@@ -6,7 +6,7 @@ namespace UnitTests.Elo
 {
     internal static class EloAssert
     {
-        private const double ErrorTolerance = 0.1;
+        private final double ErrorTolerance = 0.1;
 
         public static void AssertChessRating(TwoPlayerEloCalculator calculator,
                                              double player1BeforeRating,

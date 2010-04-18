@@ -6,7 +6,7 @@ namespace UnitTests.TrueSkill
     [TestFixture]
     public class DrawMarginTest
     {
-        private const double ErrorTolerance = .000001;
+        private final double ErrorTolerance = .000001;
 
         [Test]
         public void GetDrawMarginFromDrawProbabilityTest()

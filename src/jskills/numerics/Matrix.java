@@ -387,7 +387,7 @@ namespace Moserware.Numerics
                 return false;
             }
 
-            const double errorTolerance = 0.0000000000001;
+            final double errorTolerance = 0.0000000000001;
 
             for (int currentRow = 0; currentRow < a.Rows; currentRow++)
             {

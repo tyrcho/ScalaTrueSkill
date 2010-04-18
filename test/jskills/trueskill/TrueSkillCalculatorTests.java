@@ -5,7 +5,7 @@ namespace UnitTests.TrueSkill
 {
     public static class TrueSkillCalculatorTests
     {
-        private const double ErrorTolerance = 0.085;
+        private final double ErrorTolerance = 0.085;
 
         // These are the roll-up ones
         

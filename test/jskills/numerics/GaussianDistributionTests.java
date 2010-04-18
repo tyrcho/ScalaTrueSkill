@@ -7,7 +7,7 @@ namespace UnitTests.Numerics
     [TestFixture]
     public class GaussianDistributionTests
     {
-        private const double ErrorTolerance = 0.000001;
+        private final double ErrorTolerance = 0.000001;
 
         [Test]
         public void MultiplicationTests()

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Moserware.Numerics
+﻿namespace Moserware.Numerics
 {
     public class GaussianDistribution
     {

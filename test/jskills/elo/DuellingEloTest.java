@@ -7,7 +7,7 @@ namespace UnitTests.Elo
     [TestFixture]
     public class DuellingEloTest
     {
-        private const double ErrorTolerance = 0.1;
+        private final double ErrorTolerance = 0.1;
 
         [Test]
         public void TwoOnTwoDuellingTest()

@@ -178,7 +178,7 @@ namespace Moserware.Skills.TrueSkill.Layers
                             forwardSchedule, backwardSchedule
                         });
 
-            const double initialMaxDelta = 0.0001;
+            final double initialMaxDelta = 0.0001;
 
             var loop = new ScheduleLoop<GaussianDistribution>(
                 String.Format("loop with max delta of {0}",
