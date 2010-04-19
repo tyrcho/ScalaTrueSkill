@@ -11,7 +11,7 @@ namespace UnitTests.Elo
         public void GaussianEloCalculatorTests()
         {
             final double defaultKFactor = 24.0;
-            var calc = new GaussianEloCalculator();
+            calc = new GaussianEloCalculator();
 
             EloAssert.AssertChessRating(calc, 1200, 1200, PairwiseComparison.Win, 1212, 1188);
             EloAssert.AssertChessRating(calc, 1200, 1200, PairwiseComparison.Draw, 1200, 1200);

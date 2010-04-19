@@ -26,9 +26,9 @@ namespace Moserware.Skills.Elo
             ValidateTeamCountAndPlayersCountPerTeam(teams);
             RankSorter.Sort(ref teams, ref teamRanks);
 
-            var teamsList = teams.ToList();
+            teamsList = teams.ToList();
 
-            var deltas = new Dictionary<TPlayer, IDictionary<TPlayer, double>>();
+            deltas = new Dictionary<TPlayer, IDictionary<TPlayer, double>>();
 
             for(int ixCurrentTeam = 0; ixCurrentTeam < teamsList.Count; ixCurrentTeam++)
             {
@@ -40,11 +40,11 @@ namespace Moserware.Skills.Elo
                         continue;
                     }
 
-                    var currentTeam = teamsList[ixCurrentTeam];
-                    var otherTeam = teamsList[ixOtherTeam];
+                    currentTeam = teamsList[ixCurrentTeam];
+                    otherTeam = teamsList[ixOtherTeam];
 
                     // Remember that bigger numbers mean worse rank (e.g. other-current is what we want)
-                    var comparison = (PairwiseComparison) Math.Sign(teamRanks[ixOtherTeam] - teamRanks[ixCurrentTeam]);
+                    comparison = (PairwiseComparison) Math.Sign(teamRanks[ixOtherTeam] - teamRanks[ixCurrentTeam]);
 
                     foreach(var currentTeamPlayerRatingPair in currentTeam)
                     {
@@ -60,13 +60,13 @@ namespace Moserware.Skills.Elo
                 }
             }
             
-            var result = new Dictionary<TPlayer, Rating>();
+            result = new Dictionary<TPlayer, Rating>();
 
             foreach(var currentTeam in teamsList)
             {
                 foreach(var currentTeamPlayerPair in currentTeam)
                 {
-                    var currentPlayerAverageDuellingDelta = deltas[currentTeamPlayerPair.Key].Values.Average();
+                    currentPlayerAverageDuellingDelta = deltas[currentTeamPlayerPair.Key].Values.Average();
                     result[currentTeamPlayerPair.Key] = new EloRating(currentTeamPlayerPair.Value.Mean + currentPlayerAverageDuellingDelta);
                 }
             }
@@ -81,7 +81,7 @@ namespace Moserware.Skills.Elo
                                           PairwiseComparison weakToStrongComparison)
         {
             
-            var duelOutcomes = _TwoPlayerEloCalc.CalculateNewRatings(gameInfo, 
+            duelOutcomes = _TwoPlayerEloCalc.CalculateNewRatings(gameInfo, 
                                                                      Teams.Concat(
                                                                        new Team<TPlayer>(player1, player1Rating),
                                                                        new Team<TPlayer>(player2, player2Rating)),
@@ -114,17 +114,17 @@ namespace Moserware.Skills.Elo
             // HACK! Need a better algorithm, this is just to have something there and it isn't good
             double minQuality = 1.0;
 
-            var teamList = teams.ToList();
+            teamList = teams.ToList();
 
             for(int ixCurrentTeam = 0; ixCurrentTeam < teamList.Count; ixCurrentTeam++)
             {
                 EloRating currentTeamAverageRating = new EloRating(teamList[ixCurrentTeam].Values.Average(r => r.Mean));
-                var currentTeam = new Team(new Player(ixCurrentTeam), currentTeamAverageRating);
+                currentTeam = new Team(new Player(ixCurrentTeam), currentTeamAverageRating);
 
                 for(int ixOtherTeam = ixCurrentTeam + 1; ixOtherTeam < teamList.Count; ixOtherTeam++)
                 {
                     EloRating otherTeamAverageRating = new EloRating(teamList[ixOtherTeam].Values.Average(r => r.Mean));
-                    var otherTeam = new Team(new Player(ixOtherTeam), otherTeamAverageRating);
+                    otherTeam = new Team(new Player(ixOtherTeam), otherTeamAverageRating);
 
                     minQuality = Math.Min(minQuality,
                                           _TwoPlayerEloCalc.CalculateMatchQuality(gameInfo,

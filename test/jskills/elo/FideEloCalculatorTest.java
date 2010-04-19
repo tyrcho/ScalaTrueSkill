@@ -11,7 +11,7 @@ namespace UnitTests.Elo
         public void FideProvisionalEloCalculatorTests()
         {
             // verified against http://ratings.fide.com/calculator_rtd.phtml
-            var calc = new FideEloCalculator(new FideKFactor.Provisional());
+            calc = new FideEloCalculator(new FideKFactor.Provisional());
             
             EloAssert.AssertChessRating(calc, 1200, 1500, PairwiseComparison.Win, 1221.25, 1478.75);
             EloAssert.AssertChessRating(calc, 1200, 1500, PairwiseComparison.Draw, 1208.75, 1491.25);
@@ -22,7 +22,7 @@ namespace UnitTests.Elo
         public void FideNonProvisionalEloCalculatorTests()
         {
             // verified against http://ratings.fide.com/calculator_rtd.phtml
-            var calc = new FideEloCalculator();
+            calc = new FideEloCalculator();
 
             EloAssert.AssertChessRating(calc, 1200, 1200, PairwiseComparison.Win, 1207.5, 1192.5);
             EloAssert.AssertChessRating(calc, 1200, 1200, PairwiseComparison.Draw, 1200, 1200);

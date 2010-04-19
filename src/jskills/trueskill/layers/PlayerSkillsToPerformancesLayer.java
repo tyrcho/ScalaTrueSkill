@@ -20,7 +20,7 @@ namespace Moserware.Skills.TrueSkill.Layers
         {
             foreach (var currentTeam in InputVariablesGroups)
             {
-                var currentTeamPlayerPerformances = new List<KeyedVariable<TPlayer, GaussianDistribution>>();
+                currentTeamPlayerPerformances = new List<KeyedVariable<TPlayer, GaussianDistribution>>();
 
                 foreach (var playerSkillVariable in currentTeam)
                 {

@@ -89,12 +89,12 @@ namespace Moserware.Numerics
             get
             {
                 // Just flip everything 
-                var transposeMatrix = new double[Columns][];
+                transposeMatrix = new double[Columns][];
                 for (int currentRowTransposeMatrix = 0;
                      currentRowTransposeMatrix < Columns;
                      currentRowTransposeMatrix++)
                 {
-                    var transposeMatrixCurrentRowColumnValues = new double[Rows];
+                    transposeMatrixCurrentRowColumnValues = new double[Rows];
                     transposeMatrix[currentRowTransposeMatrix] = transposeMatrixCurrentRowColumnValues;
 
                     for (int currentColumnTransposeMatrix = 0;
@@ -196,7 +196,7 @@ namespace Moserware.Numerics
                 }
 
                 // The idea is that it's the transpose of the cofactors                
-                var result = new double[Columns][];
+                result = new double[Columns][];
 
                 for (int currentColumn = 0; currentColumn < Columns; currentColumn++)
                 {
@@ -231,11 +231,11 @@ namespace Moserware.Numerics
         {
             int rows = matrix.Rows;
             int columns = matrix.Columns;
-            var newValues = new double[rows][];
+            newValues = new double[rows][];
 
             for (int currentRow = 0; currentRow < rows; currentRow++)
             {
-                var newRowColumnValues = new double[columns];
+                newRowColumnValues = new double[columns];
                 newValues[currentRow] = newRowColumnValues;
 
                 for (int currentColumn = 0; currentColumn < columns; currentColumn++)
@@ -256,11 +256,11 @@ namespace Moserware.Numerics
 
             // simple addition of each item
 
-            var resultMatrix = new double[left.Rows][];
+            resultMatrix = new double[left.Rows][];
 
             for (int currentRow = 0; currentRow < left.Rows; currentRow++)
             {
-                var rowColumnValues = new double[right.Columns];
+                rowColumnValues = new double[right.Columns];
                 resultMatrix[currentRow] = rowColumnValues;
                 for (int currentColumn = 0; currentColumn < right.Columns; currentColumn++)
                 {
@@ -287,7 +287,7 @@ namespace Moserware.Numerics
             int resultRows = left.Rows;
             int resultColumns = right.Columns;
 
-            var resultMatrix = new double[resultRows][];
+            resultMatrix = new double[resultRows][];
 
             for (int currentRow = 0; currentRow < resultRows; currentRow++)
             {
@@ -317,7 +317,7 @@ namespace Moserware.Numerics
             // See http://en.wikipedia.org/wiki/Minor_(linear_algebra)
 
             // I'm going to use a horribly naïve algorithm... because I can :)
-            var result = new double[Rows - 1][];
+            result = new double[Rows - 1][];
             int resultRow = 0;
 
             for (int currentRow = 0; currentRow < Rows; currentRow++)
@@ -434,7 +434,7 @@ namespace Moserware.Numerics
             // Ok, now convert that double to an int
             byte[] resultBytes = BitConverter.GetBytes(result);
 
-            var finalBytes = new byte[4];
+            finalBytes = new byte[4];
             for (int i = 0; i < 4; i++)
             {
                 finalBytes[i] = (byte) (resultBytes[i] ^ resultBytes[i + 4]);
@@ -446,7 +446,7 @@ namespace Moserware.Numerics
 
         public override bool Equals(object obj)
         {
-            var other = obj as Matrix;
+            other = obj as Matrix;
             if (other == null)
             {
                 return base.Equals(obj);
@@ -488,7 +488,7 @@ namespace Moserware.Numerics
             _MatrixRowValues = new double[Rows][];
             for (int currentRow = 0; currentRow < Rows; currentRow++)
             {
-                var currentRowValues = new double[Columns];
+                currentRowValues = new double[Columns];
                 _MatrixRowValues[currentRow] = currentRowValues;
 
                 for (int currentColumn = 0; currentColumn < Columns; currentColumn++)
@@ -508,7 +508,7 @@ namespace Moserware.Numerics
 
         private static double[] CreateDiagonal(int rows)
         {
-            var result = new double[rows];
+            result = new double[rows];
             for (int i = 0; i < rows; i++)
             {
                 result[i] = 1.0;

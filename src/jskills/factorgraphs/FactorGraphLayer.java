@@ -68,7 +68,7 @@ namespace Moserware.Skills.FactorGraphs
 
         public override void SetRawInputVariablesGroups(object value)
         {
-            var newList = value as IList<IList<TInputVariable>>;
+            newList = value as IList<IList<TInputVariable>>;
             if (newList == null)
             {
                 // TODO: message

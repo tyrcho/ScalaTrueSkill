@@ -34,7 +34,7 @@ namespace Moserware.Skills.TrueSkill
 
             bool wasDraw = (teamRanks[0] == teamRanks[1]);
 
-            var results = new Dictionary<TPlayer, Rating>();
+            results = new Dictionary<TPlayer, Rating>();
 
             UpdatePlayerRatings(gameInfo,
                                 results,

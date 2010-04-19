@@ -9,7 +9,7 @@ namespace UnitTests.TrueSkill
         [Test]
         public void TwoPlayerTrueSkillCalculatorTests()
         {
-            var calculator = new TwoPlayerTrueSkillCalculator();
+            calculator = new TwoPlayerTrueSkillCalculator();
 
             // We only support two players
             TrueSkillCalculatorTests.TestAllTwoPlayerScenarios(calculator);

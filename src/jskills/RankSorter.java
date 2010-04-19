@@ -45,7 +45,7 @@ namespace Moserware.Skills
             List<T> itemsInList = teams.ToList();
 
             // item -> rank
-            var itemToRank = new Dictionary<T, int>();
+            itemToRank = new Dictionary<T, int>();
 
             for (int i = 0; i < itemsInList.Count; i++)
             {
@@ -55,8 +55,8 @@ namespace Moserware.Skills
             }
 
             // Now we need a place for our results...
-            var sortedItems = new T[teamRanks.Length];
-            var sortedRanks = new int[teamRanks.Length];
+            sortedItems = new T[teamRanks.Length];
+            sortedRanks = new int[teamRanks.Length];
 
             // where are we in the result?
             int currentIndex = 0;

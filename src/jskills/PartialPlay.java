@@ -5,7 +5,7 @@
         public static double GetPartialPlayPercentage(object player)
         {
             // If the player doesn't support the interface, assume 1.0 == 100%
-            var partialPlay = player as ISupportPartialPlay;
+            partialPlay = player as ISupportPartialPlay;
             if (partialPlay == null)
             {
                 return 1.0;

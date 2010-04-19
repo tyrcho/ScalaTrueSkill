@@ -71,20 +71,20 @@ namespace UnitTests.TrueSkill
         
         private static void TwoPlayerTestNotDrawn(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
-            var player2 = new Player(2);
-            var gameInfo = GameInfo.DefaultGameInfo;
+            player1 = new Player(1);
+            player2 = new Player(2);
+            gameInfo = GameInfo.DefaultGameInfo;
             
-            var team1 = new Team(player1, gameInfo.DefaultRating);
-            var team2 = new Team(player2, gameInfo.DefaultRating);
-            var teams = Teams.Concat(team1, team2);
+            team1 = new Team(player1, gameInfo.DefaultRating);
+            team2 = new Team(player2, gameInfo.DefaultRating);
+            teams = Teams.Concat(team1, team2);
 
-            var newRatings = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
+            newRatings = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
                     
-            var player1NewRating = newRatings[player1];
+            player1NewRating = newRatings[player1];
             AssertRating(29.39583201999924, 7.171475587326186, player1NewRating);
             
-            var player2NewRating = newRatings[player2];
+            player2NewRating = newRatings[player2];
             AssertRating(20.60416798000076, 7.171475587326186, player2NewRating);
 
             AssertMatchQuality(0.447, calculator.CalculateMatchQuality(gameInfo, teams));
@@ -92,20 +92,20 @@ namespace UnitTests.TrueSkill
 
         private static void TwoPlayerTestDrawn(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
-            var player2 = new Player(2);
-            var gameInfo = GameInfo.DefaultGameInfo;
+            player1 = new Player(1);
+            player2 = new Player(2);
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team(player1, gameInfo.DefaultRating);
-            var team2 = new Team(player2, gameInfo.DefaultRating);
+            team1 = new Team(player1, gameInfo.DefaultRating);
+            team2 = new Team(player2, gameInfo.DefaultRating);
 
-            var teams = Teams.Concat(team1, team2);
-            var newRatings = calculator.CalculateNewRatings(gameInfo, teams, 1, 1);
+            teams = Teams.Concat(team1, team2);
+            newRatings = calculator.CalculateNewRatings(gameInfo, teams, 1, 1);
             
-            var player1NewRating = newRatings[player1];
+            player1NewRating = newRatings[player1];
             AssertRating(25.0, 6.4575196623173081, player1NewRating);
 
-            var player2NewRating = newRatings[player2];
+            player2NewRating = newRatings[player2];
             AssertRating(25.0, 6.4575196623173081, player2NewRating);
 
             AssertMatchQuality(0.447, calculator.CalculateMatchQuality(gameInfo, teams));
@@ -114,39 +114,39 @@ namespace UnitTests.TrueSkill
         private static void TwoPlayerChessTestNotDrawn(SkillCalculator calculator)
         {
             // Inspired by a real bug :-)
-            var player1 = new Player(1);
-            var player2 = new Player(2);
-            var gameInfo = new GameInfo(1200.0, 1200.0 / 3.0, 200.0, 1200.0 / 300.0, 0.03);
+            player1 = new Player(1);
+            player2 = new Player(2);
+            gameInfo = new GameInfo(1200.0, 1200.0 / 3.0, 200.0, 1200.0 / 300.0, 0.03);
 
-            var team1 = new Team(player1, new Rating(1301.0007, 42.9232));
-            var team2 = new Team(player2, new Rating(1188.7560, 42.5570));
+            team1 = new Team(player1, new Rating(1301.0007, 42.9232));
+            team2 = new Team(player2, new Rating(1188.7560, 42.5570));
 
-            var newRatings = calculator.CalculateNewRatings(gameInfo, Teams.Concat(team1, team2), 1, 2);
+            newRatings = calculator.CalculateNewRatings(gameInfo, Teams.Concat(team1, team2), 1, 2);
 
-            var player1NewRating = newRatings[player1];
+            player1NewRating = newRatings[player1];
             AssertRating(1304.7820836053318, 42.843513887848658, player1NewRating);
 
-            var player2NewRating = newRatings[player2];
+            player2NewRating = newRatings[player2];
             AssertRating(1185.0383099003536, 42.485604606897752, player2NewRating);
         }
 
         private static void OneOnOneMassiveUpsetDrawTest(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
+            player1 = new Player(1);
 
-            var gameInfo = GameInfo.DefaultGameInfo;
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team()
+            team1 = new Team()
                 .AddPlayer(player1, gameInfo.DefaultRating);
 
-            var player2 = new Player(2);
+            player2 = new Player(2);
 
-            var team2 = new Team()
+            team2 = new Team()
                         .AddPlayer(player2, new Rating(50, 12.5));
 
-            var teams = Teams.Concat(team1, team2);
+            teams = Teams.Concat(team1, team2);
 
-            var newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 1);
+            newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 1);
 
             // Winners
             AssertRating(31.662, 7.137, newRatingsWinLose[player1]);
@@ -163,24 +163,24 @@ namespace UnitTests.TrueSkill
         
         private static void TwoOnTwoSimpleTest(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
-            var player2 = new Player(2);
+            player1 = new Player(1);
+            player2 = new Player(2);
 
-            var gameInfo = GameInfo.DefaultGameInfo;
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team()
+            team1 = new Team()
                 .AddPlayer(player1, gameInfo.DefaultRating)
                 .AddPlayer(player2, gameInfo.DefaultRating);
 
-            var player3 = new Player(3);
-            var player4 = new Player(4);
+            player3 = new Player(3);
+            player4 = new Player(4);
 
-            var team2 = new Team()
+            team2 = new Team()
                         .AddPlayer(player3, gameInfo.DefaultRating)
                         .AddPlayer(player4, gameInfo.DefaultRating);
 
-            var teams = Teams.Concat(team1, team2);
-            var newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
+            teams = Teams.Concat(team1, team2);
+            newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
 
             // Winners
             AssertRating(28.108, 7.774, newRatingsWinLose[player1]);
@@ -195,24 +195,24 @@ namespace UnitTests.TrueSkill
 
         private static void TwoOnTwoDrawTest(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
-            var player2 = new Player(2);
+            player1 = new Player(1);
+            player2 = new Player(2);
 
-            var gameInfo = GameInfo.DefaultGameInfo;
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team()
+            team1 = new Team()
                 .AddPlayer(player1, gameInfo.DefaultRating)
                 .AddPlayer(player2, gameInfo.DefaultRating);
 
-            var player3 = new Player(3);
-            var player4 = new Player(4);
+            player3 = new Player(3);
+            player4 = new Player(4);
 
-            var team2 = new Team()
+            team2 = new Team()
                         .AddPlayer(player3, gameInfo.DefaultRating)
                         .AddPlayer(player4, gameInfo.DefaultRating);
 
-            var teams = Teams.Concat(team1, team2);
-            var newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 1);
+            teams = Teams.Concat(team1, team2);
+            newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 1);
 
             // Winners
             AssertRating(25, 7.455, newRatingsWinLose[player1]);
@@ -227,24 +227,24 @@ namespace UnitTests.TrueSkill
 
         private static void TwoOnTwoUnbalancedDrawTest(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
-            var player2 = new Player(2);
+            player1 = new Player(1);
+            player2 = new Player(2);
 
-            var gameInfo = GameInfo.DefaultGameInfo;
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team()
+            team1 = new Team()
                 .AddPlayer(player1, new Rating(15, 8))
                 .AddPlayer(player2, new Rating(20, 6));
 
-            var player3 = new Player(3);
-            var player4 = new Player(4);
+            player3 = new Player(3);
+            player4 = new Player(4);
 
-            var team2 = new Team()
+            team2 = new Team()
                         .AddPlayer(player3, new Rating(25, 4))
                         .AddPlayer(player4, new Rating(30, 3));
             
-            var teams = Teams.Concat(team1, team2);
-            var newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 1);
+            teams = Teams.Concat(team1, team2);
+            newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 1);
 
             // Winners
             AssertRating(21.570, 6.556, newRatingsWinLose[player1]);
@@ -259,24 +259,24 @@ namespace UnitTests.TrueSkill
 
         private static void TwoOnTwoUpsetTest(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
-            var player2 = new Player(2);
+            player1 = new Player(1);
+            player2 = new Player(2);
 
-            var gameInfo = GameInfo.DefaultGameInfo;
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team()
+            team1 = new Team()
                 .AddPlayer(player1, new Rating(20, 8))
                 .AddPlayer(player2, new Rating(25, 6));
 
-            var player3 = new Player(3);
-            var player4 = new Player(4);
+            player3 = new Player(3);
+            player4 = new Player(4);
 
-            var team2 = new Team()
+            team2 = new Team()
                         .AddPlayer(player3, new Rating(35, 7))
                         .AddPlayer(player4, new Rating(40, 5));
 
-            var teams = Teams.Concat(team1, team2);
-            var newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
+            teams = Teams.Concat(team1, team2);
+            newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
 
             // Winners
             AssertRating(29.698, 7.008, newRatingsWinLose[player1]);
@@ -291,34 +291,34 @@ namespace UnitTests.TrueSkill
                         
         private static void FourOnFourSimpleTest(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
-            var player2 = new Player(2);
-            var player3 = new Player(3);
-            var player4 = new Player(4);
+            player1 = new Player(1);
+            player2 = new Player(2);
+            player3 = new Player(3);
+            player4 = new Player(4);
 
-            var gameInfo = GameInfo.DefaultGameInfo;
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team()
+            team1 = new Team()
                 .AddPlayer(player1, gameInfo.DefaultRating)
                 .AddPlayer(player2, gameInfo.DefaultRating)
                 .AddPlayer(player3, gameInfo.DefaultRating)
                 .AddPlayer(player4, gameInfo.DefaultRating);
 
-            var player5 = new Player(5);
-            var player6 = new Player(6);
-            var player7 = new Player(7);
-            var player8 = new Player(8);
+            player5 = new Player(5);
+            player6 = new Player(6);
+            player7 = new Player(7);
+            player8 = new Player(8);
 
-            var team2 = new Team()
+            team2 = new Team()
                         .AddPlayer(player5, gameInfo.DefaultRating)
                         .AddPlayer(player6, gameInfo.DefaultRating)
                         .AddPlayer(player7, gameInfo.DefaultRating)
                         .AddPlayer(player8, gameInfo.DefaultRating);
 
 
-            var teams = Teams.Concat(team1, team2);
+            teams = Teams.Concat(team1, team2);
 
-            var newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
+            newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
 
             // Winners
             AssertRating(27.198, 8.059, newRatingsWinLose[player1]);
@@ -337,22 +337,22 @@ namespace UnitTests.TrueSkill
 
         private static void OneOnTwoSimpleTest(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
+            player1 = new Player(1);
 
-            var gameInfo = GameInfo.DefaultGameInfo;
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team()
+            team1 = new Team()
                 .AddPlayer(player1, gameInfo.DefaultRating);
 
-            var player2 = new Player(2);
-            var player3 = new Player(3);
+            player2 = new Player(2);
+            player3 = new Player(3);
 
-            var team2 = new Team()
+            team2 = new Team()
                         .AddPlayer(player2, gameInfo.DefaultRating)
                         .AddPlayer(player3, gameInfo.DefaultRating);
 
-            var teams = Teams.Concat(team1, team2);
-            var newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
+            teams = Teams.Concat(team1, team2);
+            newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
 
             // Winners
             AssertRating(33.730, 7.317, newRatingsWinLose[player1]);
@@ -366,22 +366,22 @@ namespace UnitTests.TrueSkill
 
         private static void OneOnTwoSomewhatBalanced(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
+            player1 = new Player(1);
 
-            var gameInfo = GameInfo.DefaultGameInfo;
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team()
+            team1 = new Team()
                 .AddPlayer(player1, new Rating(40, 6));
 
-            var player2 = new Player(2);
-            var player3 = new Player(3);
+            player2 = new Player(2);
+            player3 = new Player(3);
 
-            var team2 = new Team()
+            team2 = new Team()
                         .AddPlayer(player2, new Rating(20, 7))
                         .AddPlayer(player3, new Rating(25, 8));
 
-            var teams = Teams.Concat(team1, team2);
-            var newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
+            teams = Teams.Concat(team1, team2);
+            newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
 
             // Winners
             AssertRating(42.744, 5.602, newRatingsWinLose[player1]);
@@ -395,24 +395,24 @@ namespace UnitTests.TrueSkill
 
         private static void OneOnThreeSimpleTest(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
+            player1 = new Player(1);
 
-            var gameInfo = GameInfo.DefaultGameInfo;
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team()
+            team1 = new Team()
                 .AddPlayer(player1, gameInfo.DefaultRating);
 
-            var player2 = new Player(2);
-            var player3 = new Player(3);
-            var player4 = new Player(4);
+            player2 = new Player(2);
+            player3 = new Player(3);
+            player4 = new Player(4);
 
-            var team2 = new Team()
+            team2 = new Team()
                         .AddPlayer(player2, gameInfo.DefaultRating)
                         .AddPlayer(player3, gameInfo.DefaultRating)
                         .AddPlayer(player4, gameInfo.DefaultRating);
 
-            var teams = Teams.Concat(team1, team2);
-            var newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
+            teams = Teams.Concat(team1, team2);
+            newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
 
             // Winners
             AssertRating(36.337, 7.527, newRatingsWinLose[player1]);
@@ -427,22 +427,22 @@ namespace UnitTests.TrueSkill
 
         private static void OneOnTwoDrawTest(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
+            player1 = new Player(1);
 
-            var gameInfo = GameInfo.DefaultGameInfo;
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team()
+            team1 = new Team()
                 .AddPlayer(player1, gameInfo.DefaultRating);
 
-            var player2 = new Player(2);
-            var player3 = new Player(3);
+            player2 = new Player(2);
+            player3 = new Player(3);
 
-            var team2 = new Team()
+            team2 = new Team()
                         .AddPlayer(player2, gameInfo.DefaultRating)
                         .AddPlayer(player3, gameInfo.DefaultRating);
 
-            var teams = Teams.Concat(team1, team2);
-            var newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 1);
+            teams = Teams.Concat(team1, team2);
+            newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 1);
 
             // Winners
             AssertRating(31.660, 7.138, newRatingsWinLose[player1]);
@@ -456,24 +456,24 @@ namespace UnitTests.TrueSkill
 
         private static void OneOnThreeDrawTest(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
+            player1 = new Player(1);
 
-            var gameInfo = GameInfo.DefaultGameInfo;
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team()
+            team1 = new Team()
                 .AddPlayer(player1, gameInfo.DefaultRating);
 
-            var player2 = new Player(2);
-            var player3 = new Player(3);
-            var player4 = new Player(4);
+            player2 = new Player(2);
+            player3 = new Player(3);
+            player4 = new Player(4);
 
-            var team2 = new Team()
+            team2 = new Team()
                         .AddPlayer(player2, gameInfo.DefaultRating)
                         .AddPlayer(player3, gameInfo.DefaultRating)
                         .AddPlayer(player4, gameInfo.DefaultRating);
 
-            var teams = Teams.Concat(team1, team2);
-            var newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 1);
+            teams = Teams.Concat(team1, team2);
+            newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 1);
 
             // Winners
             AssertRating(34.990, 7.455, newRatingsWinLose[player1]);
@@ -488,22 +488,22 @@ namespace UnitTests.TrueSkill
 
         private static void OneOnSevenSimpleTest(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
+            player1 = new Player(1);
 
-            var gameInfo = GameInfo.DefaultGameInfo;
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team()
+            team1 = new Team()
                 .AddPlayer(player1, gameInfo.DefaultRating);
 
-            var player2 = new Player(2);
-            var player3 = new Player(3);
-            var player4 = new Player(4);
-            var player5 = new Player(5);
-            var player6 = new Player(6);
-            var player7 = new Player(7);
-            var player8 = new Player(8);
+            player2 = new Player(2);
+            player3 = new Player(3);
+            player4 = new Player(4);
+            player5 = new Player(5);
+            player6 = new Player(6);
+            player7 = new Player(7);
+            player8 = new Player(8);
 
-            var team2 = new Team()
+            team2 = new Team()
                         .AddPlayer(player2, gameInfo.DefaultRating)
                         .AddPlayer(player3, gameInfo.DefaultRating)
                         .AddPlayer(player4, gameInfo.DefaultRating)
@@ -512,8 +512,8 @@ namespace UnitTests.TrueSkill
                         .AddPlayer(player7, gameInfo.DefaultRating)
                         .AddPlayer(player8, gameInfo.DefaultRating);
 
-            var teams = Teams.Concat(team1, team2);
-            var newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
+            teams = Teams.Concat(team1, team2);
+            newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
 
             // Winners
             AssertRating(40.582, 7.917, newRatingsWinLose[player1]);
@@ -532,27 +532,27 @@ namespace UnitTests.TrueSkill
 
         private static void ThreeOnTwoTests(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
-            var player2 = new Player(2);
-            var player3 = new Player(3);
+            player1 = new Player(1);
+            player2 = new Player(2);
+            player3 = new Player(3);
 
-            var team1 = new Team()
+            team1 = new Team()
                         .AddPlayer(player1, new Rating(28, 7))
                         .AddPlayer(player2, new Rating(27, 6))
                         .AddPlayer(player3, new Rating(26, 5));
 
 
-            var player4 = new Player(4);
-            var player5 = new Player(5);
+            player4 = new Player(4);
+            player5 = new Player(5);
 
-            var team2 = new Team()
+            team2 = new Team()
                         .AddPlayer(player4, new Rating(30, 4))
                         .AddPlayer(player5, new Rating(31, 3));
 
-            var gameInfo = GameInfo.DefaultGameInfo;
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var teams = Teams.Concat(team1, team2);
-            var newRatingsWinLoseExpected = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
+            teams = Teams.Concat(team1, team2);
+            newRatingsWinLoseExpected = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
 
             // Winners
             AssertRating(28.658, 6.770, newRatingsWinLoseExpected[player1]);
@@ -563,7 +563,7 @@ namespace UnitTests.TrueSkill
             AssertRating(29.785, 3.958, newRatingsWinLoseExpected[player4]);
             AssertRating(30.879, 2.983, newRatingsWinLoseExpected[player5]);
 
-            var newRatingsWinLoseUpset = calculator.CalculateNewRatings(gameInfo, Teams.Concat(team1, team2), 2, 1);
+            newRatingsWinLoseUpset = calculator.CalculateNewRatings(gameInfo, Teams.Concat(team1, team2), 2, 1);
 
             // Winners
             AssertRating(32.012, 3.877, newRatingsWinLoseUpset[player4]);
@@ -583,36 +583,36 @@ namespace UnitTests.TrueSkill
 
         private static void TwoOnFourOnTwoWinDraw(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
-            var player2 = new Player(2);
+            player1 = new Player(1);
+            player2 = new Player(2);
             
-            var gameInfo = GameInfo.DefaultGameInfo;
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team()
+            team1 = new Team()
                 .AddPlayer(player1, new Rating(40,4))
                 .AddPlayer(player2, new Rating(45,3));
 
-            var player3 = new Player(3);
-            var player4 = new Player(4);
-            var player5 = new Player(5);
-            var player6 = new Player(6);
+            player3 = new Player(3);
+            player4 = new Player(4);
+            player5 = new Player(5);
+            player6 = new Player(6);
 
-            var team2 = new Team()
+            team2 = new Team()
                         .AddPlayer(player3, new Rating(20, 7))
                         .AddPlayer(player4, new Rating(19, 6))
                         .AddPlayer(player5, new Rating(30, 9))
                         .AddPlayer(player6, new Rating(10, 4));
 
-            var player7 = new Player(7);
-            var player8 = new Player(8);
+            player7 = new Player(7);
+            player8 = new Player(8);
 
-            var team3 = new Team()                        
+            team3 = new Team()                        
                         .AddPlayer(player7, new Rating(50,5))
                         .AddPlayer(player8, new Rating(30,2));
 
 
-            var teams = Teams.Concat(team1, team2, team3);
-            var newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 2, 2);
+            teams = Teams.Concat(team1, team2, team3);
+            newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 2, 2);
 
             // Winners
             AssertRating(40.877, 3.840, newRatingsWinLose[player1]);
@@ -629,25 +629,25 @@ namespace UnitTests.TrueSkill
         
         private static void ThreeTeamsOfOneNotDrawn(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
-            var player2 = new Player(2);
-            var player3 = new Player(3);
-            var gameInfo = GameInfo.DefaultGameInfo;
+            player1 = new Player(1);
+            player2 = new Player(2);
+            player3 = new Player(3);
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team(player1, gameInfo.DefaultRating);
-            var team2 = new Team(player2, gameInfo.DefaultRating);
-            var team3 = new Team(player3, gameInfo.DefaultRating);
+            team1 = new Team(player1, gameInfo.DefaultRating);
+            team2 = new Team(player2, gameInfo.DefaultRating);
+            team3 = new Team(player3, gameInfo.DefaultRating);
 
-            var teams = Teams.Concat(team1, team2, team3);
-            var newRatings = calculator.CalculateNewRatings(gameInfo, teams, 1, 2, 3);
+            teams = Teams.Concat(team1, team2, team3);
+            newRatings = calculator.CalculateNewRatings(gameInfo, teams, 1, 2, 3);
 
-            var player1NewRating = newRatings[player1];
+            player1NewRating = newRatings[player1];
             AssertRating(31.675352419172107, 6.6559853776206905, player1NewRating);
 
-            var player2NewRating = newRatings[player2];
+            player2NewRating = newRatings[player2];
             AssertRating(25.000000000003912, 6.2078966412243233, player2NewRating);
 
-            var player3NewRating = newRatings[player3];
+            player3NewRating = newRatings[player3];
             AssertRating(18.324647580823971, 6.6559853776218318, player3NewRating);
 
             AssertMatchQuality(0.200, calculator.CalculateMatchQuality(gameInfo, teams));
@@ -655,25 +655,25 @@ namespace UnitTests.TrueSkill
 
         private static void ThreeTeamsOfOneDrawn(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
-            var player2 = new Player(2);
-            var player3 = new Player(3);
-            var gameInfo = GameInfo.DefaultGameInfo;
+            player1 = new Player(1);
+            player2 = new Player(2);
+            player3 = new Player(3);
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team(player1, gameInfo.DefaultRating);
-            var team2 = new Team(player2, gameInfo.DefaultRating);
-            var team3 = new Team(player3, gameInfo.DefaultRating);
+            team1 = new Team(player1, gameInfo.DefaultRating);
+            team2 = new Team(player2, gameInfo.DefaultRating);
+            team3 = new Team(player3, gameInfo.DefaultRating);
 
-            var teams = Teams.Concat(team1, team2, team3);
-            var newRatings = calculator.CalculateNewRatings(gameInfo, teams, 1, 1, 1);
+            teams = Teams.Concat(team1, team2, team3);
+            newRatings = calculator.CalculateNewRatings(gameInfo, teams, 1, 1, 1);
 
-            var player1NewRating = newRatings[player1];
+            player1NewRating = newRatings[player1];
             AssertRating(25.000, 5.698, player1NewRating);
 
-            var player2NewRating = newRatings[player2];
+            player2NewRating = newRatings[player2];
             AssertRating(25.000, 5.695, player2NewRating);
 
-            var player3NewRating = newRatings[player3];
+            player3NewRating = newRatings[player3];
             AssertRating(25.000, 5.698, player3NewRating);
 
             AssertMatchQuality(0.200, calculator.CalculateMatchQuality(gameInfo, teams));
@@ -681,31 +681,31 @@ namespace UnitTests.TrueSkill
 
         private static void FourTeamsOfOneNotDrawn(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
-            var player2 = new Player(2);
-            var player3 = new Player(3);
-            var player4 = new Player(4);
-            var gameInfo = GameInfo.DefaultGameInfo;
+            player1 = new Player(1);
+            player2 = new Player(2);
+            player3 = new Player(3);
+            player4 = new Player(4);
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team(player1, gameInfo.DefaultRating);
-            var team2 = new Team(player2, gameInfo.DefaultRating);
-            var team3 = new Team(player3, gameInfo.DefaultRating);
-            var team4 = new Team(player4, gameInfo.DefaultRating);
+            team1 = new Team(player1, gameInfo.DefaultRating);
+            team2 = new Team(player2, gameInfo.DefaultRating);
+            team3 = new Team(player3, gameInfo.DefaultRating);
+            team4 = new Team(player4, gameInfo.DefaultRating);
 
-            var teams = Teams.Concat(team1, team2, team3, team4);
+            teams = Teams.Concat(team1, team2, team3, team4);
 
-            var newRatings = calculator.CalculateNewRatings(gameInfo, teams, 1, 2, 3, 4);
+            newRatings = calculator.CalculateNewRatings(gameInfo, teams, 1, 2, 3, 4);
 
-            var player1NewRating = newRatings[player1];
+            player1NewRating = newRatings[player1];
             AssertRating(33.206680965631264, 6.3481091698077057, player1NewRating);            
 
-            var player2NewRating = newRatings[player2];
+            player2NewRating = newRatings[player2];
             AssertRating(27.401454693843323, 5.7871629348447584, player2NewRating);            
 
-            var player3NewRating = newRatings[player3];
+            player3NewRating = newRatings[player3];
             AssertRating(22.598545306188374, 5.7871629348413451, player3NewRating);            
 
-            var player4NewRating = newRatings[player4];
+            player4NewRating = newRatings[player4];
             AssertRating(16.793319034361271, 6.3481091698144967, player4NewRating);
 
             AssertMatchQuality(0.089, calculator.CalculateMatchQuality(gameInfo, teams));
@@ -713,35 +713,35 @@ namespace UnitTests.TrueSkill
 
         private static void FiveTeamsOfOneNotDrawn(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
-            var player2 = new Player(2);
-            var player3 = new Player(3);
-            var player4 = new Player(4);
-            var player5 = new Player(5);
-            var gameInfo = GameInfo.DefaultGameInfo;
+            player1 = new Player(1);
+            player2 = new Player(2);
+            player3 = new Player(3);
+            player4 = new Player(4);
+            player5 = new Player(5);
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team(player1, gameInfo.DefaultRating);
-            var team2 = new Team(player2, gameInfo.DefaultRating);
-            var team3 = new Team(player3, gameInfo.DefaultRating);
-            var team4 = new Team(player4, gameInfo.DefaultRating);
-            var team5 = new Team(player5, gameInfo.DefaultRating);
+            team1 = new Team(player1, gameInfo.DefaultRating);
+            team2 = new Team(player2, gameInfo.DefaultRating);
+            team3 = new Team(player3, gameInfo.DefaultRating);
+            team4 = new Team(player4, gameInfo.DefaultRating);
+            team5 = new Team(player5, gameInfo.DefaultRating);
 
-            var teams = Teams.Concat(team1, team2, team3, team4, team5);
-            var newRatings = calculator.CalculateNewRatings(gameInfo, teams, 1, 2, 3, 4, 5);
+            teams = Teams.Concat(team1, team2, team3, team4, team5);
+            newRatings = calculator.CalculateNewRatings(gameInfo, teams, 1, 2, 3, 4, 5);
 
-            var player1NewRating = newRatings[player1];
+            player1NewRating = newRatings[player1];
             AssertRating(34.363135705841188, 6.1361528798112692, player1NewRating);            
 
-            var player2NewRating = newRatings[player2];
+            player2NewRating = newRatings[player2];
             AssertRating(29.058448805636779, 5.5358352402833413, player2NewRating);            
 
-            var player3NewRating = newRatings[player3];
+            player3NewRating = newRatings[player3];
             AssertRating(25.000000000031758, 5.4200805474429847, player3NewRating);
             
-            var player4NewRating = newRatings[player4];
+            player4NewRating = newRatings[player4];
             AssertRating(20.941551194426314, 5.5358352402709672, player4NewRating);
             
-            var player5NewRating = newRatings[player5];
+            player5NewRating = newRatings[player5];
             AssertRating(15.636864294158848, 6.136152879829349, player5NewRating);
 
             AssertMatchQuality(0.040, calculator.CalculateMatchQuality(gameInfo, teams));
@@ -749,50 +749,50 @@ namespace UnitTests.TrueSkill
 
         private static void EightTeamsOfOneDrawn(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
-            var player2 = new Player(2);
-            var player3 = new Player(3);
-            var player4 = new Player(4);
-            var player5 = new Player(5);
-            var player6 = new Player(6);
-            var player7 = new Player(7);
-            var player8 = new Player(8);
-            var gameInfo = GameInfo.DefaultGameInfo;
+            player1 = new Player(1);
+            player2 = new Player(2);
+            player3 = new Player(3);
+            player4 = new Player(4);
+            player5 = new Player(5);
+            player6 = new Player(6);
+            player7 = new Player(7);
+            player8 = new Player(8);
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team(player1, gameInfo.DefaultRating);
-            var team2 = new Team(player2, gameInfo.DefaultRating);
-            var team3 = new Team(player3, gameInfo.DefaultRating);
-            var team4 = new Team(player4, gameInfo.DefaultRating);
-            var team5 = new Team(player5, gameInfo.DefaultRating);
-            var team6 = new Team(player6, gameInfo.DefaultRating);
-            var team7 = new Team(player7, gameInfo.DefaultRating);
-            var team8 = new Team(player8, gameInfo.DefaultRating);
+            team1 = new Team(player1, gameInfo.DefaultRating);
+            team2 = new Team(player2, gameInfo.DefaultRating);
+            team3 = new Team(player3, gameInfo.DefaultRating);
+            team4 = new Team(player4, gameInfo.DefaultRating);
+            team5 = new Team(player5, gameInfo.DefaultRating);
+            team6 = new Team(player6, gameInfo.DefaultRating);
+            team7 = new Team(player7, gameInfo.DefaultRating);
+            team8 = new Team(player8, gameInfo.DefaultRating);
 
-            var teams = Teams.Concat(team1, team2, team3, team4, team5, team6, team7, team8);
-            var newRatings = calculator.CalculateNewRatings(gameInfo, teams, 1, 1, 1, 1, 1, 1, 1, 1);
+            teams = Teams.Concat(team1, team2, team3, team4, team5, team6, team7, team8);
+            newRatings = calculator.CalculateNewRatings(gameInfo, teams, 1, 1, 1, 1, 1, 1, 1, 1);
 
-            var player1NewRating = newRatings[player1];
+            player1NewRating = newRatings[player1];
             AssertRating(25.000, 4.592, player1NewRating);
 
-            var player2NewRating = newRatings[player2];
+            player2NewRating = newRatings[player2];
             AssertRating(25.000, 4.583, player2NewRating);
 
-            var player3NewRating = newRatings[player3];
+            player3NewRating = newRatings[player3];
             AssertRating(25.000, 4.576, player3NewRating);
 
-            var player4NewRating = newRatings[player4];
+            player4NewRating = newRatings[player4];
             AssertRating(25.000, 4.573, player4NewRating);
 
-            var player5NewRating = newRatings[player5];
+            player5NewRating = newRatings[player5];
             AssertRating(25.000, 4.573, player5NewRating);
 
-            var player6NewRating = newRatings[player6];
+            player6NewRating = newRatings[player6];
             AssertRating(25.000, 4.576, player6NewRating);
 
-            var player7NewRating = newRatings[player7];
+            player7NewRating = newRatings[player7];
             AssertRating(25.000, 4.583, player7NewRating);
 
-            var player8NewRating = newRatings[player8];
+            player8NewRating = newRatings[player8];
             AssertRating(25.000, 4.592, player8NewRating);
 
             AssertMatchQuality(0.004, calculator.CalculateMatchQuality(gameInfo, teams));
@@ -800,50 +800,50 @@ namespace UnitTests.TrueSkill
 
         private static void EightTeamsOfOneUpset(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
-            var player2 = new Player(2);
-            var player3 = new Player(3);
-            var player4 = new Player(4);
-            var player5 = new Player(5);
-            var player6 = new Player(6);
-            var player7 = new Player(7);
-            var player8 = new Player(8);
-            var gameInfo = GameInfo.DefaultGameInfo;
+            player1 = new Player(1);
+            player2 = new Player(2);
+            player3 = new Player(3);
+            player4 = new Player(4);
+            player5 = new Player(5);
+            player6 = new Player(6);
+            player7 = new Player(7);
+            player8 = new Player(8);
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team(player1, new Rating(10, 8));
-            var team2 = new Team(player2, new Rating(15, 7));
-            var team3 = new Team(player3, new Rating(20, 6));
-            var team4 = new Team(player4, new Rating(25, 5));
-            var team5 = new Team(player5, new Rating(30, 4));
-            var team6 = new Team(player6, new Rating(35, 3));
-            var team7 = new Team(player7, new Rating(40, 2));
-            var team8 = new Team(player8, new Rating(45, 1));
+            team1 = new Team(player1, new Rating(10, 8));
+            team2 = new Team(player2, new Rating(15, 7));
+            team3 = new Team(player3, new Rating(20, 6));
+            team4 = new Team(player4, new Rating(25, 5));
+            team5 = new Team(player5, new Rating(30, 4));
+            team6 = new Team(player6, new Rating(35, 3));
+            team7 = new Team(player7, new Rating(40, 2));
+            team8 = new Team(player8, new Rating(45, 1));
 
-            var teams = Teams.Concat(team1, team2, team3, team4, team5, team6, team7, team8);
-            var newRatings = calculator.CalculateNewRatings(gameInfo, teams, 1, 2, 3, 4, 5, 6, 7, 8);
+            teams = Teams.Concat(team1, team2, team3, team4, team5, team6, team7, team8);
+            newRatings = calculator.CalculateNewRatings(gameInfo, teams, 1, 2, 3, 4, 5, 6, 7, 8);
 
-            var player1NewRating = newRatings[player1];
+            player1NewRating = newRatings[player1];
             AssertRating(35.135, 4.506, player1NewRating);
 
-            var player2NewRating = newRatings[player2];
+            player2NewRating = newRatings[player2];
             AssertRating(32.585, 4.037, player2NewRating);
 
-            var player3NewRating = newRatings[player3];
+            player3NewRating = newRatings[player3];
             AssertRating(31.329, 3.756, player3NewRating);
 
-            var player4NewRating = newRatings[player4];
+            player4NewRating = newRatings[player4];
             AssertRating(30.984, 3.453, player4NewRating);
 
-            var player5NewRating = newRatings[player5];
+            player5NewRating = newRatings[player5];
             AssertRating(31.751, 3.064, player5NewRating);
 
-            var player6NewRating = newRatings[player6];
+            player6NewRating = newRatings[player6];
             AssertRating(34.051, 2.541, player6NewRating);
 
-            var player7NewRating = newRatings[player7];
+            player7NewRating = newRatings[player7];
             AssertRating(38.263, 1.849, player7NewRating);
 
-            var player8NewRating = newRatings[player8];
+            player8NewRating = newRatings[player8];
             AssertRating(44.118, 0.983, player8NewRating);
 
             AssertMatchQuality(0.000, calculator.CalculateMatchQuality(gameInfo,teams));
@@ -851,42 +851,42 @@ namespace UnitTests.TrueSkill
 
         private static void SixteenTeamsOfOneNotDrawn(SkillCalculator calculator)
         {
-            var player1 = new Player(1);
-            var player2 = new Player(2);
-            var player3 = new Player(3);
-            var player4 = new Player(4);
-            var player5 = new Player(5);
-            var player6 = new Player(6);
-            var player7 = new Player(7);
-            var player8 = new Player(8);
-            var player9 = new Player(9);
-            var player10 = new Player(10);
-            var player11 = new Player(11);
-            var player12 = new Player(12);
-            var player13 = new Player(13);
-            var player14 = new Player(14);
-            var player15 = new Player(15);
-            var player16 = new Player(16);
-            var gameInfo = GameInfo.DefaultGameInfo;
+            player1 = new Player(1);
+            player2 = new Player(2);
+            player3 = new Player(3);
+            player4 = new Player(4);
+            player5 = new Player(5);
+            player6 = new Player(6);
+            player7 = new Player(7);
+            player8 = new Player(8);
+            player9 = new Player(9);
+            player10 = new Player(10);
+            player11 = new Player(11);
+            player12 = new Player(12);
+            player13 = new Player(13);
+            player14 = new Player(14);
+            player15 = new Player(15);
+            player16 = new Player(16);
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var team1 = new Team(player1, gameInfo.DefaultRating);
-            var team2 = new Team(player2, gameInfo.DefaultRating);
-            var team3 = new Team(player3, gameInfo.DefaultRating);
-            var team4 = new Team(player4, gameInfo.DefaultRating);
-            var team5 = new Team(player5, gameInfo.DefaultRating);
-            var team6 = new Team(player6, gameInfo.DefaultRating);
-            var team7 = new Team(player7, gameInfo.DefaultRating);
-            var team8 = new Team(player8, gameInfo.DefaultRating);
-            var team9 = new Team(player9, gameInfo.DefaultRating);
-            var team10 = new Team(player10, gameInfo.DefaultRating);
-            var team11 = new Team(player11, gameInfo.DefaultRating);
-            var team12 = new Team(player12, gameInfo.DefaultRating);
-            var team13 = new Team(player13, gameInfo.DefaultRating);
-            var team14 = new Team(player14, gameInfo.DefaultRating);
-            var team15 = new Team(player15, gameInfo.DefaultRating);
-            var team16 = new Team(player16, gameInfo.DefaultRating);
+            team1 = new Team(player1, gameInfo.DefaultRating);
+            team2 = new Team(player2, gameInfo.DefaultRating);
+            team3 = new Team(player3, gameInfo.DefaultRating);
+            team4 = new Team(player4, gameInfo.DefaultRating);
+            team5 = new Team(player5, gameInfo.DefaultRating);
+            team6 = new Team(player6, gameInfo.DefaultRating);
+            team7 = new Team(player7, gameInfo.DefaultRating);
+            team8 = new Team(player8, gameInfo.DefaultRating);
+            team9 = new Team(player9, gameInfo.DefaultRating);
+            team10 = new Team(player10, gameInfo.DefaultRating);
+            team11 = new Team(player11, gameInfo.DefaultRating);
+            team12 = new Team(player12, gameInfo.DefaultRating);
+            team13 = new Team(player13, gameInfo.DefaultRating);
+            team14 = new Team(player14, gameInfo.DefaultRating);
+            team15 = new Team(player15, gameInfo.DefaultRating);
+            team16 = new Team(player16, gameInfo.DefaultRating);
 
-            var newRatings = 
+            newRatings = 
                 calculator.CalculateNewRatings(
                     gameInfo, 
                     Teams.Concat(
@@ -896,52 +896,52 @@ namespace UnitTests.TrueSkill
                         team16), 
                         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
 
-            var player1NewRating = newRatings[player1];
+            player1NewRating = newRatings[player1];
             AssertRating(40.53945776946920, 5.27581643889050, player1NewRating);
  
-            var player2NewRating = newRatings[player2];
+            player2NewRating = newRatings[player2];
             AssertRating(36.80951229454210, 4.71121217610266, player2NewRating);
             
-            var player3NewRating = newRatings[player3];
+            player3NewRating = newRatings[player3];
             AssertRating(34.34726355544460, 4.52440328139991, player3NewRating);
             
-            var player4NewRating = newRatings[player4];
+            player4NewRating = newRatings[player4];
             AssertRating(32.33614722608720, 4.43258628279632, player4NewRating);
             
-            var player5NewRating = newRatings[player5];
+            player5NewRating = newRatings[player5];
             AssertRating(30.55048814671730, 4.38010805034365, player5NewRating);
             
-            var player6NewRating = newRatings[player6];
+            player6NewRating = newRatings[player6];
             AssertRating(28.89277312234790, 4.34859291776483, player6NewRating);
             
-            var player7NewRating = newRatings[player7];
+            player7NewRating = newRatings[player7];
             AssertRating(27.30952161972210, 4.33037679041216, player7NewRating);
             
-            var player8NewRating = newRatings[player8];
+            player8NewRating = newRatings[player8];
             AssertRating(25.76571046519540, 4.32197078088701, player8NewRating);
  
-            var player9NewRating = newRatings[player9];
+            player9NewRating = newRatings[player9];
             AssertRating(24.23428953480470, 4.32197078088703, player9NewRating);
             
-            var player10NewRating = newRatings[player10];
+            player10NewRating = newRatings[player10];
             AssertRating(22.69047838027800, 4.33037679041219, player10NewRating);
             
-            var player11NewRating = newRatings[player11];
+            player11NewRating = newRatings[player11];
             AssertRating(21.10722687765220, 4.34859291776488, player11NewRating);
             
-            var player12NewRating = newRatings[player12];
+            player12NewRating = newRatings[player12];
             AssertRating(19.44951185328290, 4.38010805034375, player12NewRating);
             
-            var player13NewRating = newRatings[player13];
+            player13NewRating = newRatings[player13];
             AssertRating(17.66385277391300, 4.43258628279643, player13NewRating);
             
-            var player14NewRating = newRatings[player14];
+            player14NewRating = newRatings[player14];
             AssertRating(15.65273644455550, 4.52440328139996, player14NewRating);
             
-            var player15NewRating = newRatings[player15];
+            player15NewRating = newRatings[player15];
             AssertRating(13.19048770545810, 4.71121217610273, player15NewRating);
             
-            var player16NewRating = newRatings[player16];
+            player16NewRating = newRatings[player16];
             AssertRating(9.46054223053080, 5.27581643889032, player16NewRating);
         }
 
@@ -951,21 +951,21 @@ namespace UnitTests.TrueSkill
 
         private static void OneOnTwoBalancedPartialPlay(SkillCalculator calculator)
         {
-            var gameInfo = GameInfo.DefaultGameInfo;
+            gameInfo = GameInfo.DefaultGameInfo;
 
-            var p1 = new Player(1);
-            var team1 = new Team(p1, gameInfo.DefaultRating);
+            p1 = new Player(1);
+            team1 = new Team(p1, gameInfo.DefaultRating);
 
-            var p2 = new Player(2, 0.0);
-            var p3 = new Player(3, 1.00);
+            p2 = new Player(2, 0.0);
+            p3 = new Player(3, 1.00);
 
-            var team2 = new Team()
+            team2 = new Team()
                         .AddPlayer(p2, gameInfo.DefaultRating)
                         .AddPlayer(p3, gameInfo.DefaultRating);
 
-            var teams = Teams.Concat(team1, team2);
-            var newRatings = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
-            var matchQuality = calculator.CalculateMatchQuality(gameInfo, teams);
+            teams = Teams.Concat(team1, team2);
+            newRatings = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
+            matchQuality = calculator.CalculateMatchQuality(gameInfo, teams);
             
         }
 
@@ -975,13 +975,13 @@ namespace UnitTests.TrueSkill
         
         private static void AssertRating(double expectedMean, double expectedStandardDeviation, Rating actual)
         {
-            Assert.AreEqual(expectedMean, actual.Mean, ErrorTolerance);
-            Assert.AreEqual(expectedStandardDeviation, actual.StandardDeviation, ErrorTolerance);
+            assertEquals(expectedMean, actual.Mean, ErrorTolerance);
+            assertEquals(expectedStandardDeviation, actual.StandardDeviation, ErrorTolerance);
         }
 
         private static void AssertMatchQuality(double expectedMatchQuality, double actualMatchQuality)
         {
-            Assert.AreEqual(expectedMatchQuality, actualMatchQuality, 0.0005);
+            assertEquals(expectedMatchQuality, actualMatchQuality, 0.0005);
         }
     }
 }

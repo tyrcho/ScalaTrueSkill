@@ -21,7 +21,7 @@ namespace UnitTests.TrueSkill
         private static void AssertDrawMargin(double drawProbability, double beta, double expected)
         {
             double actual = DrawMargin.GetDrawMarginFromDrawProbability(drawProbability, beta);
-            Assert.AreEqual(expected, actual, ErrorTolerance);
+            assertEquals(expected, actual, ErrorTolerance);
         }
     }
 }

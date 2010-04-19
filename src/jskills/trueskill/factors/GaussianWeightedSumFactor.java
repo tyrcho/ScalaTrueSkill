@@ -53,13 +53,13 @@ namespace Moserware.Skills.TrueSkill.Factors
 
             for (int weightsIndex = 1; weightsIndex < _Weights.Length; weightsIndex++)
             {
-                var currentWeights = new double[variableWeights.Length];
+                currentWeights = new double[variableWeights.Length];
                 _Weights[weightsIndex] = currentWeights;
 
-                var variableIndices = new int[variableWeights.Length + 1];
+                variableIndices = new int[variableWeights.Length + 1];
                 variableIndices[0] = weightsIndex;
 
-                var currentWeightsSquared = new double[variableWeights.Length];
+                currentWeightsSquared = new double[variableWeights.Length];
                 _WeightsSquared[weightsIndex] = currentWeightsSquared;
 
                 // keep a single variable to keep track of where we are in the array.
@@ -194,8 +194,8 @@ namespace Moserware.Skills.TrueSkill.Factors
 
             Guard.ArgumentIsValidIndex(messageIndex, allMessages.Count, "messageIndex");
 
-            var updatedMessages = new List<Message<GaussianDistribution>>();
-            var updatedVariables = new List<Variable<GaussianDistribution>>();
+            updatedMessages = new List<Message<GaussianDistribution>>();
+            updatedVariables = new List<Variable<GaussianDistribution>>();
 
             int[] indicesToUse = _VariableIndexOrdersForWeights[messageIndex];
 
@@ -214,7 +214,7 @@ namespace Moserware.Skills.TrueSkill.Factors
         private static string CreateName(Variable<GaussianDistribution> sumVariable,
                                          IList<Variable<GaussianDistribution>> variablesToSum, double[] weights)
         {
-            var sb = new StringBuilder();
+            sb = new StringBuilder();
             sb.Append(sumVariable.ToString());
             sb.Append(" = ");
             for (int i = 0; i < variablesToSum.Count; i++)

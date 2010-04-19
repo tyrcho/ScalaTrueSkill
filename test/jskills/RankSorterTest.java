@@ -15,8 +15,8 @@ namespace UnitTests
 
             RankSorter.Sort(ref people, ref ranks);
 
-            CollectionAssert.AreEqual(new[] { "One", "Two", "Three" }, people);
-            CollectionAssert.AreEqual(new[] { 1, 2, 3 }, ranks);
+            CollectionassertEquals(new[] { "One", "Two", "Three" }, people);
+            CollectionassertEquals(new[] { 1, 2, 3 }, ranks);
         }
 
         [Test]
@@ -27,8 +27,8 @@ namespace UnitTests
 
             RankSorter.Sort(ref people, ref ranks);
 
-            CollectionAssert.AreEqual(new[] { "One", "Two1", "Two2", "Four", "Five" }, people);
-            CollectionAssert.AreEqual(new[] { 1, 2, 2, 4, 5 }, ranks);
+            CollectionassertEquals(new[] { "One", "Two1", "Two2", "Four", "Five" }, people);
+            CollectionassertEquals(new[] { 1, 2, 2, 4, 5 }, ranks);
         }
     }
 }

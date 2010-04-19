@@ -68,7 +68,7 @@ namespace Moserware.Skills.TrueSkill.Layers
             int totalTeamDifferences = _TeamPerformancesToTeamPerformanceDifferencesLayer.LocalFactors.Count;
             int totalTeams = totalTeamDifferences + 1;
 
-            var innerSchedule = new ScheduleSequence<GaussianDistribution>(
+            innerSchedule = new ScheduleSequence<GaussianDistribution>(
                 "inner schedule",
                 new[]
                     {
@@ -107,7 +107,7 @@ namespace Moserware.Skills.TrueSkill.Layers
         {
             int totalTeamDifferences = _TeamPerformancesToTeamPerformanceDifferencesLayer.LocalFactors.Count;
 
-            var forwardScheduleList = new List<Schedule<GaussianDistribution>>();
+            forwardScheduleList = new List<Schedule<GaussianDistribution>>();
 
             for (int i = 0; i < totalTeamDifferences - 1; i++)
             {
@@ -133,16 +133,16 @@ namespace Moserware.Skills.TrueSkill.Layers
                 forwardScheduleList.Add(currentForwardSchedulePiece);
             }
 
-            var forwardSchedule =
+            forwardSchedule =
                 new ScheduleSequence<GaussianDistribution>(
                     "forward schedule",
                     forwardScheduleList);
 
-            var backwardScheduleList = new List<Schedule<GaussianDistribution>>();
+            backwardScheduleList = new List<Schedule<GaussianDistribution>>();
 
             for (int i = 0; i < totalTeamDifferences - 1; i++)
             {
-                var currentBackwardSchedulePiece = new ScheduleSequence<GaussianDistribution>(
+                currentBackwardSchedulePiece = new ScheduleSequence<GaussianDistribution>(
                     "current backward schedule piece",
                     new Schedule<GaussianDistribution>[]
                         {
@@ -165,12 +165,12 @@ namespace Moserware.Skills.TrueSkill.Layers
                 backwardScheduleList.Add(currentBackwardSchedulePiece);
             }
 
-            var backwardSchedule =
+            backwardSchedule =
                 new ScheduleSequence<GaussianDistribution>(
                     "backward schedule",
                     backwardScheduleList);
 
-            var forwardBackwardScheduleToLoop =
+            forwardBackwardScheduleToLoop =
                 new ScheduleSequence<GaussianDistribution>(
                     "forward Backward Schedule To Loop",
                     new Schedule<GaussianDistribution>[]
@@ -180,7 +180,7 @@ namespace Moserware.Skills.TrueSkill.Layers
 
             final double initialMaxDelta = 0.0001;
 
-            var loop = new ScheduleLoop<GaussianDistribution>(
+            loop = new ScheduleLoop<GaussianDistribution>(
                 String.Format("loop with max delta of {0}",
                               initialMaxDelta),
                 forwardBackwardScheduleToLoop,

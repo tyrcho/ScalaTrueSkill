@@ -16,7 +16,7 @@ namespace Moserware.Skills.FactorGraphs
 
         public Variable<TValue> CreateBasicVariable(string nameFormat, params object[] args)
         {
-            var newVar = new Variable<TValue>(
+            newVar = new Variable<TValue>(
                 String.Format(nameFormat, args),
                 this,
                 _CreatedVariables.Count,
@@ -28,7 +28,7 @@ namespace Moserware.Skills.FactorGraphs
 
         public KeyedVariable<TKey, TValue> CreateKeyedVariable<TKey>(TKey key, string nameFormat, params object[] args)
         {
-            var newVar = new KeyedVariable<TKey, TValue>(
+            newVar = new KeyedVariable<TKey, TValue>(
                 key,
                 String.Format(nameFormat, args),
                 this,

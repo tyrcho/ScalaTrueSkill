@@ -59,7 +59,7 @@ namespace Moserware.Skills.TrueSkill
 
         public double GetProbabilityOfRanking()
         {
-            var factorList = new FactorList<GaussianDistribution>();
+            factorList = new FactorList<GaussianDistribution>();
 
             foreach (var currentLayer in _Layers)
             {
@@ -75,7 +75,7 @@ namespace Moserware.Skills.TrueSkill
 
         private Schedule<GaussianDistribution> CreateFullSchedule()
         {
-            var fullSchedule = new List<Schedule<GaussianDistribution>>();
+            fullSchedule = new List<Schedule<GaussianDistribution>>();
 
             foreach (var currentLayer in _Layers)
             {
@@ -103,7 +103,7 @@ namespace Moserware.Skills.TrueSkill
 
         public IDictionary<TPlayer, Rating> GetUpdatedRatings()
         {
-            var result = new Dictionary<TPlayer, Rating>();
+            result = new Dictionary<TPlayer, Rating>();
             foreach (var currentTeam in _PriorLayer.OutputVariablesGroups)
             {
                 foreach (var currentPlayer in currentTeam)

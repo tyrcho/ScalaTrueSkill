@@ -9,7 +9,7 @@ namespace UnitTests.TrueSkill
         [Test]
         public void FullFactorGraphCalculatorTests()
         {
-            var calculator = new FactorGraphTrueSkillCalculator();
+            calculator = new FactorGraphTrueSkillCalculator();
 
             // We can test all classes 
             TrueSkillCalculatorTests.TestAllTwoPlayerScenarios(calculator);

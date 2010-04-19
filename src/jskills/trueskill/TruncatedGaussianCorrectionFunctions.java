@@ -79,7 +79,7 @@ namespace Moserware.Skills.TrueSkill
         // My original:
         //public static double VWithinMargin(double teamPerformanceDifference, double drawMargin)
         //{
-        //    var teamPerformanceDifferenceAbsoluteValue = Math.Abs(teamPerformanceDifference);
+        //    teamPerformanceDifferenceAbsoluteValue = Math.Abs(teamPerformanceDifference);
         //    return (GaussianDistribution.At(-drawMargin - teamPerformanceDifferenceAbsoluteValue) - GaussianDistribution.At(drawMargin - teamPerformanceDifferenceAbsoluteValue))
         //           /
         //           (GaussianDistribution.CumulativeTo(drawMargin - teamPerformanceDifferenceAbsoluteValue) - GaussianDistribution.CumulativeTo(-drawMargin - teamPerformanceDifferenceAbsoluteValue));                                      
@@ -148,8 +148,8 @@ namespace Moserware.Skills.TrueSkill
         // My original:
         //public static double WWithinMargin(double teamPerformanceDifference, double drawMargin)
         //{
-        //    var teamPerformanceDifferenceAbsoluteValue = Math.Abs(teamPerformanceDifference);
-        //    var vDraw = VWithinMargin(teamPerformanceDifferenceAbsoluteValue, drawMargin);
+        //    teamPerformanceDifferenceAbsoluteValue = Math.Abs(teamPerformanceDifference);
+        //    vDraw = VWithinMargin(teamPerformanceDifferenceAbsoluteValue, drawMargin);
         //    return (vDraw * vDraw)
         //           +
         //           (

@@ -19,14 +19,14 @@ namespace Moserware.Skills.Elo
             ValidateTeamCountAndPlayersCountPerTeam(teams);
             RankSorter.Sort(ref teams, ref teamRanks);
 
-            var result = new Dictionary<TPlayer, Rating>();
+            result = new Dictionary<TPlayer, Rating>();
             bool isDraw = (teamRanks[0] == teamRanks[1]);
 
-            var player1 = teams.First().First();
-            var player2 = teams.Last().First();
+            player1 = teams.First().First();
+            player2 = teams.Last().First();
             
-            var player1Rating = player1.Value.Mean;
-            var player2Rating = player2.Value.Mean;
+            player1Rating = player1.Value.Mean;
+            player2Rating = player2.Value.Mean;
 
             result[player1.Key] = CalculateNewRating(gameInfo, player1Rating, player2Rating, isDraw ? PairwiseComparison.Draw : PairwiseComparison.Win);
             result[player2.Key] = CalculateNewRating(gameInfo, player2Rating, player1Rating, isDraw ? PairwiseComparison.Draw : PairwiseComparison.Lose);

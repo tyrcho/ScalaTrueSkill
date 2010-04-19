@@ -24,7 +24,7 @@ namespace Moserware.Skills.TrueSkill
 
             RankSorter.Sort(ref teams, ref teamRanks);
 
-            var factorGraph = new TrueSkillFactorGraph<TPlayer>(gameInfo, teams, teamRanks);
+            factorGraph = new TrueSkillFactorGraph<TPlayer>(gameInfo, teams, teamRanks);
             factorGraph.BuildGraph();
             factorGraph.RunSchedule();
 
@@ -89,7 +89,7 @@ namespace Moserware.Skills.TrueSkill
         private static IList<double> GetPlayerRatingValues<TPlayer>(
             IEnumerable<IDictionary<TPlayer, Rating>> teamAssignmentsList, Func<Rating, double> playerRatingFunction)
         {
-            var playerRatingValues = new List<double>();
+            playerRatingValues = new List<double>();
 
             foreach (var currentTeam in teamAssignmentsList)
             {
@@ -121,7 +121,7 @@ namespace Moserware.Skills.TrueSkill
             // | -0.75  0.75 |
             // |  0.00 -1.00 |
 
-            var playerAssignments = new List<IEnumerable<double>>();
+            playerAssignments = new List<IEnumerable<double>>();
             int totalPreviousPlayers = 0;
 
             for (int i = 0; i < teamAssignmentsList.Count - 1; i++)
@@ -130,7 +130,7 @@ namespace Moserware.Skills.TrueSkill
 
                 // Need to add in 0's for all the previous players, since they're not
                 // on this team
-                var currentRowValues = new List<double>(new double[totalPreviousPlayers]);
+                currentRowValues = new List<double>(new double[totalPreviousPlayers]);
                 playerAssignments.Add(currentRowValues);
 
                 foreach (var currentRating in currentTeam)
@@ -148,7 +148,7 @@ namespace Moserware.Skills.TrueSkill
                 }
             }
 
-            var playerTeamAssignmentsMatrix = new Matrix(totalPlayers, teamAssignmentsList.Count - 1, playerAssignments);
+            playerTeamAssignmentsMatrix = new Matrix(totalPlayers, teamAssignmentsList.Count - 1, playerAssignments);
 
             return playerTeamAssignmentsMatrix;
         }
