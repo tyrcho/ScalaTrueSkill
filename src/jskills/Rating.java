@@ -1,94 +1,74 @@
-﻿using System;
-using Moserware.Numerics;
+﻿package jskills;
 
-namespace Moserware.Skills
-{
-    /// <summary>
-    /// Container for a player's rating.
-    /// </summary>
-    public class Rating
+import jskills.numerics.GaussianDistribution;
+import lombok.Data;
+
+/** Container for a player's rating. **/
+@Data public class Rating {
+    
+    private static final int defaultConservativeStandardDeviationMultiplier = 3;
+    
+    private final double conservativeStandardDeviationMultiplier;
+    
+    /** The statistical mean value of the rating (also known as μ). **/
+    private final double mean;
+    
+    /** The standard deviation (the spread) of the rating. This is also known as σ. **/
+    private final double standardDeviation;
+
+    /** A conservative estimate of skill based on the mean and standard deviation. **/
+    private final double conservativeRating;
+
+    /**
+     * Constructs a rating.
+     * @param mean The statistical mean value of the rating (also known as μ).
+     * @param standardDeviation The standard deviation of the rating (also known as σ).
+     */
+    public Rating(double mean, double standardDeviation) {
+        this(mean, standardDeviation, defaultConservativeStandardDeviationMultiplier);
+    }
+
+    /**
+     * Constructs a rating.
+     * @param mean The statistical mean value of the rating (also known as μ).
+     * @param standardDeviation The number of standardDeviation to subtract from the mean to achieve a conservative rating.
+     * @param conservativeStandardDeviationMultiplier The number of standardDeviations to subtract from the mean to achieve a conservative rating.
+     */
+    public Rating(double mean, double standardDeviation, double conservativeStandardDeviationMultiplier)
     {
-        private const int ConservativeStandardDeviationMultiplier = 3;
-        private readonly double _ConservativeStandardDeviationMultiplier;
-        private readonly double _Mean;
-        private readonly double _StandardDeviation;
+        this.mean = mean;
+        this.standardDeviation = standardDeviation;
+        this.conservativeStandardDeviationMultiplier = conservativeStandardDeviationMultiplier;
+        this.conservativeRating = mean - conservativeStandardDeviationMultiplier*standardDeviation;
+    }
 
-        /// <summary>
-        /// Constructs a rating.
-        /// </summary>
-        /// <param name="mean">The statistical mean value of the rating (also known as μ).</param>
-        /// <param name="standardDeviation">The standard deviation of the rating (also known as σ).</param>        
-        public Rating(double mean, double standardDeviation)
-            : this(mean, standardDeviation, ConservativeStandardDeviationMultiplier)
-        {
-        }
+    public static Rating partialUpdate(Rating prior, Rating fullPosterior, double updatePercentage) {
+        GaussianDistribution priorGaussian = new GaussianDistribution(prior),
+                    posteriorGaussian = new GaussianDistribution(fullPosterior);
 
-        /// <summary>
-        /// Constructs a rating.
-        /// </summary>
-        /// <param name="mean">The statistical mean value of the rating (also known as μ).</param>
-        /// <param name="standardDeviation">The standard deviation (the spread) of the rating (also known as σ).</param>
-        /// <param name="conservativeStandardDeviationMultiplier">The number of <paramref name="standardDeviation"/>s to subtract from the <paramref name="mean"/> to achieve a conservative rating.</param>
-        public Rating(double mean, double standardDeviation, double conservativeStandardDeviationMultiplier)
-        {
-            _Mean = mean;
-            _StandardDeviation = standardDeviation;
-            _ConservativeStandardDeviationMultiplier = conservativeStandardDeviationMultiplier;
-        }
+		// From a clarification email from Ralf Herbrich:
+		// "the idea is to compute a linear interpolation between the prior and
+		// posterior skills of each player ... in the canonical space of
+		// parameters"
 
-        /// <summary>
-        /// The statistical mean value of the rating (also known as μ).
-        /// </summary>
-        public double Mean
-        {
-            get { return _Mean; }
-        }
+        double precisionDifference = posteriorGaussian.getPrecision() - priorGaussian.getPrecision();
+        double partialPrecisionDifference = updatePercentage*precisionDifference;
 
-        /// <summary>
-        /// The standard deviation (the spread) of the rating. This is also known as σ.
-        /// </summary>
-        public double StandardDeviation
-        {
-            get { return _StandardDeviation; }
-        }
+        double precisionMeanDifference = posteriorGaussian.getPrecisionMean() - priorGaussian.getPrecisionMean();
+        double partialPrecisionMeanDifference = updatePercentage*precisionMeanDifference;
 
-        /// <summary>
-        /// A conservative estimate of skill based on the mean and standard deviation.
-        /// </summary>
-        public double ConservativeRating
-        {
-            get { return _Mean - ConservativeStandardDeviationMultiplier*_StandardDeviation; }
-        }
+        GaussianDistribution partialPosteriorGaussion = GaussianDistribution.fromPrecisionMean(
+            priorGaussian.getPrecisionMean() + partialPrecisionMeanDifference,
+            priorGaussian.getPrecision() + partialPrecisionDifference);
 
-        public static Rating GetPartialUpdate(Rating prior, Rating fullPosterior, double updatePercentage)
-        {
-            var priorGaussian = new GaussianDistribution(prior.Mean, prior.StandardDeviation);
-            var posteriorGaussian = new GaussianDistribution(fullPosterior.Mean, fullPosterior.StandardDeviation);
+        return new Rating(partialPosteriorGaussion.getMean(), partialPosteriorGaussion.getStandardDeviation(),
+                          prior.getConservativeStandardDeviationMultiplier());
+    }
 
-            // From a clarification email from Ralf Herbrich:
-            // "the idea is to compute a linear interpolation between the prior and posterior skills of each player 
-            //  ... in the canonical space of parameters"
-
-            double precisionDifference = posteriorGaussian.Precision - priorGaussian.Precision;
-            double partialPrecisionDifference = updatePercentage*precisionDifference;
-
-            double precisionMeanDifference = posteriorGaussian.PrecisionMean - priorGaussian.PrecisionMean;
-            double partialPrecisionMeanDifference = updatePercentage*precisionMeanDifference;
-
-            GaussianDistribution partialPosteriorGaussion = GaussianDistribution.FromPrecisionMean(
-                priorGaussian.PrecisionMean + partialPrecisionMeanDifference,
-                priorGaussian.Precision + partialPrecisionDifference);
-
-            return new Rating(partialPosteriorGaussion.Mean, partialPosteriorGaussion.StandardDeviation,
-                              prior._ConservativeStandardDeviationMultiplier);
-        }
-
-        public override string ToString()
-        {
-            // As a debug helper, display a localized rating:
-            return String.Format(
-                "μ={0:0.0000}, σ={1:0.0000}",
-                Mean, StandardDeviation);
-        }
+    @Override
+    public String toString() {
+        // As a debug helper, display a localized rating:
+        return String.format("Mean(μ)=%f, Std-Dev(σ)=%f",
+                             mean, standardDeviation);
     }
 }

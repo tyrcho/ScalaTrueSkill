@@ -1,49 +1,43 @@
-﻿namespace Moserware.Skills
-{
-    /// <summary>
-    /// Parameters about the game for calculating the TrueSkill.
-    /// </summary>
-    public class GameInfo
-    {
-        private const double DefaultBeta = DefaultInitialMean/6.0;
-        private const double DefaultDrawProbability = 0.10;
-        private const double DefaultDynamicsFactor = DefaultInitialMean/300.0;
-        private const double DefaultInitialMean = 25.0;
-        private const double DefaultInitialStandardDeviation = DefaultInitialMean/3.0;
+﻿package jskills;
 
-        public GameInfo(double initialMean, double initialStandardDeviation, double beta, double dynamicFactor,
-                        double drawProbability)
-        {
-            InitialMean = initialMean;
-            InitialStandardDeviation = initialStandardDeviation;
-            Beta = beta;
-            DynamicsFactor = dynamicFactor;
-            DrawProbability = drawProbability;
-        }
+import lombok.Data;
 
-        public double InitialMean { get; set; }
-        public double InitialStandardDeviation { get; set; }
-        public double Beta { get; set; }
+/**
+ * Parameters about the game for calculating the TrueSkill.
+ */
+@Data public class GameInfo {
 
-        public double DynamicsFactor { get; set; }
-        public double DrawProbability { get; set; }
+    private static final double defaultInitialMean = 25.0;
+    private static final double defaultBeta = defaultInitialMean/6.0;
+    private static final double defaultDrawProbability = 0.10;
+    private static final double defaultDynamicsFactor = defaultInitialMean/300.0;
+    private static final double defaultInitialStandardDeviation = defaultInitialMean/3.0;
 
-        public Rating DefaultRating
-        {
-            get { return new Rating(InitialMean, InitialStandardDeviation); }
-        }
+    private double initialMean;
+    private double initialStandardDeviation;
+    private double beta;
+    private double dynamicsFactor;
+    private double drawProbability;
 
-        public static GameInfo DefaultGameInfo
-        {
-            get
-            {
-                // We return a fresh copy since we have public setters that can mutate state
-                return new GameInfo(DefaultInitialMean,
-                                    DefaultInitialStandardDeviation,
-                                    DefaultBeta,
-                                    DefaultDynamicsFactor,
-                                    DefaultDrawProbability);
-            }
-        }
+    public GameInfo(double initialMean, double initialStandardDeviation,
+            double beta, double dynamicFactor, double drawProbability) {
+        this.initialMean = initialMean;
+        this.initialStandardDeviation = initialStandardDeviation;
+        this.beta = beta;
+        this.dynamicsFactor = dynamicFactor;
+        this.drawProbability = drawProbability;
+    }
+
+    public static GameInfo getDefaultGameInfo() {
+        // We return a fresh copy since we have public setters that can mutate state
+        return new GameInfo(defaultInitialMean,
+                            defaultInitialStandardDeviation,
+                            defaultBeta,
+                            defaultDynamicsFactor,
+                            defaultDrawProbability);
+    }
+    
+    public Rating getDefaultRating() {
+    	return new Rating(initialMean, initialStandardDeviation);
     }
 }

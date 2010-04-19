@@ -5,8 +5,8 @@
     /// </summary>
     public class Player<T> : ISupportPartialPlay, ISupportPartialUpdate
     {
-        private const double DefaultPartialPlayPercentage = 1.0; // = 100% play time
-        private const double DefaultPartialUpdatePercentage = 1.0; // = receive 100% update
+        private final double DefaultPartialPlayPercentage = 1.0; // = 100% play time
+        private final double DefaultPartialUpdatePercentage = 1.0; // = receive 100% update
         private readonly T _Id;
         private readonly double _PartialPlayPercentage;
 

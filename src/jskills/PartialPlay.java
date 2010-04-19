@@ -14,7 +14,7 @@
             double partialPlayPercentage = partialPlay.PartialPlayPercentage;
 
             // HACK to get around bug near 0
-            const double smallestPercentage = 0.0001;
+            final double smallestPercentage = 0.0001;
             if (partialPlayPercentage < smallestPercentage)
             {
                 partialPlayPercentage = smallestPercentage;
