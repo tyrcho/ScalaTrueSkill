@@ -1,6 +1,5 @@
 ﻿package jskills.numerics;
 
-import static java.lang.Math.PI;
 import static java.lang.Math.sqrt;
 import static jskills.numerics.MathUtils.square;
 import static org.testng.Assert.assertEquals;
@@ -9,6 +8,20 @@ import org.testng.annotations.Test;
 
 public class GaussianDistributionTests {
     private final double ErrorTolerance = 0.000001;
+
+    @Test
+    public void CumulativeToTests() {
+        // Verified with WolframAlpha
+        // (e.g. http://www.wolframalpha.com/input/?i=CDF%5BNormalDistribution%5B0%2C1%5D%2C+0.5%5D )
+        assertEquals(0.691462, GaussianDistribution.CumulativeTo(0.5), ErrorTolerance);            
+    }
+
+    @Test
+    public void AtTests() {
+        // Verified with WolframAlpha
+        // (e.g. http://www.wolframalpha.com/input/?i=PDF%5BNormalDistribution%5B0%2C1%5D%2C+0.5%5D )
+        assertEquals(0.352065, GaussianDistribution.at(0.5), ErrorTolerance);
+    }
 
     @Test
     public void MultiplicationTests() {
@@ -54,12 +67,36 @@ public class GaussianDistributionTests {
 
     @Test
     public void LogProductNormalizationTests() {
-        GaussianDistribution m4s5 = new GaussianDistribution(4, 5);
-        GaussianDistribution m6s7 = new GaussianDistribution(6, 7);
+        // Verified with Ralf Herbrich's F# implementation
+    	GaussianDistribution standardNormal = new GaussianDistribution(0, 1);
+    	double lpn = GaussianDistribution.LogProductNormalization(standardNormal, standardNormal);
+        assertEquals(-1.2655121234846454, lpn, ErrorTolerance);
 
-        GaussianDistribution product2 = GaussianDistribution.mult(m4s5, m6s7);
-        double normConstant = 1.0 / (sqrt(2 * PI) * product2.getStandardDeviation());
-        double lpn = GaussianDistribution.LogProductNormalization(m4s5, m6s7);
+        GaussianDistribution m1s2 = new GaussianDistribution(1, 2);
+        GaussianDistribution m3s4 = new GaussianDistribution(3, 4);
+        double lpn2 = GaussianDistribution.LogProductNormalization(m1s2, m3s4);
+        assertEquals(-2.5168046699816684, lpn2, ErrorTolerance);
+    }
 
+    @Test
+    public void LogRatioNormalizationTests() {
+        // Verified with Ralf Herbrich's F# implementation            
+    	GaussianDistribution m1s2 = new GaussianDistribution(1, 2);
+    	GaussianDistribution m3s4 = new GaussianDistribution(3, 4);
+    	double lrn = GaussianDistribution.LogRatioNormalization(m1s2, m3s4);
+        assertEquals(2.6157405972171204, lrn, ErrorTolerance);            
+    }
+
+    @Test
+    public void AbsoluteDifferenceTests() {
+        // Verified with Ralf Herbrich's F# implementation            
+    	GaussianDistribution standardNormal = new GaussianDistribution(0, 1);
+    	double absDiff = GaussianDistribution.absoluteDifference(standardNormal, standardNormal);
+        assertEquals(0.0, absDiff, ErrorTolerance);
+
+        GaussianDistribution m1s2 = new GaussianDistribution(1, 2);
+        GaussianDistribution m3s4 = new GaussianDistribution(3, 4);
+        double absDiff2 = GaussianDistribution.absoluteDifference(m1s2, m3s4);
+        assertEquals(0.4330127018922193, absDiff2, ErrorTolerance);
     }
 }
