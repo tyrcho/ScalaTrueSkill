@@ -1,36 +1,31 @@
-﻿using System;
+﻿package jskills;
 
-namespace Moserware.Skills
-{
-    /// <summary>
-    /// Verifies argument contracts.
-    /// </summary>
-    /// <remarks>These are used until .NET 4.0 ships with Contracts. For more information, 
-    /// see http://www.moserware.com/2008/01/borrowing-ideas-from-3-interesting.html</remarks>
-    internal static class Guard
-    {
-        public static void ArgumentNotNull(object value, string parameterName)
-        {
-            if (value == null)
-            {
-                throw new ArgumentNullException(parameterName);
-            }
+/**
+ * Verifies argument contracts.
+ * <p>
+ * These are used until I figure out how to do this better in Java
+ */
+public class Guard {
+ 
+    /** No instances allowed **/ private Guard() { }
+
+    public static void ArgumentNotNull(Object value, String parameterName) {
+        if (value == null) {
+            throw new NullPointerException(parameterName);
         }
+    }
 
-        public static void ArgumentIsValidIndex(int index, int count, string parameterName)
-        {
-            if ((index < 0) || (index >= count))
-            {
-                throw new ArgumentOutOfRangeException(parameterName);
-            }
+    public static void ArgumentIsValidIndex(int index, int count,
+            String parameterName) {
+        if ((index < 0) || (index >= count)) {
+            throw new IndexOutOfBoundsException(parameterName);
         }
+    }
 
-        public static void ArgumentInRangeInclusive(double value, double min, double max, string parameterName)
-        {
-            if ((value < min) || (value > max))
-            {
-                throw new ArgumentOutOfRangeException(parameterName);
-            }
+    public static void ArgumentInRangeInclusive(double value, double min,
+            double max, String parameterName) {
+        if ((value < min) || (value > max)) {
+            throw new IndexOutOfBoundsException(parameterName);
         }
     }
 }
