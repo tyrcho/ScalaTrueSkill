@@ -7,13 +7,13 @@ import static org.testng.Assert.assertEquals;
 import org.testng.annotations.Test;
 
 public class GaussianDistributionTests {
-    private final double ErrorTolerance = 0.000001;
+    private static final double ErrorTolerance = 0.000001;
 
     @Test
     public void CumulativeToTests() {
         // Verified with WolframAlpha
         // (e.g. http://www.wolframalpha.com/input/?i=CDF%5BNormalDistribution%5B0%2C1%5D%2C+0.5%5D )
-        assertEquals(0.691462, GaussianDistribution.CumulativeTo(0.5), ErrorTolerance);            
+        assertEquals(0.691462, GaussianDistribution.cumulativeTo(0.5), ErrorTolerance);            
     }
 
     @Test
@@ -69,12 +69,12 @@ public class GaussianDistributionTests {
     public void LogProductNormalizationTests() {
         // Verified with Ralf Herbrich's F# implementation
     	GaussianDistribution standardNormal = new GaussianDistribution(0, 1);
-    	double lpn = GaussianDistribution.LogProductNormalization(standardNormal, standardNormal);
+    	double lpn = GaussianDistribution.logProductNormalization(standardNormal, standardNormal);
         assertEquals(-1.2655121234846454, lpn, ErrorTolerance);
 
         GaussianDistribution m1s2 = new GaussianDistribution(1, 2);
         GaussianDistribution m3s4 = new GaussianDistribution(3, 4);
-        double lpn2 = GaussianDistribution.LogProductNormalization(m1s2, m3s4);
+        double lpn2 = GaussianDistribution.logProductNormalization(m1s2, m3s4);
         assertEquals(-2.5168046699816684, lpn2, ErrorTolerance);
     }
 
@@ -83,7 +83,7 @@ public class GaussianDistributionTests {
         // Verified with Ralf Herbrich's F# implementation            
     	GaussianDistribution m1s2 = new GaussianDistribution(1, 2);
     	GaussianDistribution m3s4 = new GaussianDistribution(3, 4);
-    	double lrn = GaussianDistribution.LogRatioNormalization(m1s2, m3s4);
+    	double lrn = GaussianDistribution.logRatioNormalization(m1s2, m3s4);
         assertEquals(2.6157405972171204, lrn, ErrorTolerance);            
     }
 

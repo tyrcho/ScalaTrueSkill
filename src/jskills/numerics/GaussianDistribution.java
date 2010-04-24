@@ -9,6 +9,7 @@ import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 import static jskills.numerics.MathUtils.square;
 import jskills.Rating;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 /**
@@ -31,25 +32,26 @@ import lombok.Getter;
  * 
  * @see http://mathworld.wolfram.com/NormalDistribution.html
  */
+@EqualsAndHashCode
 public class GaussianDistribution {
 
 	/** The peak of the Gaussian, μ **/
-	@Getter private double mean;
+	@Getter private final double mean;
 	
 	/** The width of the Gaussian, σ, where the height drops to max/e **/
-	@Getter private double standardDeviation;
+	@Getter private final double standardDeviation;
 	
 	/** The square of the standard deviation, σ^2 **/
-	@Getter private double variance;
+	@Getter private final double variance;
 	
 	// Precision and PrecisionMean are used because they make multiplying and
 	// dividing simpler (see the accompanying math paper for more details)
 	
 	/** 1/σ^2 **/
-	@Getter private double precision;
+	@Getter private final double precision;
 	
 	/** Precision times mean, μ/σ^2 **/
-	@Getter private double precisionMean;
+	@Getter private final double precisionMean;
 
 	/**
 	 * The normalization constant multiplies the exponential and causes the
@@ -63,43 +65,41 @@ public class GaussianDistribution {
 		return 1.0/(sqrt(2*PI)*standardDeviation);
 	}
 
-	// Intentionally, we're not going to derive related things, but set them all at once
-	// to get around some NaN issues
-    private GaussianDistribution() { }
-
-    public GaussianDistribution(double mean, double standardDeviation) {
+    /**
+     * Private constructor that sets everything at once.
+     * <p>
+     * Only allow other constructors to use this because if the public were to 
+     * mess up the relationship between the parameters, who knows what would 
+     * happen?
+     */
+    private GaussianDistribution(double mean, double standardDeviation,
+            double variance, double precision, double precisionMean) {
         this.mean = mean;
         this.standardDeviation = standardDeviation;
-        this.variance = square(standardDeviation);
-        this.precision = 1.0/variance;
-        this.precisionMean = precision*mean;
+        this.variance = variance;
+        this.precision = precision;
+        this.precisionMean = precisionMean;
+    }
+
+    public GaussianDistribution(double mean, double standardDeviation) {
+        this(mean, 
+             standardDeviation,
+             square(standardDeviation),
+             1. / square(standardDeviation), 
+             mean / square(standardDeviation));
     }
     
     public GaussianDistribution(Rating rating) {
     	this(rating.getMean(), rating.getStandardDeviation());
     }
 
-    // TODO use ctor?
-    @Override
-    public GaussianDistribution clone() {
-    	GaussianDistribution result = new GaussianDistribution();
-        result.mean = mean;
-        result.standardDeviation = standardDeviation;
-        result.variance = variance;
-        result.precision = precision;
-        result.precisionMean = precisionMean;
-        return result;
-    }
-
-    // TODO use ctor?
-    public static GaussianDistribution fromPrecisionMean(double precisionMean, double precision) {
-    	GaussianDistribution gd = new GaussianDistribution();
-        gd.precision = precision;
-        gd.precisionMean = precisionMean;
-        gd.variance = 1.0/precision;
-        gd.standardDeviation = sqrt(gd.variance);
-        gd.mean = gd.precisionMean/gd.precision;
-        return gd;
+    public static GaussianDistribution fromPrecisionMean(double precisionMean,
+            double precision) {
+        return new GaussianDistribution(precisionMean / precision,
+                                        sqrt(1. / precision), 
+                                        1. / precision, 
+                                        precision, 
+                                        precisionMean);
     }
     
     public GaussianDistribution mult(GaussianDistribution other) {
@@ -125,7 +125,7 @@ public class GaussianDistribution {
         return absoluteDifference(left, right);
     }
 
-    public static double LogProductNormalization(GaussianDistribution left, GaussianDistribution right) {
+    public static double logProductNormalization(GaussianDistribution left, GaussianDistribution right) {
         if ((left.precision == 0) || (right.precision == 0)) return 0;
 
         double varianceSum = left.variance + right.variance;
@@ -141,7 +141,7 @@ public class GaussianDistribution {
                                  numerator.precision - denominator.precision);
     }
 
-    public static double LogRatioNormalization(GaussianDistribution numerator, GaussianDistribution denominator) {
+    public static double logRatioNormalization(GaussianDistribution numerator, GaussianDistribution denominator) {
         if ((numerator.precision == 0) || (denominator.precision == 0)) return 0;
 
         double varianceDifference = denominator.variance - numerator.variance;
@@ -188,17 +188,17 @@ public class GaussianDistribution {
         return result;
     }
 
-    public static double CumulativeTo(double x, double mean, double standardDeviation) {
+    public static double cumulativeTo(double x, double mean, double standardDeviation) {
         double invsqrt2 = -0.707106781186547524400844362104;
-        double result = ErrorFunctionCumulativeTo(invsqrt2*x);
+        double result = errorFunctionCumulativeTo(invsqrt2*x);
         return 0.5*result;
     }
 
-    public static double CumulativeTo(double x) {
-        return CumulativeTo(x, 0, 1);
+    public static double cumulativeTo(double x) {
+        return cumulativeTo(x, 0, 1);
     }
 
-    private static double ErrorFunctionCumulativeTo(double x) {
+    private static double errorFunctionCumulativeTo(double x) {
         // Derived from page 265 of Numerical Recipes 3rd Edition            
         double z = abs(x);
 
@@ -240,20 +240,20 @@ public class GaussianDistribution {
         double x = -0.70711*((2.30753 + t*0.27061)/(1.0 + t*(0.99229 + t*0.04481)) - t);
 
 		for (int j = 0; j < 2; j++) {
-			double err = ErrorFunctionCumulativeTo(x) - pp;
+			double err = errorFunctionCumulativeTo(x) - pp;
 			x += err / (1.12837916709551257 * exp(-(x * x)) - x * err); // Halley
 		}
 
         return p < 1.0 ? x : -x;
     }
 
-    public static double InverseCumulativeTo(double x, double mean, double standardDeviation) {
+    public static double inverseCumulativeTo(double x, double mean, double standardDeviation) {
         // From numerical recipes, page 320
         return mean - sqrt(2)*standardDeviation*InverseErrorFunctionCumulativeTo(2*x);
     }
 
-    public static double InverseCumulativeTo(double x) {
-        return InverseCumulativeTo(x, 0, 1);
+    public static double inverseCumulativeTo(double x) {
+        return inverseCumulativeTo(x, 0, 1);
     }
 
     @Override
