@@ -24,9 +24,7 @@ public class Team<TPlayer> {
      * @param rating
      *            The rating of the player.
      */
-    public Team(TPlayer player, Rating rating) {
-        addPlayer(player, rating);
-    }
+    public Team(TPlayer player, Rating rating) { addPlayer(player, rating); }
 
     /**
      * Adds the player to the team.
@@ -48,23 +46,18 @@ public class Team<TPlayer> {
      * 
      * @returns The {@link Team} as a simple mapping from Player to Rating.
      */
-    public Map<TPlayer, Rating> asMap() {
-        return playerRatings;
-    }
+    public Map<TPlayer, Rating> asMap() { return playerRatings; }
 
     /**
      * Concatenates multiple teams into a list of teams.
-     * <p>
-     * I'm not happy with how this has turned out, but I'll just leave a TODO
-     * for now.
      * 
      * @param teams
      *            The teams to concatenate together.
      * @returns A sequence of teams.
      */
-    public static Iterable<Map<?, Rating>> concat(Team<?>[] teams) {
-        List<Map<?, Rating>> teamslist = new ArrayList<Map<?, Rating>>();
-        for (Team<?> team : teams) {
+    public static <T> Iterable<Map<T, Rating>> concat(Team<T>[] teams) {
+        List<Map<T, Rating>> teamslist = new ArrayList<Map<T, Rating>>();
+        for (Team<T> team : teams) {
             teamslist.add(team.asMap());
         }
         return teamslist;
