@@ -7,7 +7,7 @@ namespace UnitTests.Elo
     [TestFixture]
     public class GaussianEloCalculatorTest
     {
-        [Test]
+        @Test
         public void GaussianEloCalculatorTests()
         {
             final double defaultKFactor = 24.0;

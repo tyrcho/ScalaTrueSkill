@@ -7,7 +7,7 @@ namespace UnitTests.Elo
     [TestFixture]
     public class FideEloCalculatorTest
     {        
-        [Test]
+        @Test
         public void FideProvisionalEloCalculatorTests()
         {
             // verified against http://ratings.fide.com/calculator_rtd.phtml
@@ -18,7 +18,7 @@ namespace UnitTests.Elo
             EloAssert.AssertChessRating(calc, 1200, 1500, PairwiseComparison.Lose, 1196.25, 1503.75);
         }
 
-        [Test]
+        @Test
         public void FideNonProvisionalEloCalculatorTests()
         {
             // verified against http://ratings.fide.com/calculator_rtd.phtml

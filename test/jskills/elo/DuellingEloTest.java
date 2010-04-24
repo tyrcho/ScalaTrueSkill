@@ -9,7 +9,7 @@ namespace UnitTests.Elo
     {
         private final double ErrorTolerance = 0.1;
 
-        [Test]
+        @Test
         public void TwoOnTwoDuellingTest()
         {
             calculator = new DuellingEloCalculator(new GaussianEloCalculator());

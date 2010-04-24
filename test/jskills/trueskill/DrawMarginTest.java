@@ -8,7 +8,7 @@ namespace UnitTests.TrueSkill
     {
         private final double ErrorTolerance = .000001;
 
-        [Test]
+        @Test
         public void GetDrawMarginFromDrawProbabilityTest()
         {
             double beta = 25.0 / 6.0;

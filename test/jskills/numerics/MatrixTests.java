@@ -6,7 +6,7 @@ namespace UnitTests.Numerics
     [TestFixture]
     public class MatrixTests
     {
-        [Test]
+        @Test
         public void TwoByTwoDeterminantTests()
         {
             a = new SquareMatrix(1, 2,
@@ -26,7 +26,7 @@ namespace UnitTests.Numerics
             assertEquals(12 * 21 - 15 * 17, d.Determinant);
         }
 
-        [Test]
+        @Test
         public void ThreeByThreeDeterminantTests()
         {
             a = new SquareMatrix(1, 2, 3,
@@ -42,7 +42,7 @@ namespace UnitTests.Numerics
             assertEquals(-90, π.Determinant);
         }
 
-        [Test]
+        @Test
         public void FourByFourDeterminantTests()
         {
             a = new SquareMatrix( 1,  2,  3,  4,
@@ -61,7 +61,7 @@ namespace UnitTests.Numerics
             assertEquals(98, π.Determinant);
         }
 
-        [Test]
+        @Test
         public void EightByEightDeterminantTests()
         {
             a = new SquareMatrix( 1,   2,  3,  4,  5,  6,  7,  8,
@@ -88,7 +88,7 @@ namespace UnitTests.Numerics
             assertEquals(1378143, π.Determinant);
         }
 
-        [Test]
+        @Test
         public void EqualsTest()
         {
             a = new SquareMatrix(1, 2,
@@ -123,7 +123,7 @@ namespace UnitTests.Numerics
 
         }
 
-        [Test]
+        @Test
         public void AdjugateTests()
         {
             // From Wikipedia: http://en.wikipedia.org/wiki/Adjugate_matrix
@@ -148,7 +148,7 @@ namespace UnitTests.Numerics
             assertEquals(d, c.Adjugate);
         }
 
-        [Test]
+        @Test
         public void InverseTests()
         {
             // see http://www.mathwords.com/i/inverse_of_a_matrix.htm

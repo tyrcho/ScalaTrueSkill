@@ -1,75 +1,68 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿package jskills;
 
-namespace Moserware.Skills
-{
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Helper class to sort ranks in non-decreasing order.
+ */
+public class RankSorter {
+
+    /** Static usage only **/ private RankSorter() { }
+
     /**
-     * Helper class to sort ranks in non-decreasing order.
+     * Returns a list of all the elements in items, sorted in non-descending
+     * order, according to itemRanks. Uses a stable sort, and also sorts
+     * itemRanks (in place)
+     * 
+     * @param items
+     *            The items to sort according to the order specified by ranks.
+     * @param ranks
+     *            The ranks for each item where 1 is first place.
      */
-    internal static class RankSorter
-    {
-        /**
-         * Performs an in-place sort of the <paramref name="items"/> in according to the <paramref name="ranks"/> in non-decreasing order.
-         * @param items The items to sort according to the order specified by <paramref name="ranks"/>.
-         * @param ranks The ranks for each item where 1 is first place.
-         */
-        public static void Sort<T>(ref IEnumerable<T> teams, ref int[] teamRanks)
-        {
-            Guard.ArgumentNotNull(teams, "teams");
-            Guard.ArgumentNotNull(teamRanks, "teamRanks");
+    public static <T> List<T> sort(Collection<T> items, int[] itemRanks) {
+        Guard.argumentNotNull(items, "items");
+        Guard.argumentNotNull(itemRanks, "itemRanks");
 
-            int lastObserverdRank = 0;
-            bool needToSort = false;
+        int lastObserverdRank = 0;
+        boolean needToSort = false;
 
-            foreach (int currentRank in teamRanks)
-            {
-                // We're expecting ranks to go up (e.g. 1, 2, 2, 3, ...)
-                // If it goes down, then we've got to sort it.
-                if (currentRank < lastObserverdRank)
-                {
-                    needToSort = true;
-                    break;
-                }
-
-                lastObserverdRank = currentRank;
+        for (int currentRank : itemRanks) {
+            // We're expecting ranks to go up (e.g. 1, 2, 2, 3, ...)
+            // If it goes down, then we've got to sort it.
+            if (currentRank < lastObserverdRank) {
+                needToSort = true;
+                break;
             }
 
-            if (!needToSort)
-            {
-                // Don't bother doing more work, it's already in a good order
-                return;
-            }
-
-            // Get the existing items as an indexable list.
-            List<T> itemsInList = teams.ToList();
-
-            // item -> rank
-            itemToRank = new Dictionary<T, int>();
-
-            for (int i = 0; i < itemsInList.Count; i++)
-            {
-                T currentItem = itemsInList[i];
-                int currentItemRank = teamRanks[i];
-                itemToRank[currentItem] = currentItemRank;
-            }
-
-            // Now we need a place for our results...
-            sortedItems = new T[teamRanks.Length];
-            sortedRanks = new int[teamRanks.Length];
-
-            // where are we in the result?
-            int currentIndex = 0;
-
-            // Let LINQ-to-Objects to the actual sorting
-            foreach (var sortedKeyValuePair in itemToRank.OrderBy(pair => pair.Value))
-            {
-                sortedItems[currentIndex] = sortedKeyValuePair.Key;
-                sortedRanks[currentIndex++] = sortedKeyValuePair.Value;
-            }
-
-            // And we're done
-            teams = sortedItems;
-            teamRanks = sortedRanks;
+            lastObserverdRank = currentRank;
         }
+
+        // Don't bother doing more work, it's already in a good order
+        if (!needToSort) return new ArrayList<T>(items);
+
+        // Get the existing items as an indexable list.
+        List<T> itemsInList = new ArrayList<T>(items);
+
+        // item -> rank
+        final Map<T, Integer> itemToRank = new HashMap<T, Integer>();
+        for (int i = 0; i < itemsInList.size(); i++)
+            itemToRank.put(itemsInList.get(i), itemRanks[i]);
+        
+        Collections.sort(itemsInList, new Comparator<T>() {
+            @Override
+            public int compare(T o1, T o2) {
+                return itemToRank.get(o1).compareTo(itemToRank.get(o2));
+            }
+        });
+        
+        Arrays.sort(itemRanks);
+        return itemsInList;
     }
 }

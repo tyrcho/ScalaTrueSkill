@@ -6,7 +6,7 @@ namespace UnitTests.TrueSkill
     [TestFixture]
     public class TwoPlayerTrueSkillCalculatorTest
     {
-        [Test]
+        @Test
         public void TwoPlayerTrueSkillCalculatorTests()
         {
             calculator = new TwoPlayerTrueSkillCalculator();

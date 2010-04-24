@@ -6,7 +6,7 @@ namespace UnitTests.TrueSkill
     [TestFixture]
     public class FactorGraphTrueSkillCalculatorTests
     {
-        [Test]
+        @Test
         public void FullFactorGraphCalculatorTests()
         {
             calculator = new FactorGraphTrueSkillCalculator();
