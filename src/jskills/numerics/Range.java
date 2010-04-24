@@ -13,8 +13,8 @@ import lombok.Data;
  * C#, so I'm going to eschew the relative type safety afforded by Moser's
  * scheme and make this class final. A Range is a Range is a Range.
  */
-@Data public final class Range { 
-
+@Data public final class Range<T> { 
+    
 	private final int min;
 	private final int max;
 
@@ -36,15 +36,15 @@ import lombok.Data;
     // through derived classes gets you a warning, but accessing generic types
     // (T) won't compile.  
 
-    public static Range inclusive(int min, int max) {
-        return new Range(min, max);
+    public static <T> Range<T> inclusive(int min, int max) {
+        return new Range<T>(min, max);
     }
 
-    public static Range exactly(int value) {
-        return new Range(value, value);
+    public static <T> Range<T> exactly(int value) {
+        return new Range<T>(value, value);
     }
 
-    public static Range atLeast(int minimumValue) {
-        return new Range(minimumValue, Integer.MAX_VALUE);
+    public static <T> Range<T> atLeast(int minimumValue) {
+        return new Range<T>(minimumValue, Integer.MAX_VALUE);
     }
 }
