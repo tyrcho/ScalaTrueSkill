@@ -5,12 +5,12 @@ namespace Moserware.Skills.TrueSkill.Factors
 {
     public abstract class GaussianFactor : Factor<GaussianDistribution>
     {
-        protected GaussianFactor(string name)
+        protected GaussianFactor(String name)
             : base(name)
         {
         }
 
-        /// Sends the factor-graph message with and returns the log-normalization constant        
+         * Sends the factor-graph message with and returns the log-normalization constant        
         protected override double SendMessage(Message<GaussianDistribution> message,
                                               Variable<GaussianDistribution> variable)
         {

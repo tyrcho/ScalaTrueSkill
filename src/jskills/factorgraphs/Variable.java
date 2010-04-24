@@ -4,12 +4,12 @@ namespace Moserware.Skills.FactorGraphs
 {
     public class Variable<TValue>
     {
-        private readonly string _Name;
-        private readonly VariableFactory<TValue> _ParentFactory;
-        private readonly TValue _Prior;
+        private final String _Name;
+        private final VariableFactory<TValue> _ParentFactory;
+        private final TValue _Prior;
         private int _ParentIndex;
 
-        public Variable(string name, VariableFactory<TValue> parentFactory, int parentIndex, TValue prior)
+        public Variable(String name, VariableFactory<TValue> parentFactory, int parentIndex, TValue prior)
         {
             _Name = "Variable[" + name + "]";
             _ParentFactory = parentFactory;
@@ -25,7 +25,7 @@ namespace Moserware.Skills.FactorGraphs
             Value = _Prior;
         }
 
-        public override string ToString()
+        public override String ToString()
         {
             return _Name;
         }
@@ -47,7 +47,7 @@ namespace Moserware.Skills.FactorGraphs
 
     public class KeyedVariable<TKey, TValue> : Variable<TValue>
     {
-        public KeyedVariable(TKey key, string name, VariableFactory<TValue> parentFactory, int parentIndex, TValue prior)
+        public KeyedVariable(TKey key, String name, VariableFactory<TValue> parentFactory, int parentIndex, TValue prior)
             : base(name, parentFactory, parentIndex, prior)
         {
             Key = key;

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Moserware.Skills
 {    
-    /// <summary>
-    /// Base class for all skill calculator implementations.
-    /// </summary>
+    /**
+     * Base class for all skill calculator implementations.
+     */
     public abstract class SkillCalculator
     {
         [Flags]
@@ -16,9 +16,9 @@ namespace Moserware.Skills
             PartialUpdate = 0x02,
         }
 
-        private readonly SupportedOptions _SupportedOptions;
-        private readonly PlayersRange _PlayersPerTeamAllowed;
-        private readonly TeamsRange _TotalTeamsAllowed;
+        private final SupportedOptions _SupportedOptions;
+        private final PlayersRange _PlayersPerTeamAllowed;
+        private final TeamsRange _TotalTeamsAllowed;
         
         protected SkillCalculator(SupportedOptions supportedOptions, TeamsRange totalTeamsAllowed, PlayersRange playerPerTeamAllowed)
         {
@@ -27,27 +27,27 @@ namespace Moserware.Skills
             _PlayersPerTeamAllowed = playerPerTeamAllowed;
         }
 
-        /// <summary>
-        /// Calculates new ratings based on the prior ratings and team ranks.
-        /// </summary>
-        /// <typeparam name="TPlayer">The underlying type of the player.</typeparam>
-        /// <param name="gameInfo">Parameters for the game.</param>
-        /// <param name="teams">A mapping of team players and their ratings.</param>
-        /// <param name="teamRanks">The ranks of the teams where 1 is first place. For a tie, repeat the number (e.g. 1, 2, 2)</param>
-        /// <returns>All the players and their new ratings.</returns>
+        /**
+         * Calculates new ratings based on the prior ratings and team ranks.
+         */
+         * <typeparam name="TPlayer">The underlying type of the player.</typeparam>
+         * @param gameInfo Parameters for the game.
+         * @param teams A mapping of team players and their ratings.
+         * @param teamRanks The ranks of the teams where 1 is first place. For a tie, repeat the number (e.g. 1, 2, 2)
+         * @returns All the players and their new ratings.
         public abstract IDictionary<TPlayer, Rating> CalculateNewRatings<TPlayer>(GameInfo gameInfo,
                                                                                   IEnumerable
                                                                                       <IDictionary<TPlayer, Rating>>
                                                                                       teams,
                                                                                   params int[] teamRanks);
 
-        /// <summary>
-        /// Calculates the match quality as the likelihood of all teams drawing.
-        /// </summary>
-        /// <typeparam name="TPlayer">The underlying type of the player.</typeparam>
-        /// <param name="gameInfo">Parameters for the game.</param>
-        /// <param name="teams">A mapping of team players and their ratings.</param>
-        /// <returns>The quality of the match between the teams as a percentage (0% = bad, 100% = well matched).</returns>
+        /**
+         * Calculates the match quality as the likelihood of all teams drawing.
+         */
+         * <typeparam name="TPlayer">The underlying type of the player.</typeparam>
+         * @param gameInfo Parameters for the game.
+         * @param teams A mapping of team players and their ratings.
+         * @returns The quality of the match between the teams as a percentage (0% = bad, 100% = well matched).
         public abstract double CalculateMatchQuality<TPlayer>(GameInfo gameInfo,
                                                               IEnumerable<IDictionary<TPlayer, Rating>> teams);
 
@@ -56,10 +56,10 @@ namespace Moserware.Skills
             return (_SupportedOptions & option) == option;             
         }
 
-        /// <summary>
-        /// Helper function to square the <paramref name="value"/>.
-        /// </summary>        
-        /// <returns><param name="value"/> * <param name="value"/></returns>
+        /**
+         * Helper function to square the <paramref name="value"/>.
+         */        
+         * @returns <param name="value"/> * <param name="value"/>
         protected static double Square(double value)
         {
             return value*value;

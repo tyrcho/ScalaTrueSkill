@@ -6,42 +6,42 @@ namespace Moserware.Skills.FactorGraphs
 {    
     public abstract class Factor<TValue>        
     {
-        private readonly List<Message<TValue>> _Messages = new List<Message<TValue>>();
+        private final List<Message<TValue>> _Messages = new List<Message<TValue>>();
 
-        private readonly Dictionary<Message<TValue>, Variable<TValue>> _MessageToVariableBinding =
+        private final Dictionary<Message<TValue>, Variable<TValue>> _MessageToVariableBinding =
             new Dictionary<Message<TValue>, Variable<TValue>>();
 
-        private readonly string _Name;
-        private readonly List<Variable<TValue>> _Variables = new List<Variable<TValue>>();
+        private final String _Name;
+        private final List<Variable<TValue>> _Variables = new List<Variable<TValue>>();
 
-        protected Factor(string name)
+        protected Factor(String name)
         {
             _Name = "Factor[" + name + "]";
         }
 
-        /// Returns the log-normalization constant of that factor
+         * Returns the log-normalization constant of that factor
         public virtual double LogNormalization
         {
             get { return 0; }
         }
 
-        /// Returns the number of messages that the factor has
+         * Returns the number of messages that the factor has
         public int NumberOfMessages
         {
             get { return _Messages.Count; }
         }
 
-        protected ReadOnlyCollection<Variable<TValue>> Variables
+        protected finalCollection<Variable<TValue>> Variables
         {
-            get { return _Variables.AsReadOnly(); }
+            get { return _Variables.Asfinal(); }
         }
 
-        protected ReadOnlyCollection<Message<TValue>> Messages
+        protected finalCollection<Message<TValue>> Messages
         {
-            get { return _Messages.AsReadOnly(); }
+            get { return _Messages.Asfinal(); }
         }
 
-        /// Update the message and marginal of the i-th variable that the factor is connected to
+         * Update the message and marginal of the i-th variable that the factor is connected to
         public virtual double UpdateMessage(int messageIndex)
         {
             Guard.ArgumentIsValidIndex(messageIndex, _Messages.Count, "messageIndex");
@@ -53,7 +53,7 @@ namespace Moserware.Skills.FactorGraphs
             throw new NotImplementedException();
         }
 
-        /// Resets the marginal of the variables a factor is connected to
+         * Resets the marginal of the variables a factor is connected to
         public virtual void ResetMarginals()
         {
             foreach (var currentVariable in _MessageToVariableBinding.Values)
@@ -62,7 +62,7 @@ namespace Moserware.Skills.FactorGraphs
             }
         }
 
-        /// Sends the ith message to the marginal and returns the log-normalization constant
+         * Sends the ith message to the marginal and returns the log-normalization constant
         public virtual double SendMessage(int messageIndex)
         {
             Guard.ArgumentIsValidIndex(messageIndex, _Messages.Count, "messageIndex");
@@ -86,7 +86,7 @@ namespace Moserware.Skills.FactorGraphs
             return message;
         }
 
-        public override string ToString()
+        public override String ToString()
         {
             return _Name ?? base.ToString();
         }

@@ -68,9 +68,9 @@ public class Player<T> implements ISupportPartialPlay, ISupportPartialUpdate {
     public Player(T id, double partialPlayPercentage,
             double partialUpdatePercentage) {
         // If they don't want to give a player an id, that's ok...
-        Guard.ArgumentInRangeInclusive(partialPlayPercentage, 0, 1.0,
+        Guard.argumentInRangeInclusive(partialPlayPercentage, 0, 1.0,
                 "partialPlayPercentage");
-        Guard.ArgumentInRangeInclusive(partialUpdatePercentage, 0, 1.0,
+        Guard.argumentInRangeInclusive(partialUpdatePercentage, 0, 1.0,
                 "partialUpdatePercentage");
         this.id = id;
         this.partialPlayPercentage = partialPlayPercentage;

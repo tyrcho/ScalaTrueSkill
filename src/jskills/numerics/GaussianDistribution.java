@@ -120,7 +120,7 @@ public class GaussianDistribution {
             sqrt(abs(left.precision - right.precision)));
     }
 
-    /// Computes the absolute difference between two Gaussians
+    /** Computes the absolute difference between two Gaussians **/
     public static double sub(GaussianDistribution left, GaussianDistribution right) {
         return absoluteDifference(left, right);
     }

@@ -8,8 +8,8 @@ namespace Moserware.Skills.TrueSkill.Layers
         TrueSkillFactorGraphLayer
             <TPlayer, Variable<GaussianDistribution>, GaussianFactor, DefaultVariable<GaussianDistribution>>
     {
-        private readonly double _Epsilon;
-        private readonly int[] _TeamRanks;
+        private final double _Epsilon;
+        private final int[] _TeamRanks;
 
         public TeamDifferencesComparisonLayer(TrueSkillFactorGraph<TPlayer> parentGraph, int[] teamRanks)
             : base(parentGraph)

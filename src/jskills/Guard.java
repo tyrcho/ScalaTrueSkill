@@ -9,20 +9,20 @@ public class Guard {
  
     /** No instances allowed **/ private Guard() { }
 
-    public static void ArgumentNotNull(Object value, String parameterName) {
+    public static void argumentNotNull(Object value, String parameterName) {
         if (value == null) {
             throw new NullPointerException(parameterName);
         }
     }
 
-    public static void ArgumentIsValidIndex(int index, int count,
+    public static void argumentIsValidIndex(int index, int count,
             String parameterName) {
         if ((index < 0) || (index >= count)) {
             throw new IndexOutOfBoundsException(parameterName);
         }
     }
 
-    public static void ArgumentInRangeInclusive(double value, double min,
+    public static void argumentInRangeInclusive(double value, double min,
             double max, String parameterName) {
         if ((value < min) || (value > max)) {
             throw new IndexOutOfBoundsException(parameterName);

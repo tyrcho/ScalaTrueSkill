@@ -6,7 +6,7 @@ namespace Moserware.Skills.Elo
 {    
     public abstract class TwoPlayerEloCalculator : SkillCalculator
     {
-        protected readonly KFactor _KFactor;
+        protected final KFactor _KFactor;
 
         protected TwoPlayerEloCalculator(KFactor kFactor)
             : base(SupportedOptions.None, TeamsRange.Exactly(2), PlayersRange.Exactly(1))

@@ -5,9 +5,9 @@ using Moserware.Numerics;
 
 namespace Moserware.Skills.TrueSkill
 {
-    /// <summary>
-    /// Calculates TrueSkill using a full factor graph.
-    /// </summary>
+    /**
+     * Calculates TrueSkill using a full factor graph.
+     */
     internal class FactorGraphTrueSkillCalculator : SkillCalculator
     {
         public FactorGraphTrueSkillCalculator()

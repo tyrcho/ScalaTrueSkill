@@ -10,8 +10,8 @@ namespace Moserware.Skills.TrueSkill
     public class TrueSkillFactorGraph<TPlayer> :
         FactorGraph<TrueSkillFactorGraph<TPlayer>, GaussianDistribution, Variable<GaussianDistribution>>
     {
-        private readonly List<FactorGraphLayerBase<GaussianDistribution>> _Layers;
-        private readonly PlayerPriorValuesToSkillsLayer<TPlayer> _PriorLayer;
+        private final List<FactorGraphLayerBase<GaussianDistribution>> _Layers;
+        private final PlayerPriorValuesToSkillsLayer<TPlayer> _PriorLayer;
 
         public TrueSkillFactorGraph(GameInfo gameInfo, IEnumerable<IDictionary<TPlayer, Rating>> teams, int[] teamRanks)
         {
@@ -36,7 +36,7 @@ namespace Moserware.Skills.TrueSkill
 
         public void BuildGraph()
         {
-            object lastOutput = null;
+            Object lastOutput = null;
 
             foreach (var currentLayer in _Layers)
             {

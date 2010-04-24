@@ -12,9 +12,9 @@ namespace Moserware.Skills.TrueSkill.Layers
         TrueSkillFactorGraphLayer
             <TPlayer, Variable<GaussianDistribution>, GaussianWeightedSumFactor, Variable<GaussianDistribution>>
     {
-        private readonly TeamDifferencesComparisonLayer<TPlayer> _TeamDifferencesComparisonLayer;
+        private final TeamDifferencesComparisonLayer<TPlayer> _TeamDifferencesComparisonLayer;
 
-        private readonly TeamPerformancesToTeamPerformanceDifferencesLayer<TPlayer>
+        private final TeamPerformancesToTeamPerformanceDifferencesLayer<TPlayer>
             _TeamPerformancesToTeamPerformanceDifferencesLayer;
 
         public IteratedTeamDifferencesInnerLayer(TrueSkillFactorGraph<TPlayer> parentGraph,

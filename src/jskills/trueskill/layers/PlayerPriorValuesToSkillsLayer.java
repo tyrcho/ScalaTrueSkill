@@ -12,7 +12,7 @@ namespace Moserware.Skills.TrueSkill.Layers
             <TPlayer, DefaultVariable<GaussianDistribution>, GaussianPriorFactor,
             KeyedVariable<TPlayer, GaussianDistribution>>
     {
-        private readonly IEnumerable<IDictionary<TPlayer, Rating>> _Teams;
+        private final IEnumerable<IDictionary<TPlayer, Rating>> _Teams;
 
         public PlayerPriorValuesToSkillsLayer(TrueSkillFactorGraph<TPlayer> parentGraph,
                                               IEnumerable<IDictionary<TPlayer, Rating>> teams)

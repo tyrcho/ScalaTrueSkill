@@ -18,9 +18,9 @@ namespace Moserware.Skills.Elo
             return 10;
         }
 
-        /// <summary>
-        /// Indicates someone who has played less than 30 games.
-        /// </summary>        
+        /**
+         * Indicates someone who has played less than 30 games.
+         */        
         public class Provisional : FideKFactor
         {
             public Provisional()

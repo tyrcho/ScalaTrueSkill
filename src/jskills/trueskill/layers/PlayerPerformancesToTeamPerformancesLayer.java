@@ -60,7 +60,7 @@ namespace Moserware.Skills.TrueSkill.Layers
         private Variable<GaussianDistribution> CreateOutputVariable(
             IList<KeyedVariable<TPlayer, GaussianDistribution>> team)
         {
-            string teamMemberNames = String.Join(", ", team.Select(teamMember => teamMember.Key.ToString()).ToArray());
+            String teamMemberNames = String.Join(", ", team.Select(teamMember => teamMember.Key.ToString()).ToArray());
 
             return ParentFactorGraph.VariableFactory.CreateBasicVariable("Team[{0}]'s performance", teamMemberNames);
         }

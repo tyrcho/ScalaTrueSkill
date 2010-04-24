@@ -4,13 +4,13 @@ using Moserware.Skills.FactorGraphs;
 
 namespace Moserware.Skills.TrueSkill.Factors
 {
-    /// <summary>
-    /// Connects two variables and adds uncertainty.
-    /// </summary>
-    /// <remarks>See the accompanying math paper for more details.</remarks>
+    /**
+     * Connects two variables and adds uncertainty.
+     */
+     * <remarks>See the accompanying math paper for more details.</remarks>
     public class GaussianLikelihoodFactor : GaussianFactor
     {
-        private readonly double _Precision;
+        private final double _Precision;
 
         public GaussianLikelihoodFactor(double betaSquared, Variable<GaussianDistribution> variable1,
                                         Variable<GaussianDistribution> variable2)
@@ -45,12 +45,12 @@ namespace Moserware.Skills.TrueSkill.Factors
 
             GaussianDistribution newMarginal = oldMarginalWithoutMessage*newMessage;
 
-            /// Update the message and marginal
+             * Update the message and marginal
 
             message1.Value = newMessage;
             variable1.Value = newMarginal;
 
-            /// Return the difference in the new marginal
+             * Return the difference in the new marginal
             return newMarginal - marginal1;
         }
 

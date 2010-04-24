@@ -4,13 +4,13 @@ using Moserware.Skills.FactorGraphs;
 
 namespace Moserware.Skills.TrueSkill.Factors
 {
-    /// <summary>
-    /// Supplies the factor graph with prior information.
-    /// </summary>
-    /// <remarks>See the accompanying math paper for more details.</remarks>
+    /**
+     * Supplies the factor graph with prior information.
+     */
+     * <remarks>See the accompanying math paper for more details.</remarks>
     public class GaussianPriorFactor : GaussianFactor
     {
-        private readonly GaussianDistribution _NewMessage;
+        private final GaussianDistribution _NewMessage;
 
         public GaussianPriorFactor(double mean, double variance, Variable<GaussianDistribution> variable)
             : base(String.Format("Prior value going to {0}", variable))

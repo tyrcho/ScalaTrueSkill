@@ -4,13 +4,13 @@ using Moserware.Skills.FactorGraphs;
 
 namespace Moserware.Skills.TrueSkill.Factors
 {
-    /// <summary>
-    /// Factor representing a team difference that has not exceeded the draw margin.
-    /// </summary>
-    /// <remarks>See the accompanying math paper for more details.</remarks>
+    /**
+     * Factor representing a team difference that has not exceeded the draw margin.
+     */
+     * <remarks>See the accompanying math paper for more details.</remarks>
     public class GaussianWithinFactor : GaussianFactor
     {
-        private readonly double _Epsilon;
+        private final double _Epsilon;
 
         public GaussianWithinFactor(double epsilon, Variable<GaussianDistribution> variable)
             : base(String.Format("{0} <= {1:0.000}", variable, epsilon))
@@ -62,11 +62,11 @@ namespace Moserware.Skills.TrueSkill.Factors
             GaussianDistribution newMarginal = GaussianDistribution.FromPrecisionMean(newPrecisionMean, newPrecision);
             GaussianDistribution newMessage = oldMessage*newMarginal/oldMarginal;
 
-            /// Update the message and marginal
+             * Update the message and marginal
             message.Value = newMessage;
             variable.Value = newMarginal;
 
-            /// Return the difference in the new marginal
+             * Return the difference in the new marginal
             return newMarginal - oldMarginal;
         }
     }

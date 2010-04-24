@@ -3,12 +3,12 @@ using System.Linq;
 
 namespace Moserware.Skills.FactorGraphs
 {
-    /// <summary>
-    /// Helper class for computing the factor graph's normalization constant.
-    /// </summary>    
+    /**
+     * Helper class for computing the factor graph's normalization constant.
+     */    
     public class FactorList<TValue>
     {        
-        private readonly List<Factor<TValue>> _List = new List<Factor<TValue>>();
+        private final List<Factor<TValue>> _List = new List<Factor<TValue>>();
 
         public double LogNormalization
         {

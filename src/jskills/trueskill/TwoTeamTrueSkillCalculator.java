@@ -5,12 +5,12 @@ using Moserware.Skills.Numerics;
 
 namespace Moserware.Skills.TrueSkill
 {
-    /// <summary>
-    /// Calculates new ratings for only two teams where each team has 1 or more players.
-    /// </summary>
-    /// <remarks>
-    /// When you only have two teams, the math is still simple: no factor graphs are used yet.
-    /// </remarks>
+    /**
+     * Calculates new ratings for only two teams where each team has 1 or more players.
+     */
+     * <remarks>
+     * When you only have two teams, the math is still simple: no factor graphs are used yet.
+     * </remarks>
     public class TwoTeamTrueSkillCalculator : SkillCalculator
     {
         public TwoTeamTrueSkillCalculator()
@@ -18,7 +18,7 @@ namespace Moserware.Skills.TrueSkill
         {
         }
 
-        /// <inheritdoc/>
+         * <inheritdoc/>
         public override IDictionary<TPlayer, Rating> CalculateNewRatings<TPlayer>(GameInfo gameInfo,
                                                                                   IEnumerable
                                                                                       <IDictionary<TPlayer, Rating>>
@@ -125,7 +125,7 @@ namespace Moserware.Skills.TrueSkill
             }
         }
 
-        /// <inheritdoc/>
+         * <inheritdoc/>
         public override double CalculateMatchQuality<TPlayer>(GameInfo gameInfo,
                                                               IEnumerable<IDictionary<TPlayer, Rating>> teams)
         {

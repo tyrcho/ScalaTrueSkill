@@ -21,8 +21,8 @@ namespace Moserware.Skills.FactorGraphs
 
         // HACK
 
-        public abstract void SetRawInputVariablesGroups(object value);
-        public abstract object GetRawOutputVariablesGroups();
+        public abstract void SetRawInputVariablesGroups(Object value);
+        public abstract Object GetRawOutputVariablesGroups();
     }
 
     public abstract class FactorGraphLayer<TParentGraph, TValue, TBaseVariable, TInputVariable, TFactor, TOutputVariable>
@@ -33,8 +33,8 @@ namespace Moserware.Skills.FactorGraphs
         where TFactor : Factor<TValue>
         where TOutputVariable : TBaseVariable
     {
-        private readonly List<TFactor> _LocalFactors = new List<TFactor>();
-        private readonly List<IList<TOutputVariable>> _OutputVariablesGroups = new List<IList<TOutputVariable>>();
+        private final List<TFactor> _LocalFactors = new List<TFactor>();
+        private final List<IList<TOutputVariable>> _OutputVariablesGroups = new List<IList<TOutputVariable>>();
         private IList<IList<TInputVariable>> _InputVariablesGroups = new List<IList<TInputVariable>>();
 
         protected FactorGraphLayer(TParentGraph parentGraph)
@@ -66,7 +66,7 @@ namespace Moserware.Skills.FactorGraphs
             get { return _LocalFactors.Cast<Factor<TValue>>(); }
         }
 
-        public override void SetRawInputVariablesGroups(object value)
+        public override void SetRawInputVariablesGroups(Object value)
         {
             newList = value as IList<IList<TInputVariable>>;
             if (newList == null)
@@ -78,19 +78,19 @@ namespace Moserware.Skills.FactorGraphs
             _InputVariablesGroups = newList;
         }
 
-        public override object GetRawOutputVariablesGroups()
+        public override Object GetRawOutputVariablesGroups()
         {
             return _OutputVariablesGroups;
         }
 
         protected Schedule<TValue> ScheduleSequence<TSchedule>(
             IEnumerable<TSchedule> itemsToSequence,
-            string nameFormat,
-            params object[] args)
+            String nameFormat,
+            params Object[] args)
             where TSchedule : Schedule<TValue>
 
         {
-            string formattedName = String.Format(nameFormat, args);
+            String formattedName = String.Format(nameFormat, args);
             return new ScheduleSequence<TValue, TSchedule>(formattedName, itemsToSequence);
         }
 

@@ -5,9 +5,9 @@ namespace Moserware.Skills.FactorGraphs
 {
     public abstract class Schedule<T>
     {
-        private readonly string _Name;
+        private final String _Name;
 
-        protected Schedule(string name)
+        protected Schedule(String name)
         {
             _Name = name;
         }
@@ -19,7 +19,7 @@ namespace Moserware.Skills.FactorGraphs
             return Visit(-1, 0);
         }
                 
-        public override string ToString()
+        public override String ToString()
         {
             return _Name;
         }
@@ -27,10 +27,10 @@ namespace Moserware.Skills.FactorGraphs
 
     public class ScheduleStep<T> : Schedule<T>
     {
-        private readonly Factor<T> _Factor;
-        private readonly int _Index;
+        private final Factor<T> _Factor;
+        private final int _Index;
 
-        public ScheduleStep(string name, Factor<T> factor, int index)
+        public ScheduleStep(String name, Factor<T> factor, int index)
             : base(name)
         {
             _Factor = factor;
@@ -47,7 +47,7 @@ namespace Moserware.Skills.FactorGraphs
     // TODO: Remove
     public class ScheduleSequence<TValue> : ScheduleSequence<TValue, Schedule<TValue>>
     {
-        public ScheduleSequence(string name, IEnumerable<Schedule<TValue>> schedules)
+        public ScheduleSequence(String name, IEnumerable<Schedule<TValue>> schedules)
             : base(name, schedules)
         {
         }
@@ -56,9 +56,9 @@ namespace Moserware.Skills.FactorGraphs
     public class ScheduleSequence<TValue, TSchedule> : Schedule<TValue>
         where TSchedule : Schedule<TValue>
     {
-        private readonly IEnumerable<TSchedule> _Schedules;
+        private final IEnumerable<TSchedule> _Schedules;
 
-        public ScheduleSequence(string name, IEnumerable<TSchedule> schedules)
+        public ScheduleSequence(String name, IEnumerable<TSchedule> schedules)
             : base(name)
         {
             _Schedules = schedules;
@@ -79,10 +79,10 @@ namespace Moserware.Skills.FactorGraphs
 
     public class ScheduleLoop<T> : Schedule<T>
     {
-        private readonly double _MaxDelta;
-        private readonly Schedule<T> _ScheduleToLoop;
+        private final double _MaxDelta;
+        private final Schedule<T> _ScheduleToLoop;
 
-        public ScheduleLoop(string name, Schedule<T> scheduleToLoop, double maxDelta)
+        public ScheduleLoop(String name, Schedule<T> scheduleToLoop, double maxDelta)
             : base(name)
         {
             _ScheduleToLoop = scheduleToLoop;

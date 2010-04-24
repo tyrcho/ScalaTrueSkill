@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace Moserware.Numerics
 {
-    /// <summary>
-    /// Represents an MxN matrix with double precision values.
-    /// </summary>    
+    /**
+     * Represents an MxN matrix with double precision values.
+     */    
     internal class Matrix
     {
         protected double[][] _MatrixRowValues;
@@ -377,7 +377,7 @@ namespace Moserware.Numerics
             }
 
             // If one is null, but not both, return false.
-            if (((object) a == null) || ((object) b == null))
+            if (((Object) a == null) || ((Object) b == null))
             {
                 return false;
             }
@@ -444,7 +444,7 @@ namespace Moserware.Numerics
             return hashCode;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(Object obj)
         {
             other = obj as Matrix;
             if (other == null)

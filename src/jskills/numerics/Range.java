@@ -3,7 +3,7 @@
 import lombok.Data;
 
 /**
- * A very limited implementation of an immutable range of integers, including
+ * A very limited implementation of an immutable range of Integers, including
  * endpoints. There is no such thing as an empty range.
  * <p>
  * The whole purpose of this class is to make the code for the

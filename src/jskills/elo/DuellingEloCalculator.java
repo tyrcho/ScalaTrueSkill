@@ -6,7 +6,7 @@ namespace Moserware.Skills.Elo
 {
     public class DuellingEloCalculator : SkillCalculator
     {
-        private readonly TwoPlayerEloCalculator _TwoPlayerEloCalc;
+        private final TwoPlayerEloCalculator _TwoPlayerEloCalc;
 
         public DuellingEloCalculator(TwoPlayerEloCalculator twoPlayerEloCalculator)
             : base(SupportedOptions.None, TeamsRange.AtLeast(2), PlayersRange.AtLeast(1))

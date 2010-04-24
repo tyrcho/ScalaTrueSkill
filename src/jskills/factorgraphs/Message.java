@@ -4,15 +4,15 @@ namespace Moserware.Skills.FactorGraphs
 {
     public class Message<T>
     {
-        private readonly string _NameFormat;
-        private readonly object[] _NameFormatArgs;
+        private final String _NameFormat;
+        private final Object[] _NameFormatArgs;
 
         public Message()
             : this(default(T), null, null)
         {
         }
 
-        public Message(T value, string nameFormat, params object[] args)
+        public Message(T value, String nameFormat, params Object[] args)
 
         {
             _NameFormat = nameFormat;
@@ -22,7 +22,7 @@ namespace Moserware.Skills.FactorGraphs
 
         public T Value { get; set; }
 
-        public override string ToString()
+        public override String ToString()
         {
             return (_NameFormat == null) ? base.ToString() : String.Format(_NameFormat, _NameFormatArgs);
         }

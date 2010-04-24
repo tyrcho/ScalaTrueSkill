@@ -6,7 +6,7 @@ namespace Moserware.Skills.Elo
     public class GaussianEloCalculator : TwoPlayerEloCalculator
     {
         // From the paper
-        private static readonly KFactor StableKFactor = new KFactor(24);
+        private static final KFactor StableKFactor = new KFactor(24);
 
         public GaussianEloCalculator()
             : base(StableKFactor)

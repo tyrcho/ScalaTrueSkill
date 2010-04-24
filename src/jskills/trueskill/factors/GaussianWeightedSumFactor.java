@@ -8,18 +8,18 @@ using Moserware.Skills.FactorGraphs;
 
 namespace Moserware.Skills.TrueSkill.Factors
 {
-    /// <summary>
-    /// Factor that sums together multiple Gaussians.
-    /// </summary>
-    /// <remarks>See the accompanying math paper for more details.</remarks>
+    /**
+     * Factor that sums together multiple Gaussians.
+     */
+     * <remarks>See the accompanying math paper for more details.</remarks>
     public class GaussianWeightedSumFactor : GaussianFactor
     {
-        private readonly List<int[]> _VariableIndexOrdersForWeights = new List<int[]>();
+        private final List<int[]> _VariableIndexOrdersForWeights = new List<int[]>();
 
         // This following is used for convenience, for example, the first entry is [0, 1, 2] 
         // corresponding to v[0] = a1*v[1] + a2*v[2]
-        private readonly double[][] _Weights;
-        private readonly double[][] _WeightsSquared;        
+        private final double[][] _Weights;
+        private final double[][] _WeightsSquared;        
 
         public GaussianWeightedSumFactor(Variable<GaussianDistribution> sumVariable,
                                          Variable<GaussianDistribution>[] variablesToSum)
@@ -117,8 +117,8 @@ namespace Moserware.Skills.TrueSkill.Factors
         {
             get
             {
-                ReadOnlyCollection<Variable<GaussianDistribution>> vars = Variables;
-                ReadOnlyCollection<Message<GaussianDistribution>> messages = Messages;
+                finalCollection<Variable<GaussianDistribution>> vars = Variables;
+                finalCollection<Message<GaussianDistribution>> messages = Messages;
 
                 double result = 0.0;
 
@@ -178,19 +178,19 @@ namespace Moserware.Skills.TrueSkill.Factors
 
             GaussianDistribution newMarginal = oldMarginalWithoutMessage*newMessage;
 
-            /// Update the message and marginal
+             * Update the message and marginal
 
             messages[0].Value = newMessage;
             variables[0].Value = newMarginal;
 
-            /// Return the difference in the new marginal
+             * Return the difference in the new marginal
             return newMarginal - marginal0;
         }
 
         public override double UpdateMessage(int messageIndex)
         {
-            ReadOnlyCollection<Message<GaussianDistribution>> allMessages = Messages;
-            ReadOnlyCollection<Variable<GaussianDistribution>> allVariables = Variables;
+            finalCollection<Message<GaussianDistribution>> allMessages = Messages;
+            finalCollection<Variable<GaussianDistribution>> allVariables = Variables;
 
             Guard.ArgumentIsValidIndex(messageIndex, allMessages.Count, "messageIndex");
 
@@ -211,7 +211,7 @@ namespace Moserware.Skills.TrueSkill.Factors
             return UpdateHelper(_Weights[messageIndex], _WeightsSquared[messageIndex], updatedMessages, updatedVariables);
         }
 
-        private static string CreateName(Variable<GaussianDistribution> sumVariable,
+        private static String CreateName(Variable<GaussianDistribution> sumVariable,
                                          IList<Variable<GaussianDistribution>> variablesToSum, double[] weights)
         {
             sb = new StringBuilder();

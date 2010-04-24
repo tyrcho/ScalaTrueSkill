@@ -10,7 +10,7 @@ namespace UnitTests
         [Test]
         public void SortAlreadySortedTest()
         {
-            IEnumerable<string> people = new[] { "One", "Two", "Three" };
+            IEnumerable<String> people = new[] { "One", "Two", "Three" };
             int[] ranks = new[] { 1, 2, 3 };
 
             RankSorter.Sort(ref people, ref ranks);
@@ -22,7 +22,7 @@ namespace UnitTests
         [Test]
         public void SortUnsortedTest()
         {
-            IEnumerable<string> people = new[] { "Five", "Two1", "Two2", "One", "Four" };
+            IEnumerable<String> people = new[] { "Five", "Two1", "Two2", "One", "Four" };
             int[] ranks = new[] { 5, 2, 2, 1, 4 };
 
             RankSorter.Sort(ref people, ref ranks);

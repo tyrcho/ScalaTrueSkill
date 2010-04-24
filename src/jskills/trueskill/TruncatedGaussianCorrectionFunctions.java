@@ -7,14 +7,14 @@ namespace Moserware.Skills.TrueSkill
     {
         // These functions from the bottom of page 4 of the TrueSkill paper.
 
-        /// <summary>
-        /// The "V" function where the team performance difference is greater than the draw margin.
-        /// </summary>
-        /// <remarks>In the reference F# implementation, this is referred to as "the additive 
-        /// correction of a single-sided truncated Gaussian with unit variance."</remarks>
-        /// <param name="teamPerformanceDifference"></param>
-        /// <param name="drawMargin">In the paper, it's referred to as just "ε".</param>
-        /// <returns></returns>
+        /**
+         * The "V" function where the team performance difference is greater than the draw margin.
+         */
+         * <remarks>In the reference F# implementation, this is referred to as "the additive 
+         * correction of a single-sided truncated Gaussian with unit variance."</remarks>
+         * @param teamPerformanceDifference 
+         * @param drawMargin In the paper, it's referred to as just "ε".
+         * @returns 
         public static double VExceedsMargin(double teamPerformanceDifference, double drawMargin, double c)
         {
             return VExceedsMargin(teamPerformanceDifference/c, drawMargin/c);
@@ -33,15 +33,15 @@ namespace Moserware.Skills.TrueSkill
             return GaussianDistribution.At(teamPerformanceDifference - drawMargin)/denominator;
         }
 
-        /// <summary>
-        /// The "W" function where the team performance difference is greater than the draw margin.
-        /// </summary>
-        /// <remarks>In the reference F# implementation, this is referred to as "the multiplicative 
-        /// correction of a single-sided truncated Gaussian with unit variance."</remarks>
-        /// <param name="teamPerformanceDifference"></param>
-        /// <param name="drawMargin"></param>
-        /// <param name="c"></param>
-        /// <returns></returns>
+        /**
+         * The "W" function where the team performance difference is greater than the draw margin.
+         */
+         * <remarks>In the reference F# implementation, this is referred to as "the multiplicative 
+         * correction of a single-sided truncated Gaussian with unit variance."</remarks>
+         * @param teamPerformanceDifference 
+         * @param drawMargin 
+         * @param c 
+         * @returns 
         public static double WExceedsMargin(double teamPerformanceDifference, double drawMargin, double c)
         {
             return WExceedsMargin(teamPerformanceDifference/c, drawMargin/c);
