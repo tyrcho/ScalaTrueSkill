@@ -1,51 +1,56 @@
-﻿using Moserware.Skills;
-using Moserware.Skills.Elo;
-using NUnit.Framework;
+﻿package jskills.elo;
 
-namespace UnitTests.Elo
-{
-    [TestFixture]
-    public class DuellingEloTest
-    {
-        private final double ErrorTolerance = 0.1;
+import static org.testng.Assert.assertEquals;
 
-        @Test
-        public void TwoOnTwoDuellingTest()
-        {
-            calculator = new DuellingEloCalculator(new GaussianEloCalculator());
+import java.util.Collection;
+import java.util.Map;
 
-            player1 = new Player(1);
-            player2 = new Player(2);
+import jskills.GameInfo;
+import jskills.IPlayer;
+import jskills.ITeam;
+import jskills.Player;
+import jskills.Rating;
+import jskills.Team;
 
-            gameInfo = GameInfo.DefaultGameInfo;
+import org.testng.annotations.Test;
 
-            team1 = new Team()
-                .AddPlayer(player1, gameInfo.DefaultRating)
-                .AddPlayer(player2, gameInfo.DefaultRating);
+public class DuellingEloTest {
+    private final static double ErrorTolerance = 0.1;
 
-            player3 = new Player(3);
-            player4 = new Player(4);
+    @Test
+    public void twoOnTwoDuellingTest() {
+        DuellingEloCalculator calculator = new DuellingEloCalculator(new GaussianEloCalculator());
 
-            team2 = new Team()
-                        .AddPlayer(player3, gameInfo.DefaultRating)
-                        .AddPlayer(player4, gameInfo.DefaultRating);
+        Player<Integer> player1 = new Player<Integer>(1);
+        Player<Integer> player2 = new Player<Integer>(2);
 
-            teams = Teams.Concat(team1, team2);
-            newRatingsWinLose = calculator.CalculateNewRatings(gameInfo, teams, 1, 2);
+        GameInfo gameInfo = GameInfo.getDefaultGameInfo();
 
-            // TODO: Verify?
-            AssertRating(37, newRatingsWinLose[player1]);
-            AssertRating(37, newRatingsWinLose[player2]);
-            AssertRating(13, newRatingsWinLose[player3]);
-            AssertRating(13, newRatingsWinLose[player4]);
+        Team team1 = new Team()
+            .addPlayer(player1, gameInfo.getDefaultRating())
+            .addPlayer(player2, gameInfo.getDefaultRating());
 
-            quality = calculator.CalculateMatchQuality(gameInfo, teams);
-            assertEquals(1.0, quality, 0.001);
-        }
+        Player<Integer> player3 = new Player<Integer>(3);
+        Player<Integer> player4 = new Player<Integer>(4);
 
-        private static void AssertRating(double expected, Rating actual)
-        {
-            assertEquals(expected, actual.Mean, ErrorTolerance);
-        }
+        Team team2 = new Team()
+                    .addPlayer(player3, gameInfo.getDefaultRating())
+                    .addPlayer(player4, gameInfo.getDefaultRating());
+
+        Collection<ITeam> teams = Team.concat(team1, team2);
+        Map<IPlayer, Rating> newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, new int[] {1, 2});
+
+        // TODO: Verify?
+        AssertRating(37, newRatingsWinLose.get(player1));
+        AssertRating(37, newRatingsWinLose.get(player2));
+        AssertRating(13, newRatingsWinLose.get(player3));
+        AssertRating(13, newRatingsWinLose.get(player4));
+
+        double quality = calculator.calculateMatchQuality(gameInfo, teams);
+        assertEquals(1.0, quality, 0.001);
+    }
+
+    private static void AssertRating(double expected, Rating actual) {
+        assertEquals(expected, actual.getMean(), ErrorTolerance);
     }
 }

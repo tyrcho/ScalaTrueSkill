@@ -1,5 +1,7 @@
 ﻿package jskills;
 
+import java.util.TreeMap;
+
 /**
  * Represents a comparison between two players.
  * <p>
@@ -14,4 +16,13 @@ public enum PairwiseComparison{
     public final int multiplier;
     
     private PairwiseComparison(int multiplier) { this.multiplier = multiplier; }
+
+    private static TreeMap<Integer, PairwiseComparison> revmap = new TreeMap<Integer, PairwiseComparison>();
+    static { for (PairwiseComparison pc : PairwiseComparison.values())
+            revmap.put(pc.multiplier, pc);
+    }
+    
+    public static PairwiseComparison fromMultiplier(int multiplier) {
+        return revmap.get(multiplier);
+    }
 }

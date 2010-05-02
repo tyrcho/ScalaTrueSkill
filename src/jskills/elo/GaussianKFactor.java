@@ -1,20 +1,15 @@
-﻿using System;
+﻿package jskills.elo;
 
-namespace Moserware.Skills.Elo
-{
-    public class GaussianKFactor : KFactor
-    {
-        // From paper
-        final double StableDynamicsKFactor = 24.0;
+import jskills.GameInfo;
 
-        public GaussianKFactor()
-            : base(StableDynamicsKFactor)
-        {
-        }
+public class GaussianKFactor extends KFactor {
+    // From paper
+    static final double StableDynamicsKFactor = 24.0;
 
-        public GaussianKFactor(GameInfo gameInfo, double latestGameWeightingFactor)
-            : base(latestGameWeightingFactor * gameInfo.Beta * Math.Sqrt(Math.PI))
-        {
-        }
+    public GaussianKFactor() { super(StableDynamicsKFactor); }
+
+    public GaussianKFactor(GameInfo gameInfo, double latestGameWeightingFactor) {
+        super(latestGameWeightingFactor * gameInfo.getBeta()
+                * Math.sqrt(Math.PI));
     }
 }

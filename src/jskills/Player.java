@@ -5,7 +5,7 @@ import lombok.Getter;
 /**
  * Represents a player who has a {@link Rating}.
  */
-public class Player<T> implements ISupportPartialPlay, ISupportPartialUpdate {
+public class Player<T> implements IPlayer, ISupportPartialPlay, ISupportPartialUpdate {
 
     /** = 100% play time **/
     private static final double DefaultPartialPlayPercentage = 1.0;

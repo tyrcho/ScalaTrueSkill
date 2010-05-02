@@ -1,79 +1,96 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿package jskills.elo;
 
-namespace Moserware.Skills.Elo
-{    
-    public abstract class TwoPlayerEloCalculator : SkillCalculator
-    {
-        protected final KFactor _KFactor;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-        protected TwoPlayerEloCalculator(KFactor kFactor)
-            : base(SupportedOptions.None, TeamsRange.Exactly(2), PlayersRange.Exactly(1))
-        {
-            _KFactor = kFactor;
+import jskills.GameInfo;
+import jskills.IPlayer;
+import jskills.PairwiseComparison;
+import jskills.RankSorter;
+import jskills.Rating;
+import jskills.SkillCalculator;
+import jskills.ITeam;
+import jskills.numerics.Range;
+
+public abstract class TwoPlayerEloCalculator extends SkillCalculator {
+
+    protected final KFactor kFactor;
+
+    protected TwoPlayerEloCalculator(KFactor kFactor) {
+        super(EnumSet.noneOf(SupportedOptions.class), Range.<ITeam> exactly(2),
+                Range.<IPlayer> exactly(1));
+        this.kFactor = kFactor;
+    }
+
+    @Override
+    public Map<IPlayer, Rating> calculateNewRatings(GameInfo gameInfo,
+            Collection<ITeam> teams, int[] teamRanks) {
+        validateTeamCountAndPlayersCountPerTeam(teams);
+        List<ITeam> teamsl = RankSorter.sort(teams, teamRanks);
+
+        Map<IPlayer, Rating> result = new HashMap<IPlayer, Rating>();
+        boolean isDraw = (teamRanks[0] == teamRanks[1]);
+
+        List<IPlayer> players = new ArrayList<IPlayer>(2);
+        for(ITeam team : teamsl)
+            players.add(team.keySet().toArray(new IPlayer[1])[0]);
+
+        double player1Rating = teamsl.get(0).get(players.get(0)).getMean();
+        double player2Rating = teamsl.get(1).get(players.get(1)).getMean();
+
+        result.put(players.get(0), calculateNewRating(gameInfo, player1Rating, player2Rating, isDraw ? PairwiseComparison.DRAW : PairwiseComparison.WIN));
+        result.put(players.get(1), calculateNewRating(gameInfo, player2Rating, player1Rating, isDraw ? PairwiseComparison.DRAW : PairwiseComparison.LOSE));
+
+        return result;
+    }
+
+    protected EloRating calculateNewRating(GameInfo gameInfo,
+            double selfRating, double opponentRating,
+            PairwiseComparison selfToOpponentComparison) {
+        double expectedProbability = getPlayerWinProbability(gameInfo, selfRating, opponentRating);
+        double actualProbability = getScoreFromComparison(selfToOpponentComparison);
+        double k = kFactor.getValueForRating(selfRating);
+        double ratingChange = k * (actualProbability - expectedProbability);
+        double newRating = selfRating + ratingChange;
+
+        return new EloRating(newRating);
+    }
+
+    private static double getScoreFromComparison(PairwiseComparison comparison) {
+        switch (comparison) {
+        case WIN: return 1;
+        case DRAW: return 0.5;
+        case LOSE: return 0;
+        default: throw new IllegalArgumentException();
         }
+    }
 
-        public override IDictionary<TPlayer, Rating> CalculateNewRatings<TPlayer>(GameInfo gameInfo, IEnumerable<IDictionary<TPlayer, Rating>> teams, params int[] teamRanks)
-        {
-            ValidateTeamCountAndPlayersCountPerTeam(teams);
-            RankSorter.Sort(ref teams, ref teamRanks);
+    protected abstract double getPlayerWinProbability(GameInfo gameInfo, double playerRating, double opponentRating);
 
-            result = new Dictionary<TPlayer, Rating>();
-            bool isDraw = (teamRanks[0] == teamRanks[1]);
+    @Override
+    public double calculateMatchQuality(GameInfo gameInfo,
+            Collection<ITeam> teams) {
+        validateTeamCountAndPlayersCountPerTeam(teams);
+        
+        // Extract both players from the teams
+        List<IPlayer> players = new ArrayList<IPlayer>(2);
+        for(ITeam team : teams) players.add(team.keySet().toArray(new IPlayer[0])[0]);
 
-            player1 = teams.First().First();
-            player2 = teams.Last().First();
-            
-            player1Rating = player1.Value.Mean;
-            player2Rating = player2.Value.Mean;
+        // Extract each player's rating from their team
+        Iterator<ITeam> teamit = teams.iterator();
+        double player1Rating = teamit.next().get(players.get(0)).getMean();
+        double player2Rating = teamit.next().get(players.get(1)).getMean();
 
-            result[player1.Key] = CalculateNewRating(gameInfo, player1Rating, player2Rating, isDraw ? PairwiseComparison.Draw : PairwiseComparison.Win);
-            result[player2.Key] = CalculateNewRating(gameInfo, player2Rating, player1Rating, isDraw ? PairwiseComparison.Draw : PairwiseComparison.Lose);
-
-            return result;
-        }
-
-        protected virtual EloRating CalculateNewRating(GameInfo gameInfo, double selfRating, double opponentRating, PairwiseComparison selfToOpponentComparison)
-        {
-            double expectedProbability = GetPlayerWinProbability(gameInfo, selfRating, opponentRating);
-            double actualProbability = GetScoreFromComparison(selfToOpponentComparison);
-            double k = _KFactor.GetValueForRating(selfRating);
-            double ratingChange = k * (actualProbability - expectedProbability);
-            double newRating = selfRating + ratingChange;
-
-            return new EloRating(newRating);
-        }
-
-        private static double GetScoreFromComparison(PairwiseComparison comparison)
-        {
-            switch (comparison)
-            {
-                case PairwiseComparison.Win:
-                    return 1;
-                case PairwiseComparison.Draw:
-                    return 0.5;
-                case PairwiseComparison.Lose:
-                    return 0;
-                default:
-                    throw new NotSupportedException();
-            }
-        }
-
-        protected abstract double GetPlayerWinProbability(GameInfo gameInfo, double playerRating, double opponentRating);
-
-        public override double CalculateMatchQuality<TPlayer>(GameInfo gameInfo, IEnumerable<IDictionary<TPlayer, Rating>> teams)
-        {
-            ValidateTeamCountAndPlayersCountPerTeam(teams);
-            double player1Rating = teams.First().First().Value.Mean;
-            double player2Rating = teams.Last().First().Value.Mean;
-            double ratingDifference = player1Rating - player2Rating;
-
-            // The TrueSkill paper mentions that they used s1 - s2 (rating difference) to
-            // determine match quality. I convert that to a percentage as a delta from 50%
-            // using the cumulative density function of the specific curve being used
-            double deltaFrom50Percent = Math.Abs(GetPlayerWinProbability(gameInfo, player1Rating, player2Rating) - 0.5);
-            return (0.5 - deltaFrom50Percent) / 0.5;
-        }
+        // The TrueSkill paper mentions that they used s1 - s2 (rating 
+        // difference) to determine match quality. I convert that to a 
+        // percentage as a delta from 50% using the cumulative density function 
+        // of the specific curve being used
+        double deltaFrom50Percent = Math.abs(getPlayerWinProbability(gameInfo, player1Rating, player2Rating) - 0.5);
+        return (0.5 - deltaFrom50Percent) / 0.5;
     }
 }

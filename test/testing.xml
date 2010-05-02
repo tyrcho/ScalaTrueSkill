@@ -1,0 +1,7 @@
+<suite name="All" parallel="false">
+  <test name="All">
+    <packages>
+    	<package name="jskills"></package><package name="jskills.numerics"></package><package name="jskills.elo"></package></packages>
+  	
+    </test>
+</suite>

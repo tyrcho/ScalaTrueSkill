@@ -9,17 +9,17 @@ import jskills.numerics.Range;
 /**
  * Base class for all skill calculator implementations.
  */
-public abstract class SkillCalculator<TPlayer> {
+public abstract class SkillCalculator {
     
-    public enum SupportedOptions { None, PartialPlay, PartialUpdate; }
+    public enum SupportedOptions { PartialPlay, PartialUpdate; }
 
     private final EnumSet<SupportedOptions> supportedOptions;
-    private final Range<Player<?>> playersPerTeamAllowed;
-    private final Range<Team<?>> totalTeamsAllowed;
+    private final Range<IPlayer> playersPerTeamAllowed;
+    private final Range<ITeam> totalTeamsAllowed;
     
     protected SkillCalculator(EnumSet<SupportedOptions> supportedOptions,
-                              Range<Team<?>> totalTeamsAllowed, 
-                              Range<Player<?>> playerPerTeamAllowed) {
+                              Range<ITeam> totalTeamsAllowed, 
+                              Range<IPlayer> playerPerTeamAllowed) {
         this.supportedOptions = supportedOptions;
         this.totalTeamsAllowed = totalTeamsAllowed;
         this.playersPerTeamAllowed = playerPerTeamAllowed;
@@ -41,8 +41,8 @@ public abstract class SkillCalculator<TPlayer> {
      *            repeat the number (e.g. 1, 2, 2)
      * @returns All the players and their new ratings.
      */
-    public abstract Map<TPlayer, Rating> calculateNewRatings(GameInfo gameInfo,
-            Iterable<Map<TPlayer, Rating>> teams, int[] teamRanks);
+    public abstract Map<IPlayer, Rating> calculateNewRatings(GameInfo gameInfo,
+            Collection<ITeam> teams, int[] teamRanks);
 
     /**
      * Calculates the match quality as the likelihood of all teams drawing.
@@ -55,20 +55,20 @@ public abstract class SkillCalculator<TPlayer> {
      *          bad, 100% = well matched).
      */
     public abstract double calculateMatchQuality(GameInfo gameInfo,
-            Iterable<Map<TPlayer, Rating>> teams);
+            Collection<ITeam> teams);
 
-    void validateTeamCountAndPlayersCountPerTeam(
-            Collection<Map<TPlayer, Rating>> teams) {
+    protected void validateTeamCountAndPlayersCountPerTeam(
+            Collection<ITeam> teams) {
         validateTeamCountAndPlayersCountPerTeam(teams, totalTeamsAllowed, playersPerTeamAllowed);
     }
 
     private static <TPlayer> void validateTeamCountAndPlayersCountPerTeam(
-            Collection<Map<TPlayer, Rating>> teams, 
-            Range<Team<?>> totalTeams,
-            Range<Player<?>> playersPerTeam) {
+            Collection<ITeam> teams, 
+            Range<ITeam> totalTeams,
+            Range<IPlayer> playersPerTeam) {
         Guard.argumentNotNull(teams, "teams");
         int countOfTeams = 0;
-        for (Map<TPlayer, Rating> currentTeam : teams) {
+        for (ITeam currentTeam : teams) {
             if (!playersPerTeam.isInRange(currentTeam.size())) {
                 throw new IllegalArgumentException();
             }

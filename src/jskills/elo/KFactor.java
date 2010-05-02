@@ -1,22 +1,9 @@
-﻿
-namespace Moserware.Skills.Elo
-{
-    public class KFactor
-    {
-        private double _Value;
+﻿package jskills.elo;
 
-        protected KFactor()
-        {
-        }
+public class KFactor {
+    private final double value;
 
-        public KFactor(double exactKFactor)
-        {
-            _Value = exactKFactor;
-        }
+    public KFactor(double exactKFactor) { value = exactKFactor; }
 
-        public virtual double GetValueForRating(double rating)
-        {
-            return _Value;
-        }
-    }
+    public double getValueForRating(double rating) { return value; }
 }

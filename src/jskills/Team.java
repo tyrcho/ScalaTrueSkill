@@ -1,20 +1,20 @@
 ﻿package jskills;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Helper class for working with a single team.
  */
-public class Team<TPlayer> {
+public class Team extends HashMap<IPlayer, Rating> implements ITeam {
 
-    private final Map<TPlayer, Rating> playerRatings = new HashMap<TPlayer, Rating>();
+    /** Generated UID for serialization **/
+    private static final long serialVersionUID = -5274158841312594600L;
 
     /** Constructs a new team. **/
-    public Team() {
-    }
+    public Team() { }
 
     /**
      * Constructs a Team and populates it with the specified player.
@@ -24,7 +24,7 @@ public class Team<TPlayer> {
      * @param rating
      *            The rating of the player.
      */
-    public Team(TPlayer player, Rating rating) { addPlayer(player, rating); }
+    public Team(IPlayer player, Rating rating) { addPlayer(player, rating); }
 
     /**
      * Adds the player to the team.
@@ -35,18 +35,10 @@ public class Team<TPlayer> {
      *            The rating of the player
      * @returns The instance of the team (for chaining convenience).
      */
-    public Team<TPlayer> addPlayer(TPlayer player, Rating rating) {
-        playerRatings.put(player, rating);
+    public Team addPlayer(IPlayer player, Rating rating) {
+        put(player, rating);
         return this;
     }
-
-    /**
-     * Returns the {@link Team} as a simple mapping from the {@link Player}s to
-     * their {@link Rating}.
-     * 
-     * @returns The {@link Team} as a simple mapping from Player to Rating.
-     */
-    public Map<TPlayer, Rating> asMap() { return playerRatings; }
 
     /**
      * Concatenates multiple teams into a list of teams.
@@ -55,11 +47,9 @@ public class Team<TPlayer> {
      *            The teams to concatenate together.
      * @returns A sequence of teams.
      */
-    public static <T> Iterable<Map<T, Rating>> concat(Team<T>[] teams) {
-        List<Map<T, Rating>> teamslist = new ArrayList<Map<T, Rating>>();
-        for (Team<T> team : teams) {
-            teamslist.add(team.asMap());
-        }
+    public static Collection<ITeam> concat(ITeam... teams) {
+        List<ITeam> teamslist = new ArrayList<ITeam>();
+        for (ITeam team : teams) teamslist.add(team); 
         return teamslist;
     }
 }

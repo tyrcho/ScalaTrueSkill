@@ -1,27 +1,21 @@
-﻿using System;
-using Moserware.Numerics;
+﻿package jskills.elo;
 
-namespace Moserware.Skills.Elo
-{
-    public class GaussianEloCalculator : TwoPlayerEloCalculator
-    {
-        // From the paper
-        private static final KFactor StableKFactor = new KFactor(24);
+import jskills.GameInfo;
+import jskills.numerics.GaussianDistribution;
 
-        public GaussianEloCalculator()
-            : base(StableKFactor)
-        {
-        }
-        
-        protected override double GetPlayerWinProbability(GameInfo gameInfo, double playerRating, double opponentRating)
-        {
-            double ratingDifference = playerRating - opponentRating;
+public class GaussianEloCalculator extends TwoPlayerEloCalculator {
+    // From the paper
+    private static final KFactor StableKFactor = new KFactor(24);
 
-            // See equation 1.1 in the TrueSkill paper
-            return GaussianDistribution.CumulativeTo(
-                ratingDifference
-                /
-                (Math.Sqrt(2) * gameInfo.Beta));
-        }
+    public GaussianEloCalculator() { super(StableKFactor); }
+    
+    @Override
+    protected double getPlayerWinProbability(GameInfo gameInfo,
+            double playerRating, double opponentRating) {
+        double ratingDifference = playerRating - opponentRating;
+
+        // See equation 1.1 in the TrueSkill paper
+        return GaussianDistribution.cumulativeTo(
+                        ratingDifference / (Math.sqrt(2) * gameInfo.getBeta()));
     }
 }

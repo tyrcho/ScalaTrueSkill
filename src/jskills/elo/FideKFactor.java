@@ -1,36 +1,23 @@
-﻿
-namespace Moserware.Skills.Elo
-{
-    // see http://ratings.fide.com/calculator_rtd.phtml for details
-    public class FideKFactor : KFactor
-    {
-        public FideKFactor()
-        {
-        }
+﻿package jskills.elo;
 
-        public override double GetValueForRating(double rating)
-        {
-            if (rating < 2400)
-            {
-                return 15;
-            }
+import jskills.elo.KFactor;
 
-            return 10;
-        }
+/** @see http://ratings.fide.com/calculator_rtd.phtml for details **/
+public class FideKFactor extends KFactor {
 
-        /**
-         * Indicates someone who has played less than 30 games.
-         */        
-        public class Provisional : FideKFactor
-        {
-            public Provisional()
-            {                
-            }
+    public FideKFactor() { super(-1.); }
 
-            public override double GetValueForRating(double rating)
-            {
-                return 25;
-            }
-        }
+    public double getValueForRating(double rating) {
+        if (rating < 2400) return 15;
+        return 10;
+    }
+
+    /** Indicates someone who has played less than 30 games. **/
+    public static class Provisional extends FideKFactor {
+
+        public Provisional() { super(); }
+
+        @Override
+        public double getValueForRating(double rating) { return 25; }
     }
 }

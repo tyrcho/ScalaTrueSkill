@@ -1,5 +1,7 @@
 ﻿package jskills;
 
+import java.util.Collection;
+
 import jskills.numerics.GaussianDistribution;
 import lombok.Data;
 
@@ -70,5 +72,11 @@ import lombok.Data;
         // As a debug helper, display a localized rating:
         return String.format("Mean(μ)=%f, Std-Dev(σ)=%f",
                              mean, standardDeviation);
+    }
+    
+    public static double calcMeanMean(Collection<Rating> ratings) {
+        double ret = 0;
+        for (Rating rating : ratings) ret += rating.mean;
+        return ret/ratings.size();
     }
 }
