@@ -1,58 +1,21 @@
-﻿using System;
+﻿package jskills.factorgraphs;
 
-namespace Moserware.Skills.FactorGraphs
+import lombok.Getter;
+import lombok.Setter;
+
+public class Variable<TValue>
 {
-    public class Variable<TValue>
-    {
-        private final String _Name;
-        private final VariableFactory<TValue> _ParentFactory;
-        private final TValue _Prior;
-        private int _ParentIndex;
+    private final String name;
+    private final TValue prior;
+    @Getter @Setter private TValue value;
 
-        public Variable(String name, VariableFactory<TValue> parentFactory, int parentIndex, TValue prior)
-        {
-            _Name = "Variable[" + name + "]";
-            _ParentFactory = parentFactory;
-            _ParentIndex = parentIndex;
-            _Prior = prior;
-            ResetToPrior();
-        }
-
-        public virtual TValue Value { get; set; }
-
-        public void ResetToPrior()
-        {
-            Value = _Prior;
-        }
-
-        public override String ToString()
-        {
-            return _Name;
-        }
+    public Variable(String name, TValue prior) {
+        this.name = "Variable[" + name + "]";
+        this.prior = prior;
+        resetToPrior();
     }
 
-    public class DefaultVariable<TValue> : Variable<TValue>
-    {
-        public DefaultVariable()
-            : base("Default", null, 0, default(TValue))
-        {
-        }
+    public void resetToPrior() { value = prior; }
 
-        public override TValue Value
-        {
-            get { return default(TValue); }
-            set { throw new NotSupportedException(); }
-        }
-    }
-
-    public class KeyedVariable<TKey, TValue> : Variable<TValue>
-    {
-        public KeyedVariable(TKey key, String name, VariableFactory<TValue> parentFactory, int parentIndex, TValue prior)
-            : base(name, parentFactory, parentIndex, prior)
-        {
-            Key = key;
-        }
-
-        public TKey Key { get; private set; }
-    }
+    @Override public String toString() { return name; }
 }

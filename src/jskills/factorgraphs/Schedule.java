@@ -1,105 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿package jskills.factorgraphs;
 
-namespace Moserware.Skills.FactorGraphs
+public abstract class Schedule<T>
 {
-    public abstract class Schedule<T>
-    {
-        private final String _Name;
+    private final String _Name;
 
-        protected Schedule(String name)
-        {
-            _Name = name;
-        }
+    protected Schedule(String name) { _Name = name; }
 
-        public abstract double Visit(int depth, int maxDepth);
+    public abstract double visit(int depth, int maxDepth);
 
-        public double Visit()
-        {
-            return Visit(-1, 0);
-        }
-                
-        public override String ToString()
-        {
-            return _Name;
-        }
-    }
+    public double visit() { return visit(-1, 0); }
 
-    public class ScheduleStep<T> : Schedule<T>
-    {
-        private final Factor<T> _Factor;
-        private final int _Index;
+    @Override public String toString() { return _Name; }
 
-        public ScheduleStep(String name, Factor<T> factor, int index)
-            : base(name)
-        {
-            _Factor = factor;
-            _Index = index;
-        }
-
-        public override double Visit(int depth, int maxDepth)
-        {
-            double delta = _Factor.UpdateMessage(_Index);
-            return delta;
-        }
-    }
-
-    // TODO: Remove
-    public class ScheduleSequence<TValue> : ScheduleSequence<TValue, Schedule<TValue>>
-    {
-        public ScheduleSequence(String name, IEnumerable<Schedule<TValue>> schedules)
-            : base(name, schedules)
-        {
-        }
-    }
-
-    public class ScheduleSequence<TValue, TSchedule> : Schedule<TValue>
-        where TSchedule : Schedule<TValue>
-    {
-        private final IEnumerable<TSchedule> _Schedules;
-
-        public ScheduleSequence(String name, IEnumerable<TSchedule> schedules)
-            : base(name)
-        {
-            _Schedules = schedules;
-        }
-
-        public override double Visit(int depth, int maxDepth)
-        {
-            double maxDelta = 0;
-
-            foreach (TSchedule currentSchedule in _Schedules)
-            {
-                maxDelta = Math.Max(currentSchedule.Visit(depth + 1, maxDepth), maxDelta);
-            }
-            
-            return maxDelta;
-        }
-    }
-
-    public class ScheduleLoop<T> : Schedule<T>
-    {
-        private final double _MaxDelta;
-        private final Schedule<T> _ScheduleToLoop;
-
-        public ScheduleLoop(String name, Schedule<T> scheduleToLoop, double maxDelta)
-            : base(name)
-        {
-            _ScheduleToLoop = scheduleToLoop;
-            _MaxDelta = maxDelta;
-        }
-
-        public override double Visit(int depth, int maxDepth)
-        {
-            int totalIterations = 1;
-            double delta = _ScheduleToLoop.Visit(depth + 1, maxDepth);
-            while (delta > _MaxDelta)
-            {
-                delta = _ScheduleToLoop.Visit(depth + 1, maxDepth);
-                totalIterations++;
-            }
-
-            return delta;
-        }
-    }
 }

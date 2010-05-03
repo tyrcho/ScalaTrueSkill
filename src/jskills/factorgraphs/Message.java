@@ -1,30 +1,27 @@
-﻿using System;
+﻿package jskills.factorgraphs;
 
-namespace Moserware.Skills.FactorGraphs
-{
-    public class Message<T>
-    {
-        private final String _NameFormat;
-        private final Object[] _NameFormatArgs;
+import lombok.Getter;
+import lombok.Setter;
 
-        public Message()
-            : this(default(T), null, null)
-        {
-        }
+public class Message<T> {
 
-        public Message(T value, String nameFormat, params Object[] args)
+    private final String nameFormat;
+    private final Object[] nameFormatArgs;
 
-        {
-            _NameFormat = nameFormat;
-            _NameFormatArgs = args;
-            Value = value;
-        }
+    @Getter @Setter private T value;
 
-        public T Value { get; set; }
+    public Message() { this(null, null, (Object[])null); }
 
-        public override String ToString()
-        {
-            return (_NameFormat == null) ? base.ToString() : String.Format(_NameFormat, _NameFormatArgs);
-        }
+    public Message(T value, String nameFormat, Object... args) {
+        this.nameFormat = nameFormat;
+        nameFormatArgs = args;
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return (nameFormat == null) ? 
+                super.toString() : 
+                    String.format(nameFormat, nameFormatArgs);
     }
 }

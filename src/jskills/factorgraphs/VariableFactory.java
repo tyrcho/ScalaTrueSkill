@@ -1,42 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿package jskills.factorgraphs;
 
-namespace Moserware.Skills.FactorGraphs
-{
-    public class VariableFactory<TValue>
-    {
-        // using a Func<TValue> to encourage fresh copies in case it's overwritten
-        private final List<Variable<TValue>> _CreatedVariables = new List<Variable<TValue>>();
-        private final Func<TValue> _VariablePriorInitializer;
+public class VariableFactory<TValue> {
 
-        public VariableFactory(Func<TValue> variablePriorInitializer)
-        {
-            _VariablePriorInitializer = variablePriorInitializer;
-        }
+    // using a Func<TValue> to encourage fresh copies in case it's overwritten
+    protected final Func<TValue> variablePriorInitializer;
 
-        public Variable<TValue> CreateBasicVariable(String nameFormat, params Object[] args)
-        {
-            newVar = new Variable<TValue>(
-                String.Format(nameFormat, args),
-                this,
-                _CreatedVariables.Count,
-                _VariablePriorInitializer());
+    public VariableFactory(Func<TValue> variablePriorInitializer) {
+        this.variablePriorInitializer = variablePriorInitializer;
+    }
 
-            _CreatedVariables.Add(newVar);
-            return newVar;
-        }
-
-        public KeyedVariable<TKey, TValue> CreateKeyedVariable<TKey>(TKey key, String nameFormat, params Object[] args)
-        {
-            newVar = new KeyedVariable<TKey, TValue>(
-                key,
-                String.Format(nameFormat, args),
-                this,
-                _CreatedVariables.Count,
-                _VariablePriorInitializer());
-
-            _CreatedVariables.Add(newVar);
-            return newVar;
-        }
+    public Variable<TValue> createBasicVariable(String nameFormat, Object... args) {
+        return new Variable<TValue>(String.format(nameFormat, args), 
+                                    variablePriorInitializer.eval());
     }
 }

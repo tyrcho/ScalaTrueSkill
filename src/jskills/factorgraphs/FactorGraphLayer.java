@@ -1,108 +1,80 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿package jskills.factorgraphs;
 
-namespace Moserware.Skills.FactorGraphs
-{
-    public abstract class FactorGraphLayerBase<TValue>
-    {
-        public abstract IEnumerable<Factor<TValue>> UntypedFactors { get; }
-        public abstract void BuildLayer();
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-        public virtual Schedule<TValue> CreatePriorSchedule()
-        {
-            return null;
-        }
+// TODO Still necessary?
+//public abstract class FactorGraphLayerBase<TValue>
+//{
+//    public abstract IEnumerable<Factor<TValue>> UntypedFactors { get; }
+//    public abstract void BuildLayer();
+//
+//    public virtual Schedule<TValue> CreatePriorSchedule()
+//    {
+//        return null;
+//    }
+//
+//    public virtual Schedule<TValue> CreatePosteriorSchedule()
+//    {
+//        return null;
+//    }
+//
+//    // HACK
+//
+//    public abstract void SetRawInputVariablesGroups(Object value);
+//    public abstract Object GetRawOutputVariablesGroups();
+//}
 
-        public virtual Schedule<TValue> CreatePosteriorSchedule()
-        {
-            return null;
-        }
+public abstract class FactorGraphLayer<TValue, TParentGraph 
+    extends FactorGraph<TParentGraph, TValue, Variable<TValue>>> {
 
-        // HACK
-
-        public abstract void SetRawInputVariablesGroups(Object value);
-        public abstract Object GetRawOutputVariablesGroups();
+    private final List<Factor<TValue>> localFactors = new ArrayList<Factor<TValue>>();
+    private final List<List<Variable<TValue>>> outputVariablesGroups = new ArrayList<List<Variable<TValue>>>();
+    private List<List<Variable<TValue>>> inputVariablesGroups = new ArrayList<List<Variable<TValue>>>();
+    private final TParentGraph parentFactorGraph;
+    
+    
+    protected FactorGraphLayer(TParentGraph parentGraph) {
+        parentFactorGraph = parentGraph;
     }
 
-    public abstract class FactorGraphLayer<TParentGraph, TValue, TBaseVariable, TInputVariable, TFactor, TOutputVariable>
-        : FactorGraphLayerBase<TValue>
-        where TParentGraph : FactorGraph<TParentGraph, TValue, TBaseVariable>
-        where TBaseVariable : Variable<TValue>
-        where TInputVariable : TBaseVariable
-        where TFactor : Factor<TValue>
-        where TOutputVariable : TBaseVariable
-    {
-        private final List<TFactor> _LocalFactors = new List<TFactor>();
-        private final List<IList<TOutputVariable>> _OutputVariablesGroups = new List<IList<TOutputVariable>>();
-        private IList<IList<TInputVariable>> _InputVariablesGroups = new List<IList<TInputVariable>>();
+    protected List<List<Variable<TValue>>> getInputVariablesGroups() {
+        return inputVariablesGroups;
+    }
 
-        protected FactorGraphLayer(TParentGraph parentGraph)
-        {
-            ParentFactorGraph = parentGraph;
-        }
+    public TParentGraph getParentFactorGraph() { return parentFactorGraph; }
 
-        protected IList<IList<TInputVariable>> InputVariablesGroups
-        {
-            get { return _InputVariablesGroups; }
-        }
+    // TODO Make copy?
+    public List<List<Variable<TValue>>> getOutputVariablesGroups() {
+        return outputVariablesGroups;
+    }
 
-        // HACK
+    // TODO Make copy?
+    public List<Factor<TValue>> getLocalFactors() {
+        return localFactors;
+    }
 
-        public TParentGraph ParentFactorGraph { get; private set; }
+    // TODO Stop using raw stuff?
+    public void SetRawInputVariablesGroups(Object value) {
+        List<List<Variable<TValue>>> newList = (List<List<Variable<TValue>>>) value;
+        inputVariablesGroups = newList;
+    }
 
-        public IList<IList<TOutputVariable>> OutputVariablesGroups
-        {
-            get { return _OutputVariablesGroups; }
-        }
+    // TODO Stop using raw stuff?
+    public Object GetRawOutputVariablesGroups() {
+        return outputVariablesGroups;
+    }
 
-        public IList<TFactor> LocalFactors
-        {
-            get { return _LocalFactors; }
-        }
+    protected Schedule<TValue> ScheduleSequence(
+        Collection<Schedule<TValue>> itemsToSequence,
+        String nameFormat,
+        Object... args) {
+        String formattedName = String.format(nameFormat, args);
+        return new ScheduleSequence<TValue, Schedule<TValue>>(formattedName, itemsToSequence);
+    }
 
-        public override IEnumerable<Factor<TValue>> UntypedFactors
-        {
-            get { return _LocalFactors.Cast<Factor<TValue>>(); }
-        }
-
-        public override void SetRawInputVariablesGroups(Object value)
-        {
-            newList = value as IList<IList<TInputVariable>>;
-            if (newList == null)
-            {
-                // TODO: message
-                throw new ArgumentException();
-            }
-
-            _InputVariablesGroups = newList;
-        }
-
-        public override Object GetRawOutputVariablesGroups()
-        {
-            return _OutputVariablesGroups;
-        }
-
-        protected Schedule<TValue> ScheduleSequence<TSchedule>(
-            IEnumerable<TSchedule> itemsToSequence,
-            String nameFormat,
-            params Object[] args)
-            where TSchedule : Schedule<TValue>
-
-        {
-            String formattedName = String.Format(nameFormat, args);
-            return new ScheduleSequence<TValue, TSchedule>(formattedName, itemsToSequence);
-        }
-
-        protected void AddLayerFactor(TFactor factor)
-        {
-            _LocalFactors.Add(factor);
-        }
-
-        // Helper utility
-        protected double Square(double x)
-        {
-            return x*x;
-        }
+    protected void AddLayerFactor(Factor<TValue> factor) {
+        localFactors.add(factor);
     }
 }

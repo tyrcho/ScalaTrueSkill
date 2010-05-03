@@ -1,47 +1,35 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿package jskills.factorgraphs;
 
-namespace Moserware.Skills.FactorGraphs
-{
-    /**
-     * Helper class for computing the factor graph's normalization constant.
-     */    
-    public class FactorList<TValue>
-    {        
-        private final List<Factor<TValue>> _List = new List<Factor<TValue>>();
+import java.util.ArrayList;
+import java.util.List;
 
-        public double LogNormalization
-        {
-            get
-            {                
-                _List.ForEach(f => f.ResetMarginals());
+/**
+ * Helper class for computing the factor graph's normalization constant.
+ */
+public class FactorList<TValue> {
 
-                double sumLogZ = 0.0;
-                                
-                for (int i = 0; i < _List.Count; i++)
-                {
-                    Factor<TValue> f = _List[i];
-                    for (int j = 0; j < f.NumberOfMessages; j++)
-                    {
-                        sumLogZ += f.SendMessage(j);
-                    }
-                }
-                                
-                double sumLogS = _List.Aggregate(0.0, (acc, fac) => acc + fac.LogNormalization);
+    private final List<Factor<TValue>> factors = new ArrayList<Factor<TValue>>();
 
-                return sumLogZ + sumLogS;
-            }
+    public double getLogNormalization() { 
+        // TODO can these 3 loops be rolled into 1?
+        for(Factor<TValue> f : factors) f.ResetMarginals();
+
+        double sumLogZ = 0.0;
+        for(Factor<TValue> f : factors) {
+            for (int j = 0; j < f.getNumberOfMessages(); j++)
+                sumLogZ += f.SendMessage(j);
         }
+        
+        double sumLogS = 0;
+        for(Factor<TValue> f : factors) sumLogS += f.getLogNormalization();
 
-        public int Count
-        {
-            get { return _List.Count; }
-        }
-                
-        public Factor<TValue> AddFactor(Factor<TValue> factor)
-        {
-            _List.Add(factor);
-            return factor;
-        }
+        return sumLogZ + sumLogS;
+    }
+
+    public int size() { return factors.size(); }
+
+    public Factor<TValue> addFactor(Factor<TValue> factor) {
+        factors.add(factor);
+        return factor;
     }
 }
