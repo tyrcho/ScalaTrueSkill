@@ -1,20 +1,17 @@
-﻿using Moserware.Skills.TrueSkill;
-using NUnit.Framework;
+﻿package jskills.trueskill;
 
-namespace UnitTests.TrueSkill
+import org.testng.annotations.Test;
+
+public class TwoPlayerTrueSkillCalculatorTest
 {
-    [TestFixture]
-    public class TwoPlayerTrueSkillCalculatorTest
+    @Test
+    public void TwoPlayerTrueSkillCalculatorTests()
     {
-        @Test
-        public void TwoPlayerTrueSkillCalculatorTests()
-        {
-            calculator = new TwoPlayerTrueSkillCalculator();
+        TwoPlayerTrueSkillCalculator calculator = new TwoPlayerTrueSkillCalculator();
 
-            // We only support two players
-            TrueSkillCalculatorTests.TestAllTwoPlayerScenarios(calculator);
+        // We only support two players
+        TrueSkillCalculatorTests.TestAllTwoPlayerScenarios(calculator);
 
-            // TODO: Assert failures for larger teams
-        }    
-    }
+        // TODO: Assert failures for larger teams
+    }    
 }

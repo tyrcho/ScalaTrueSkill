@@ -1,22 +1,19 @@
-﻿using Moserware.Skills.TrueSkill;
-using NUnit.Framework;
+﻿package jskills.trueskill;
 
-namespace UnitTests.TrueSkill
+import org.testng.annotations.Test;
+
+public class FactorGraphTrueSkillCalculatorTests
 {
-    [TestFixture]
-    public class FactorGraphTrueSkillCalculatorTests
+    @Test
+    public void FullFactorGraphCalculatorTests()
     {
-        @Test
-        public void FullFactorGraphCalculatorTests()
-        {
-            calculator = new FactorGraphTrueSkillCalculator();
+        FactorGraphTrueSkillCalculator calculator = new FactorGraphTrueSkillCalculator();
 
-            // We can test all classes 
-            TrueSkillCalculatorTests.TestAllTwoPlayerScenarios(calculator);
-            TrueSkillCalculatorTests.TestAllTwoTeamScenarios(calculator);
-            TrueSkillCalculatorTests.TestAllMultipleTeamScenarios(calculator);
+        // We can test all classes 
+        TrueSkillCalculatorTests.TestAllTwoPlayerScenarios(calculator);
+        TrueSkillCalculatorTests.TestAllTwoTeamScenarios(calculator);
+        TrueSkillCalculatorTests.TestAllMultipleTeamScenarios(calculator);
 
-            TrueSkillCalculatorTests.TestPartialPlayScenarios(calculator);
-        }
+        TrueSkillCalculatorTests.TestPartialPlayScenarios(calculator);
     }
 }
