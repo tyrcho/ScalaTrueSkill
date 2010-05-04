@@ -25,6 +25,7 @@ public class RankSorter {
      *            The items to sort according to the order specified by ranks.
      * @param ranks
      *            The ranks for each item where 1 is first place.
+     * @return the items sorted according to their ranks
      */
     public static <T> List<T> sort(Collection<T> items, int[] itemRanks) {
         Guard.argumentNotNull(items, "items");

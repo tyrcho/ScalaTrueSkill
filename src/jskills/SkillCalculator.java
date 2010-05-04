@@ -42,7 +42,7 @@ public abstract class SkillCalculator {
      * @returns All the players and their new ratings.
      */
     public abstract Map<IPlayer, Rating> calculateNewRatings(GameInfo gameInfo,
-            Collection<ITeam> teams, int[] teamRanks);
+            Collection<ITeam> teams, int... teamRanks);
 
     /**
      * Calculates the match quality as the likelihood of all teams drawing.
@@ -62,7 +62,7 @@ public abstract class SkillCalculator {
         validateTeamCountAndPlayersCountPerTeam(teams, totalTeamsAllowed, playersPerTeamAllowed);
     }
 
-    private static <TPlayer> void validateTeamCountAndPlayersCountPerTeam(
+    private static void validateTeamCountAndPlayersCountPerTeam(
             Collection<ITeam> teams, 
             Range<ITeam> totalTeams,
             Range<IPlayer> playersPerTeam) {

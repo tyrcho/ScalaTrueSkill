@@ -29,7 +29,7 @@ public abstract class TwoPlayerEloCalculator extends SkillCalculator {
 
     @Override
     public Map<IPlayer, Rating> calculateNewRatings(GameInfo gameInfo,
-            Collection<ITeam> teams, int[] teamRanks) {
+            Collection<ITeam> teams, int... teamRanks) {
         validateTeamCountAndPlayersCountPerTeam(teams);
         List<ITeam> teamsl = RankSorter.sort(teams, teamRanks);
 

@@ -38,7 +38,7 @@ public class DuellingEloTest {
                     .addPlayer(player4, gameInfo.getDefaultRating());
 
         Collection<ITeam> teams = Team.concat(team1, team2);
-        Map<IPlayer, Rating> newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, new int[] {1, 2});
+        Map<IPlayer, Rating> newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, 1, 2);
 
         // TODO: Verify?
         AssertRating(37, newRatingsWinLose.get(player1));

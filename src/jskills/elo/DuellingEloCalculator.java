@@ -29,7 +29,7 @@ public class DuellingEloCalculator extends SkillCalculator {
 
     @Override
     public Map<IPlayer, Rating> calculateNewRatings(GameInfo gameInfo,
-            Collection<ITeam> teams, int[] teamRanks) {
+            Collection<ITeam> teams, int... teamRanks) {
         // On page 6 of the TrueSkill paper, the authors write:
         /* "When we had to process a team game or a game with more than two 
          * teams we used the so-called *duelling* heuristic: For each player, 
