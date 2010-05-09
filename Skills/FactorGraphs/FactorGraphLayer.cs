@@ -25,13 +25,12 @@ namespace Moserware.Skills.FactorGraphs
         public abstract object GetRawOutputVariablesGroups();
     }
 
-    public abstract class FactorGraphLayer<TParentGraph, TValue, TBaseVariable, TInputVariable, TFactor, TOutputVariable>
+    public abstract class FactorGraphLayer<TParentGraph, TValue, TInputVariable, TFactor, TOutputVariable>
         : FactorGraphLayerBase<TValue>
-        where TParentGraph : FactorGraph<TParentGraph, TValue, TBaseVariable>
-        where TBaseVariable : Variable<TValue>
-        where TInputVariable : TBaseVariable
+        where TParentGraph : FactorGraph<TValue>
+        where TInputVariable : Variable<TValue>
         where TFactor : Factor<TValue>
-        where TOutputVariable : TBaseVariable
+        where TOutputVariable : Variable<TValue>
     {
         private readonly List<TFactor> _LocalFactors = new List<TFactor>();
         private readonly List<IList<TOutputVariable>> _OutputVariablesGroups = new List<IList<TOutputVariable>>();

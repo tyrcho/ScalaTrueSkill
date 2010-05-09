@@ -8,7 +8,7 @@ using Moserware.Skills.TrueSkill.Layers;
 namespace Moserware.Skills.TrueSkill
 {
     public class TrueSkillFactorGraph<TPlayer> :
-        FactorGraph<TrueSkillFactorGraph<TPlayer>, GaussianDistribution, Variable<GaussianDistribution>>
+        FactorGraph<GaussianDistribution>
     {
         private readonly List<FactorGraphLayerBase<GaussianDistribution>> _Layers;
         private readonly PlayerPriorValuesToSkillsLayer<TPlayer> _PriorLayer;
