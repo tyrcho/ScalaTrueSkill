@@ -35,6 +35,11 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class GaussianDistribution {
 
+    /** 
+     * The Gaussian representation of a flat line. 
+     **/
+    public static final GaussianDistribution UNIFORM = fromPrecisionMean(0, 0);
+
 	/** The peak of the Gaussian, μ **/
 	@Getter private final double mean;
 	
@@ -91,6 +96,12 @@ public class GaussianDistribution {
     
     public GaussianDistribution(Rating rating) {
     	this(rating.getMean(), rating.getStandardDeviation());
+    }
+    
+    public GaussianDistribution(GaussianDistribution distribution) {
+        this(distribution.mean, distribution.standardDeviation,
+                distribution.variance, distribution.precision,
+                distribution.precisionMean);
     }
 
     public static GaussianDistribution fromPrecisionMean(double precisionMean,
