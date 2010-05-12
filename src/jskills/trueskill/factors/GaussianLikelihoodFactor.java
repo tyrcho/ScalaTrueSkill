@@ -1,72 +1,74 @@
-﻿using System;
-using Moserware.Numerics;
-using Moserware.Skills.FactorGraphs;
+﻿package jskills.trueskill.factors;
 
-namespace Moserware.Skills.TrueSkill.Factors
+import jskills.factorgraphs.Message;
+import jskills.factorgraphs.Variable;
+import jskills.numerics.GaussianDistribution;
+import static jskills.numerics.GaussianDistribution.*;
+
+/**
+ * Connects two variables and adds uncertainty.
+ * <remarks>See the accompanying math paper for more details.</remarks>
+ */
+public class GaussianLikelihoodFactor extends GaussianFactor
 {
-    /**
-     * Connects two variables and adds uncertainty.
-     */
-     * <remarks>See the accompanying math paper for more details.</remarks>
-    public class GaussianLikelihoodFactor : GaussianFactor
+    private final double _Precision;
+
+    public GaussianLikelihoodFactor(double betaSquared, Variable<GaussianDistribution> variable1,
+                                    Variable<GaussianDistribution> variable2)
     {
-        private final double _Precision;
+        super(String.format("Likelihood of {0} going to {1}", variable2, variable1));
+        _Precision = 1.0/betaSquared;
+        CreateVariableToMessageBinding(variable1);
+        CreateVariableToMessageBinding(variable2);
+    }
 
-        public GaussianLikelihoodFactor(double betaSquared, Variable<GaussianDistribution> variable1,
-                                        Variable<GaussianDistribution> variable2)
-            : base(String.Format("Likelihood of {0} going to {1}", variable2, variable1))
+    @Override
+    public double getLogNormalization()
+    {
+        return logRatioNormalization(variables.get(0).getValue(), messages.get(0).getValue());
+    }
+
+    private double UpdateHelper(Message<GaussianDistribution> message1, Message<GaussianDistribution> message2,
+                                Variable<GaussianDistribution> variable1, Variable<GaussianDistribution> variable2)
+    {
+        GaussianDistribution message1Value = new GaussianDistribution(message1.getValue());
+        GaussianDistribution message2Value = new GaussianDistribution(message2.getValue());
+
+        GaussianDistribution marginal1 = new GaussianDistribution(variable1.getValue());
+        GaussianDistribution marginal2 = new GaussianDistribution(variable2.getValue());
+
+        double a = _Precision/(_Precision + marginal2.getPrecision() - message2Value.getPrecision());
+
+        GaussianDistribution newMessage = GaussianDistribution.fromPrecisionMean(
+            a*(marginal2.getPrecisionMean() - message2Value.getPrecisionMean()),
+            a*(marginal2.getPrecision() - message2Value.getPrecision()));
+
+        GaussianDistribution oldMarginalWithoutMessage = divide(marginal1,message1Value);
+
+        GaussianDistribution newMarginal = mult(oldMarginalWithoutMessage,newMessage);
+
+        // Update the message and marginal
+
+        message1.setValue(newMessage);
+        variable1.setValue(newMarginal);
+
+        // Return the difference in the new marginal
+        return sub(newMarginal, marginal1);
+    }
+
+    @Override
+    public double updateMessage(int messageIndex)
+    {
+        switch (messageIndex)
         {
-            _Precision = 1.0/betaSquared;
-            CreateVariableToMessageBinding(variable1);
-            CreateVariableToMessageBinding(variable2);
-        }
-
-        public override double LogNormalization
-        {
-            get { return GaussianDistribution.LogRatioNormalization(Variables[0].Value, Messages[0].Value); }
-        }
-
-        private double UpdateHelper(Message<GaussianDistribution> message1, Message<GaussianDistribution> message2,
-                                    Variable<GaussianDistribution> variable1, Variable<GaussianDistribution> variable2)
-        {
-            GaussianDistribution message1Value = message1.Value.Clone();
-            GaussianDistribution message2Value = message2.Value.Clone();
-
-            GaussianDistribution marginal1 = variable1.Value.Clone();
-            GaussianDistribution marginal2 = variable2.Value.Clone();
-
-            double a = _Precision/(_Precision + marginal2.Precision - message2Value.Precision);
-
-            GaussianDistribution newMessage = GaussianDistribution.FromPrecisionMean(
-                a*(marginal2.PrecisionMean - message2Value.PrecisionMean),
-                a*(marginal2.Precision - message2Value.Precision));
-
-            GaussianDistribution oldMarginalWithoutMessage = marginal1/message1Value;
-
-            GaussianDistribution newMarginal = oldMarginalWithoutMessage*newMessage;
-
-             * Update the message and marginal
-
-            message1.Value = newMessage;
-            variable1.Value = newMarginal;
-
-             * Return the difference in the new marginal
-            return newMarginal - marginal1;
-        }
-
-        public override double UpdateMessage(int messageIndex)
-        {
-            switch (messageIndex)
-            {
-                case 0:
-                    return UpdateHelper(Messages[0], Messages[1],
-                                        Variables[0], Variables[1]);
-                case 1:
-                    return UpdateHelper(Messages[1], Messages[0],
-                                        Variables[1], Variables[0]);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            case 0:
+                return UpdateHelper(getMessages().get(0), getMessages().get(1),
+                                    getVariables().get(0), getVariables().get(1));
+            case 1:
+                return UpdateHelper(getMessages().get(1), getMessages().get(0),
+                                    getVariables().get(1), getVariables().get(0));
+            default:
+                throw new IllegalArgumentException();
         }
     }
 }

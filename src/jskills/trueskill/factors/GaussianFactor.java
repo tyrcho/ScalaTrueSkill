@@ -1,33 +1,32 @@
-﻿using Moserware.Numerics;
-using Moserware.Skills.FactorGraphs;
+﻿package jskills.trueskill.factors;
 
-namespace Moserware.Skills.TrueSkill.Factors
-{
-    public abstract class GaussianFactor : Factor<GaussianDistribution>
-    {
-        protected GaussianFactor(String name)
-            : base(name)
-        {
-        }
+import static jskills.numerics.GaussianDistribution.logProductNormalization;
+import jskills.factorgraphs.Factor;
+import jskills.factorgraphs.Message;
+import jskills.factorgraphs.Variable;
+import jskills.numerics.GaussianDistribution;
 
-         * Sends the factor-graph message with and returns the log-normalization constant        
-        protected override double SendMessage(Message<GaussianDistribution> message,
-                                              Variable<GaussianDistribution> variable)
-        {
-            GaussianDistribution marginal = variable.Value;
-            GaussianDistribution messageValue = message.Value;
-            double logZ = GaussianDistribution.LogProductNormalization(marginal, messageValue);
-            variable.Value = marginal*messageValue;
-            return logZ;
-        }
+public abstract class GaussianFactor extends Factor<GaussianDistribution> {
 
-        public override Message<GaussianDistribution> CreateVariableToMessageBinding(
-            Variable<GaussianDistribution> variable)
-        {
-            return CreateVariableToMessageBinding(variable,
-                                                  new Message<GaussianDistribution>(
-                                                      GaussianDistribution.FromPrecisionMean(0, 0),
-                                                      "message from {0} to {1}", this, variable));
-        }
+    GaussianFactor(String name) { super(name); }
+
+    /** Sends the factor-graph message with and returns the log-normalization constant **/
+    @Override
+    protected double SendMessage(Message<GaussianDistribution> message,
+            Variable<GaussianDistribution> variable) {
+        GaussianDistribution marginal = variable.getValue();
+        GaussianDistribution messageValue = message.getValue();
+        double logZ = logProductNormalization(marginal, messageValue);
+        variable.setValue(marginal.mult(messageValue));
+        return logZ;
+    }
+
+    @Override
+    public Message<GaussianDistribution> CreateVariableToMessageBinding(
+            Variable<GaussianDistribution> variable) {
+        return CreateVariableToMessageBinding(variable,
+                new Message<GaussianDistribution>(GaussianDistribution
+                        .fromPrecisionMean(0, 0), "message from {0} to {1}",
+                        this, variable));
     }
 }
