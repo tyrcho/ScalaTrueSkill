@@ -2,11 +2,10 @@
 
 import org.testng.annotations.Test;
 
-public class TwoTeamTrueSkillCalculatorTest
-{
+public class TwoTeamTrueSkillCalculatorTest {
+
     @Test
-    public void TwoTeamTrueSkillCalculatorTests()
-    {
+    public void TwoTeamTrueSkillCalculatorTests() {
         TwoTeamTrueSkillCalculator calculator = new TwoTeamTrueSkillCalculator();
 
         // This calculator supports up to two teams with many players each

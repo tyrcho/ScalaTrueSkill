@@ -2,11 +2,10 @@
 
 import org.testng.annotations.Test;
 
-public class FactorGraphTrueSkillCalculatorTests
-{
+public class FactorGraphTrueSkillCalculatorTests {
+
     @Test
-    public void FullFactorGraphCalculatorTests()
-    {
+    public void FullFactorGraphCalculatorTests() {
         FactorGraphTrueSkillCalculator calculator = new FactorGraphTrueSkillCalculator();
 
         // We can test all classes 
