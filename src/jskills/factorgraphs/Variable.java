@@ -9,8 +9,8 @@ public class Variable<TValue>
     private final TValue prior;
     @Getter @Setter private TValue value;
 
-    public Variable(String name, TValue prior) {
-        this.name = "Variable[" + name + "]";
+    public Variable(TValue prior, String name, Object... args) {
+        this.name = "Variable[" + String.format(name, args) + "]";
         this.prior = prior;
         resetToPrior();
     }

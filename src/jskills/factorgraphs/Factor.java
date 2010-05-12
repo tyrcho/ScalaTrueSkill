@@ -3,7 +3,6 @@
 import static jskills.Guard.argumentIsValidIndex;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -11,13 +10,13 @@ import java.util.Map;
 
 public abstract class Factor<TValue> {
 
-    private final List<Message<TValue>> messages = new ArrayList<Message<TValue>>();
+    protected final List<Message<TValue>> messages = new ArrayList<Message<TValue>>();
 
     private final Map<Message<TValue>, Variable<TValue>> messageToVariableBinding =
         new HashMap<Message<TValue>, Variable<TValue>>();
 
     private final String name;
-    private final List<Variable<TValue>> variables = new ArrayList<Variable<TValue>>();
+    protected final List<Variable<TValue>> variables = new ArrayList<Variable<TValue>>();
 
     protected Factor(String name) { this.name = "Factor[" + name + "]"; }
 
@@ -27,21 +26,23 @@ public abstract class Factor<TValue> {
     /** Returns the number of messages that the factor has **/
     public int getNumberOfMessages() { return messages.size(); }
 
-    protected Collection<Variable<TValue>> getVariables() {
-        return Collections.unmodifiableCollection(variables); 
+    protected List<Variable<TValue>> getVariables() {
+        return Collections.unmodifiableList(variables); 
     }
 
-    protected Collection<Message<TValue>> getMessages() {
-        return Collections.unmodifiableCollection(messages);
+    protected List<Message<TValue>> getMessages() {
+        return Collections.unmodifiableList(messages);
     }
 
     /** Update the message and marginal of the i-th variable that the factor is connected to **/
     public double updateMessage(int messageIndex) {
         argumentIsValidIndex(messageIndex, messages.size(), "messageIndex");
-        return UpdateMessage(messages.get(messageIndex), messageToVariableBinding.get(messages.get(messageIndex)));
+        return updateMessage(messages.get(messageIndex), messageToVariableBinding.get(messages.get(messageIndex)));
     }
 
-    protected abstract double UpdateMessage(Message<TValue> message, Variable<TValue> variable);
+    protected double updateMessage(Message<TValue> message, Variable<TValue> variable) {
+        throw new UnsupportedOperationException();
+    }
 
     /** Resets the marginal of the variables a factor is connected to **/
     public void ResetMarginals() {

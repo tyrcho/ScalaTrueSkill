@@ -4,11 +4,11 @@ import static java.lang.Math.max;
 
 import java.util.Collection;
 
-public class ScheduleSequence<TValue, TSchedule extends Schedule<TValue>>
+public class ScheduleSequence<TValue>
         extends Schedule<TValue> {
-    private final Collection<TSchedule> schedules;
+    private final Collection<Schedule<TValue>> schedules;
 
-    public ScheduleSequence(String name, Collection<TSchedule> schedules) {
+    public ScheduleSequence(String name, Collection<Schedule<TValue>> schedules) {
         super(name);
         this.schedules = schedules;
     }
@@ -17,7 +17,7 @@ public class ScheduleSequence<TValue, TSchedule extends Schedule<TValue>>
     public double visit(int depth, int maxDepth) {
         double maxDelta = 0;
 
-        for (TSchedule schedule : schedules)
+        for (Schedule<TValue> schedule : schedules)
             maxDelta = max(schedule.visit(depth + 1, maxDepth), maxDelta);
 
         return maxDelta;
