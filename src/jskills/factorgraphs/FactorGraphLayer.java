@@ -4,57 +4,71 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class FactorGraphLayer<TParentFactorGraph extends FactorGraph<TParentFactorGraph>, TValue> 
+public abstract class FactorGraphLayer
+<TParentFactorGraph extends FactorGraph<TParentFactorGraph>, 
+TValue, 
+TBaseVariable extends Variable<TValue>, 
+TInputVariable extends Variable<TValue>, 
+TFactor extends Factor<TValue>, 
+TOutputVariable extends Variable<TValue>> 
     extends FactorGraphLayerBase<TValue> {
 
-    protected final TParentFactorGraph parentFactorGraph;
-    protected final List<Factor<TValue>> localFactors = new ArrayList<Factor<TValue>>();
-    protected List<List<Variable<TValue>>> inputVariablesGroups = new ArrayList<List<Variable<TValue>>>();
-    protected final List<List<Variable<TValue>>> outputVariablesGroups = new ArrayList<List<Variable<TValue>>>();
+    private final List<TFactor> _LocalFactors = new ArrayList<TFactor>();
+    private final List<List<TOutputVariable>> _OutputVariablesGroups = new ArrayList<List<TOutputVariable>>();
+    private List<List<TInputVariable>> _InputVariablesGroups = new ArrayList<List<TInputVariable>>();
+
+    protected FactorGraphLayer(TParentFactorGraph parentGraph)
+    {
+        ParentFactorGraph = parentGraph;
+    }
+
+    protected List<List<TInputVariable>> getInputVariablesGroups() {
+        return _InputVariablesGroups;
+    }
+
+    // HACK
+
+    public TParentFactorGraph ParentFactorGraph;
+    public TParentFactorGraph getParentFactorGraph() { return ParentFactorGraph; }
+    private void setParentFactorGraph( TParentFactorGraph parent ) { ParentFactorGraph = parent; }
     
-    protected FactorGraphLayer(TParentFactorGraph parentGraph) {
-        parentFactorGraph = parentGraph;
+    public List<List<TOutputVariable>> getOutputVariablesGroups(){
+        return _OutputVariablesGroups;
     }
 
-    public TParentFactorGraph getParentGraph() { return parentFactorGraph; }
-
-    // TODO Make copy?
-    public List<Factor<TValue>> getLocalFactors() {
-        return localFactors;
+    public List<TFactor> getLocalFactors() {
+        return _LocalFactors;
     }
 
-    // TODO Make copy?
-    public List<List<Variable<TValue>>> getInputVariablesGroups() {
-        return inputVariablesGroups;
+    @Override
+    public Collection<Factor<TValue>> getUntypedFactors() {
+        return (Collection<Factor<TValue>>) _LocalFactors;
     }
 
-    // TODO Make copy?
-    public List<List<Variable<TValue>>> getOutputVariablesGroups() {
-        return outputVariablesGroups;
+    @Override
+    public void SetRawInputVariablesGroups(Object value)
+    {
+        List<List<TInputVariable>> newList = (List<List<TInputVariable>>)value;
+        _InputVariablesGroups = newList;
     }
 
-    // TODO Stop using raw stuff?
-    public void SetRawInputVariablesGroups(List<List<Variable<TValue>>> value) {
-        inputVariablesGroups = new ArrayList<List<Variable<TValue>>>(value);
+    @Override
+    public Object GetRawOutputVariablesGroups()
+    {
+        return _OutputVariablesGroups;
     }
 
     protected Schedule<TValue> ScheduleSequence(
-            Collection<Schedule<TValue>> itemsToSequence, 
-            String nameFormat,
-            Object... args) {
-
+        Collection<Schedule<TValue>> itemsToSequence,
+        String nameFormat,
+        Object... args)
+    {
         String formattedName = String.format(nameFormat, args);
         return new ScheduleSequence<TValue>(formattedName, itemsToSequence);
     }
 
-    protected void AddLayerFactor(Factor<TValue> factor) {
-        localFactors.add(factor);
+    protected void AddLayerFactor(TFactor factor)
+    {
+        _LocalFactors.add(factor);
     }
-    
-    // TODO Abstractify these?
-    public Schedule<TValue> CreatePriorSchedule() { return null; }
-
-    public Schedule<TValue> CreatePosteriorSchedule() { return null; }
-    
-    public void buildLayer() {}
 }
