@@ -19,6 +19,7 @@ import jskills.factorgraphs.KeyedVariable;
 import jskills.factorgraphs.Schedule;
 import jskills.factorgraphs.ScheduleSequence;
 import jskills.numerics.GaussianDistribution;
+import jskills.trueskill.layers.PlayerPerformancesToTeamPerformancesLayer;
 import jskills.trueskill.layers.PlayerPriorValuesToSkillsLayer;
 import jskills.trueskill.layers.PlayerSkillsToPerformancesLayer;
 
@@ -34,8 +35,8 @@ public class TrueSkillFactorGraph extends FactorGraph<TrueSkillFactorGraph>
 
         _Layers.add(_PriorLayer);
         _Layers.add(new PlayerSkillsToPerformancesLayer(this));
+        _Layers.add(new PlayerPerformancesToTeamPerformancesLayer(this));
         // TODO
-//        _Layers.add(new PlayerPerformancesToTeamPerformancesLayer(this));
 //        _Layers.add(new IteratedTeamDifferencesInnerLayer(
 //                              this,
 //                              new TeamPerformancesToTeamPerformanceDifferencesLayer(this),
