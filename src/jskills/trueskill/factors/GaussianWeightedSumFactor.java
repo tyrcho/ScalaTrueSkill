@@ -54,7 +54,7 @@ public class GaussianWeightedSumFactor extends GaussianFactor
             _WeightsSquared[0][i] = _Weights[0][i]*_Weights[0][i];
 
         // 0..n-1
-        int[] temp = new int[variablesToSum.size()];
+        int[] temp = new int[1+variablesToSum.size()];
         for (int i = 0; i < temp.length; i++) temp[i] = i;
         _VariableIndexOrdersForWeights.add(temp);
 
