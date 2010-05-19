@@ -1,156 +1,194 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Moserware.Numerics;
+﻿package jskills.trueskill;
 
-namespace Moserware.Skills.TrueSkill
+import static jskills.numerics.MathUtils.square;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+
+import jskills.GameInfo;
+import jskills.Guard;
+import jskills.IPlayer;
+import jskills.ITeam;
+import jskills.PartialPlay;
+import jskills.RankSorter;
+import jskills.Rating;
+import jskills.SkillCalculator;
+import jskills.numerics.Range;
+
+import org.ejml.data.SimpleMatrix;
+
+/**
+ * Calculates TrueSkill using a full factor graph.
+ */
+public class FactorGraphTrueSkillCalculator extends SkillCalculator
 {
-    /**
-     * Calculates TrueSkill using a full factor graph.
-     */
-    internal class FactorGraphTrueSkillCalculator : SkillCalculator
+    public FactorGraphTrueSkillCalculator()
     {
-        public FactorGraphTrueSkillCalculator()
-            : base(SupportedOptions.PartialPlay | SupportedOptions.PartialUpdate, TeamsRange.AtLeast(2), PlayersRange.AtLeast(1))
+        super(EnumSet.of(SupportedOptions.PartialPlay, SupportedOptions.PartialUpdate), 
+                Range.<ITeam>atLeast(2), Range.<IPlayer>atLeast(1));
+    }
+
+    @Override
+    public Map<IPlayer, Rating> calculateNewRatings(GameInfo gameInfo,
+                                                    Collection<ITeam> teams, 
+                                                    int... teamRanks)
+    {
+        Guard.argumentNotNull(gameInfo, "gameInfo");
+        validateTeamCountAndPlayersCountPerTeam(teams);
+
+        List<ITeam> teamsl = RankSorter.sort(teams, teamRanks);
+
+        TrueSkillFactorGraph factorGraph = new TrueSkillFactorGraph(gameInfo, teamsl, teamRanks);
+        factorGraph.BuildGraph();
+        factorGraph.RunSchedule();
+
+        @SuppressWarnings("unused") // TODO use this somehow?
+        double probabilityOfOutcome = factorGraph.GetProbabilityOfRanking();
+
+        return factorGraph.GetUpdatedRatings();
+    }
+
+    @Override
+    public double calculateMatchQuality(GameInfo gameInfo, Collection<ITeam> teams)
+    {
+        // We need to create the A matrix which is the player team assigments.
+        List<ITeam> teamAssignmentsList = new ArrayList<ITeam>(teams);
+        SimpleMatrix skillsMatrix = GetPlayerCovarianceMatrix(teamAssignmentsList);
+        SimpleMatrix meanVector = GetPlayerMeansVector(teamAssignmentsList);
+        SimpleMatrix meanVectorTranspose = meanVector.transpose();
+
+        SimpleMatrix playerTeamAssignmentsMatrix = CreatePlayerTeamAssignmentMatrix(teamAssignmentsList, meanVector.numRows());
+        SimpleMatrix playerTeamAssignmentsMatrixTranspose = playerTeamAssignmentsMatrix.transpose();
+
+        double betaSquared = square(gameInfo.getBeta());
+
+        SimpleMatrix start = meanVectorTranspose.mult(playerTeamAssignmentsMatrix);
+        SimpleMatrix aTa = playerTeamAssignmentsMatrixTranspose.mult(playerTeamAssignmentsMatrix).scale(betaSquared);
+        SimpleMatrix aTSA = playerTeamAssignmentsMatrixTranspose.mult(skillsMatrix).mult(playerTeamAssignmentsMatrix);
+        SimpleMatrix middle = aTa.plus(aTSA);
+
+        SimpleMatrix middleInverse = middle.invert();
+
+        SimpleMatrix end = playerTeamAssignmentsMatrixTranspose.mult(meanVector);
+
+        SimpleMatrix expPartMatrix = start.mult(middleInverse).mult(end).scale(-0.5);
+        double expPart = expPartMatrix.determinant();
+
+        double sqrtPartNumerator = aTa.determinant();
+        double sqrtPartDenominator = middle.determinant();
+        double sqrtPart = sqrtPartNumerator / sqrtPartDenominator;
+
+        double result = Math.exp(expPart) * Math.sqrt(sqrtPart);
+
+        return result;
+    }
+
+    private static SimpleMatrix GetPlayerMeansVector(
+        Collection<ITeam> teamAssignmentsList)
+    {
+        // A simple list of all the player means.
+        List<Double> temp = GetPlayerMeanRatingValues(teamAssignmentsList);
+        double[] tempa = new double[temp.size()];
+        for (int i = 0; i < tempa.length; i++) tempa[i] = temp.get(i);
+        return new SimpleMatrix(new double[][] {tempa});
+    }
+
+    /** This is a square matrix whose diagonal values represent the variance (square of standard deviation) of all
+     players. **/
+    private static SimpleMatrix GetPlayerCovarianceMatrix(
+        Collection<ITeam> teamAssignmentsList)
+    {
+        List<Double> temp = GetPlayerVarianceRatingValues(teamAssignmentsList);
+        double[] tempa = new double[temp.size()];
+        for (int i = 0; i < tempa.length; i++) tempa[i] = temp.get(i);
+        return SimpleMatrix.diag(tempa);
+    }
+
+    /** TODO Make array?
+     * Helper function that gets a list of values for all player ratings **/
+    private static List<Double> GetPlayerMeanRatingValues(
+            Collection<ITeam> teamAssignmentsList) {
+        List<Double> playerRatingValues = new ArrayList<Double>();
+        for (ITeam currentTeam : teamAssignmentsList)
+            for (Rating currentRating : currentTeam.values())
+                playerRatingValues.add(currentRating.getMean());
+
+        return playerRatingValues;
+    }
+
+    /** TODO Make array?
+     *  Helper function that gets a list of values for all player ratings **/
+    private static List<Double> GetPlayerVarianceRatingValues(
+            Collection<ITeam> teamAssignmentsList) {
+        List<Double> playerRatingValues = new ArrayList<Double>();
+        for (ITeam currentTeam : teamAssignmentsList)
+            for (Rating currentRating : currentTeam.values())
+                playerRatingValues.add(currentRating.getVariance());
+
+        return playerRatingValues;
+    }
+
+    /**
+     * The team assignment matrix is often referred to as the "A" matrix.
+     * It's a matrix whose rows represent the players and the columns
+     * represent teams. At Matrix[row, column] represents that player[row]
+     * is on team[col] Positive values represent an assignment and a
+     * negative value means that we subtract the value of the next team
+     * since we're dealing with pairs. This means that this matrix always
+     * has teams - 1 columns. The only other tricky thing is that values
+     * represent the play percentage.
+     * <p>
+     * For example, consider a 3 team game where team1 is just player1, team
+     * 2 is player 2 and player 3, and team3 is just player 4. Furthermore,
+     * player 2 and player 3 on team 2 played 25% and 75% of the time (e.g.
+     * partial play), the A matrix would be:
+     * <p><pre>
+     * A = this 4x2 matrix:
+     * |  1.00  0.00 |
+     * | -0.25  0.25 |
+     * | -0.75  0.75 |
+     * |  0.00 -1.00 |
+     * </pre>
+     */
+    private static SimpleMatrix CreatePlayerTeamAssignmentMatrix(
+        List<ITeam> teamAssignmentsList, int totalPlayers)
+    {
+
+        List<List<Double>> playerAssignments = new ArrayList<List<Double>>();
+        int totalPreviousPlayers = 0;
+
+        for (int i = 0; i < teamAssignmentsList.size() - 1; i++)
         {
-        }
+            ITeam currentTeam = teamAssignmentsList.get(i);
 
-        public override IDictionary<TPlayer, Rating> CalculateNewRatings<TPlayer>(GameInfo gameInfo,
-                                                                                  IEnumerable<IDictionary<TPlayer, Rating>> teams, 
-                                                                                  params int[] teamRanks)
-        {
-            Guard.ArgumentNotNull(gameInfo, "gameInfo");
-            ValidateTeamCountAndPlayersCountPerTeam(teams);
+            // Need to add in 0's for all the previous players, since they're not
+            // on this team
+            List<Double> currentRowValues = new ArrayList<Double>(totalPreviousPlayers);
+            playerAssignments.add(currentRowValues);
 
-            RankSorter.Sort(ref teams, ref teamRanks);
-
-            factorGraph = new TrueSkillFactorGraph<TPlayer>(gameInfo, teams, teamRanks);
-            factorGraph.BuildGraph();
-            factorGraph.RunSchedule();
-
-            double probabilityOfOutcome = factorGraph.GetProbabilityOfRanking();
-
-            return factorGraph.GetUpdatedRatings();
-        }
-
-
-        public override double CalculateMatchQuality<TPlayer>(GameInfo gameInfo,
-                                                              IEnumerable<IDictionary<TPlayer, Rating>> teams)
-        {
-            // We need to create the A matrix which is the player team assigments.
-            List<IDictionary<TPlayer, Rating>> teamAssignmentsList = teams.ToList();
-            Matrix skillsMatrix = GetPlayerCovarianceMatrix(teamAssignmentsList);
-            Vector meanVector = GetPlayerMeansVector(teamAssignmentsList);
-            Matrix meanVectorTranspose = meanVector.Transpose;
-
-            Matrix playerTeamAssignmentsMatrix = CreatePlayerTeamAssignmentMatrix(teamAssignmentsList, meanVector.Rows);
-            Matrix playerTeamAssignmentsMatrixTranspose = playerTeamAssignmentsMatrix.Transpose;
-
-            double betaSquared = Square(gameInfo.Beta);
-
-            Matrix start = meanVectorTranspose * playerTeamAssignmentsMatrix;
-            Matrix aTa = (betaSquared * playerTeamAssignmentsMatrixTranspose) * playerTeamAssignmentsMatrix;
-            Matrix aTSA = playerTeamAssignmentsMatrixTranspose * skillsMatrix * playerTeamAssignmentsMatrix;
-            Matrix middle = aTa + aTSA;
-
-            Matrix middleInverse = middle.Inverse;
-
-            Matrix end = playerTeamAssignmentsMatrixTranspose * meanVector;
-
-            Matrix expPartMatrix = -0.5 * (start * middleInverse * end);
-            double expPart = expPartMatrix.Determinant;
-
-            double sqrtPartNumerator = aTa.Determinant;
-            double sqrtPartDenominator = middle.Determinant;
-            double sqrtPart = sqrtPartNumerator / sqrtPartDenominator;
-
-            double result = Math.Exp(expPart) * Math.Sqrt(sqrtPart);
-
-            return result;
-        }
-
-        private static Vector GetPlayerMeansVector<TPlayer>(
-            IEnumerable<IDictionary<TPlayer, Rating>> teamAssignmentsList)
-        {
-            // A simple vector of all the player means.
-            return new Vector(GetPlayerRatingValues(teamAssignmentsList, rating => rating.Mean));
-        }
-
-        private static Matrix GetPlayerCovarianceMatrix<TPlayer>(
-            IEnumerable<IDictionary<TPlayer, Rating>> teamAssignmentsList)
-        {
-            // This is a square matrix whose diagonal values represent the variance (square of standard deviation) of all
-            // players.
-            return
-                new DiagonalMatrix(GetPlayerRatingValues(teamAssignmentsList, rating => Square(rating.StandardDeviation)));
-        }
-
-        // Helper function that gets a list of values for all player ratings
-        private static IList<double> GetPlayerRatingValues<TPlayer>(
-            IEnumerable<IDictionary<TPlayer, Rating>> teamAssignmentsList, Func<Rating, double> playerRatingFunction)
-        {
-            playerRatingValues = new List<double>();
-
-            foreach (var currentTeam in teamAssignmentsList)
+            for(IPlayer player: currentTeam.keySet())
             {
-                foreach (Rating currentRating in currentTeam.Values)
-                {
-                    playerRatingValues.Add(playerRatingFunction(currentRating));
-                }
+                currentRowValues.add(PartialPlay.getPartialPlayPercentage(player));
+                // indicates the player is on the team
+                totalPreviousPlayers++;
             }
 
-            return playerRatingValues;
-        }
-
-        private static Matrix CreatePlayerTeamAssignmentMatrix<TPlayer>(
-            IList<IDictionary<TPlayer, Rating>> teamAssignmentsList, int totalPlayers)
-        {
-            // The team assignment matrix is often referred to as the "A" matrix. It's a matrix whose rows represent the players
-            // and the columns represent teams. At Matrix[row, column] represents that player[row] is on team[col]
-            // Positive values represent an assignment and a negative value means that we subtract the value of the next 
-            // team since we're dealing with pairs. This means that this matrix always has teams - 1 columns.
-            // The only other tricky thing is that values represent the play percentage.
-
-            // For example, consider a 3 team game where team1 is just player1, team 2 is player 2 and player 3, and 
-            // team3 is just player 4. Furthermore, player 2 and player 3 on team 2 played 25% and 75% of the time 
-            // (e.g. partial play), the A matrix would be:
-
-            // A = this 4x2 matrix:
-            // |  1.00  0.00 |
-            // | -0.25  0.25 |
-            // | -0.75  0.75 |
-            // |  0.00 -1.00 |
-
-            playerAssignments = new List<IEnumerable<double>>();
-            int totalPreviousPlayers = 0;
-
-            for (int i = 0; i < teamAssignmentsList.Count - 1; i++)
+            ITeam nextTeam = teamAssignmentsList.get(i + 1);
+            for(IPlayer nextTeamPlayer : nextTeam.keySet())
             {
-                IDictionary<TPlayer, Rating> currentTeam = teamAssignmentsList[i];
-
-                // Need to add in 0's for all the previous players, since they're not
-                // on this team
-                currentRowValues = new List<double>(new double[totalPreviousPlayers]);
-                playerAssignments.Add(currentRowValues);
-
-                foreach (var currentRating in currentTeam)
-                {
-                    currentRowValues.Add(PartialPlay.GetPartialPlayPercentage(currentRating.Key));
-                    // indicates the player is on the team
-                    totalPreviousPlayers++;
-                }
-
-                IDictionary<TPlayer, Rating> nextTeam = teamAssignmentsList[i + 1];
-                foreach (var nextTeamPlayerPair in nextTeam)
-                {
-                    // Add a -1 * playing time to represent the difference
-                    currentRowValues.Add(-1 * PartialPlay.GetPartialPlayPercentage(nextTeamPlayerPair.Key));
-                }
+                // Add a -1 * playing time to represent the difference
+                currentRowValues.add(-1 * PartialPlay.getPartialPlayPercentage(nextTeamPlayer));
             }
-
-            playerTeamAssignmentsMatrix = new Matrix(totalPlayers, teamAssignmentsList.Count - 1, playerAssignments);
-
-            return playerTeamAssignmentsMatrix;
         }
+
+        SimpleMatrix playerTeamAssignmentsMatrix = new SimpleMatrix(totalPlayers, teamAssignmentsList.size() - 1);
+        for(int i=0; i < playerAssignments.size(); i++)
+            for(int j=0; j < playerAssignments.get(i).size(); j++)
+                playerTeamAssignmentsMatrix.set(i, j, playerAssignments.get(i).get(j));
+
+        return playerTeamAssignmentsMatrix;
     }
 }

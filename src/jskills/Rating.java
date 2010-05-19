@@ -1,5 +1,7 @@
 ﻿package jskills;
 
+import static jskills.numerics.MathUtils.square;
+
 import java.util.Collection;
 
 import jskills.numerics.GaussianDistribution;
@@ -17,6 +19,9 @@ import lombok.Data;
     
     /** The standard deviation (the spread) of the rating. This is also known as σ. **/
     private final double standardDeviation;
+    
+    /** The variance of the rating (standard deviation squared) **/
+    public double getVariance() { return square(getStandardDeviation()); }
 
     /** A conservative estimate of skill based on the mean and standard deviation. **/
     private final double conservativeRating;
