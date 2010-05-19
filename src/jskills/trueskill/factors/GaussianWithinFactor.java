@@ -22,7 +22,7 @@ public class GaussianWithinFactor extends GaussianFactor
 
     public GaussianWithinFactor(double epsilon, Variable<GaussianDistribution> variable)
     {
-        super(String.format("{%f} <= {%.3f}", variable, epsilon));
+        super(String.format("%s <= %4.3f", variable, epsilon));
         _Epsilon = epsilon;
         CreateVariableToMessageBinding(variable);
     }

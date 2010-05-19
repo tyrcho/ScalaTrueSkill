@@ -93,7 +93,7 @@ public class FactorGraphTrueSkillCalculator extends SkillCalculator
         List<Double> temp = GetPlayerMeanRatingValues(teamAssignmentsList);
         double[] tempa = new double[temp.size()];
         for (int i = 0; i < tempa.length; i++) tempa[i] = temp.get(i);
-        return new SimpleMatrix(new double[][] {tempa});
+        return new SimpleMatrix(new double[][] {tempa}).transpose();
     }
 
     /** This is a square matrix whose diagonal values represent the variance (square of standard deviation) of all
@@ -104,7 +104,7 @@ public class FactorGraphTrueSkillCalculator extends SkillCalculator
         List<Double> temp = GetPlayerVarianceRatingValues(teamAssignmentsList);
         double[] tempa = new double[temp.size()];
         for (int i = 0; i < tempa.length; i++) tempa[i] = temp.get(i);
-        return SimpleMatrix.diag(tempa);
+        return SimpleMatrix.diag(tempa).transpose();
     }
 
     /** TODO Make array?
@@ -166,7 +166,8 @@ public class FactorGraphTrueSkillCalculator extends SkillCalculator
 
             // Need to add in 0's for all the previous players, since they're not
             // on this team
-            List<Double> currentRowValues = new ArrayList<Double>(totalPreviousPlayers);
+            List<Double> currentRowValues = new ArrayList<Double>();
+            for(int j = 0; j < totalPreviousPlayers; j++) currentRowValues.add(0.);
             playerAssignments.add(currentRowValues);
 
             for(IPlayer player: currentTeam.keySet())
@@ -187,7 +188,7 @@ public class FactorGraphTrueSkillCalculator extends SkillCalculator
         SimpleMatrix playerTeamAssignmentsMatrix = new SimpleMatrix(totalPlayers, teamAssignmentsList.size() - 1);
         for(int i=0; i < playerAssignments.size(); i++)
             for(int j=0; j < playerAssignments.get(i).size(); j++)
-                playerTeamAssignmentsMatrix.set(i, j, playerAssignments.get(i).get(j));
+                playerTeamAssignmentsMatrix.set(j, i, playerAssignments.get(i).get(j));
 
         return playerTeamAssignmentsMatrix;
     }

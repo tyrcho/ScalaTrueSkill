@@ -2,7 +2,7 @@ package jskills.factorgraphs;
 
 public class ScheduleLoop<T> extends Schedule<T> {
 
-    private static final int MAX_ITERATIONS = 0;
+    private static final int MAX_ITERATIONS = 100;
 
     private final double maxDelta;
     private final Schedule<T> scheduleToLoop;
