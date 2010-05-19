@@ -1,38 +1,43 @@
-﻿using Moserware.Numerics;
-using Moserware.Skills.FactorGraphs;
-using Moserware.Skills.TrueSkill.Factors;
+﻿package jskills.trueskill.layers;
 
-namespace Moserware.Skills.TrueSkill.Layers
+import jskills.GameInfo;
+import jskills.factorgraphs.DefaultVariable;
+import jskills.factorgraphs.Variable;
+import jskills.numerics.GaussianDistribution;
+import jskills.trueskill.DrawMargin;
+import jskills.trueskill.TrueSkillFactorGraph;
+import jskills.trueskill.factors.GaussianFactor;
+import jskills.trueskill.factors.GaussianGreaterThanFactor;
+import jskills.trueskill.factors.GaussianWithinFactor;
+
+public class TeamDifferencesComparisonLayer extends
+    TrueSkillFactorGraphLayer<Variable<GaussianDistribution>, GaussianFactor, DefaultVariable<GaussianDistribution>>
 {
-    internal class TeamDifferencesComparisonLayer<TPlayer> :
-        TrueSkillFactorGraphLayer
-            <TPlayer, Variable<GaussianDistribution>, GaussianFactor, DefaultVariable<GaussianDistribution>>
+    private final double _Epsilon;
+    private final int[] _TeamRanks;
+
+    public TeamDifferencesComparisonLayer(TrueSkillFactorGraph parentGraph, int[] teamRanks)
     {
-        private final double _Epsilon;
-        private final int[] _TeamRanks;
+        super(parentGraph);
+        _TeamRanks = teamRanks;
+        GameInfo gameInfo = ParentFactorGraph.getGameInfo();
+        _Epsilon = DrawMargin.GetDrawMarginFromDrawProbability(gameInfo.getDrawProbability(), gameInfo.getBeta());
+    }
 
-        public TeamDifferencesComparisonLayer(TrueSkillFactorGraph<TPlayer> parentGraph, int[] teamRanks)
-            : base(parentGraph)
+    @Override
+    public void BuildLayer()
+    {
+        for (int i = 0; i < getInputVariablesGroups().size(); i++)
         {
-            _TeamRanks = teamRanks;
-            GameInfo gameInfo = ParentFactorGraph.GameInfo;
-            _Epsilon = DrawMargin.GetDrawMarginFromDrawProbability(gameInfo.DrawProbability, gameInfo.Beta);
-        }
+            boolean isDraw = (_TeamRanks[i] == _TeamRanks[i + 1]);
+            Variable<GaussianDistribution> teamDifference = getInputVariablesGroups().get(i).get(0);
 
-        public override void BuildLayer()
-        {
-            for (int i = 0; i < InputVariablesGroups.Count; i++)
-            {
-                bool isDraw = (_TeamRanks[i] == _TeamRanks[i + 1]);
-                Variable<GaussianDistribution> teamDifference = InputVariablesGroups[i][0];
+            GaussianFactor factor =
+                isDraw
+                    ? (GaussianFactor) new GaussianWithinFactor(_Epsilon, teamDifference)
+                    : new GaussianGreaterThanFactor(_Epsilon, teamDifference);
 
-                GaussianFactor factor =
-                    isDraw
-                        ? (GaussianFactor) new GaussianWithinFactor(_Epsilon, teamDifference)
-                        : new GaussianGreaterThanFactor(_Epsilon, teamDifference);
-
-                AddLayerFactor(factor);
-            }
+            AddLayerFactor(factor);
         }
     }
 }
