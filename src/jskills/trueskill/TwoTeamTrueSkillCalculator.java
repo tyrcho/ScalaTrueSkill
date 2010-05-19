@@ -1,173 +1,187 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Moserware.Skills.Numerics;
+﻿package jskills.trueskill;
 
-namespace Moserware.Skills.TrueSkill
+import static jskills.numerics.MathUtils.square;
+
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import jskills.GameInfo;
+import jskills.Guard;
+import jskills.IPlayer;
+import jskills.ITeam;
+import jskills.PairwiseComparison;
+import jskills.RankSorter;
+import jskills.Rating;
+import jskills.SkillCalculator;
+import jskills.numerics.Range;
+
+/**
+ * Calculates new ratings for only two teams where each team has 1 or more players.
+ * <remarks>
+ * When you only have two teams, the math is still simple: no factor graphs are used yet.
+ * </remarks>
+ */
+public class TwoTeamTrueSkillCalculator extends SkillCalculator
 {
-    /**
-     * Calculates new ratings for only two teams where each team has 1 or more players.
-     */
-     * <remarks>
-     * When you only have two teams, the math is still simple: no factor graphs are used yet.
-     * </remarks>
-    public class TwoTeamTrueSkillCalculator : SkillCalculator
+    public TwoTeamTrueSkillCalculator()
     {
-        public TwoTeamTrueSkillCalculator()
-            : base(SupportedOptions.None, Range<TeamsRange>.Exactly(2), Range<PlayersRange>.AtLeast(1))
+        super(EnumSet.noneOf(SupportedOptions.class), Range.<ITeam>exactly(2), Range.<IPlayer>atLeast(1));
+    }
+
+     @Override
+    public Map<IPlayer, Rating> calculateNewRatings(GameInfo gameInfo,
+                                                    Collection<ITeam> teams, 
+                                                    int... teamRanks)
+    {
+        Guard.argumentNotNull(gameInfo, "gameInfo");
+        validateTeamCountAndPlayersCountPerTeam(teams);
+
+        List<ITeam> teamsl = RankSorter.sort(teams, teamRanks);
+
+        ITeam team1 = teamsl.get(0);
+        ITeam team2 = teamsl.get(1);
+
+        boolean wasDraw = (teamRanks[0] == teamRanks[1]);
+
+        HashMap<IPlayer, Rating> results = new HashMap<IPlayer, Rating>();
+
+        UpdatePlayerRatings(gameInfo,
+                            results,
+                            team1,
+                            team2,
+                            wasDraw ? PairwiseComparison.DRAW : PairwiseComparison.WIN);
+
+        UpdatePlayerRatings(gameInfo,
+                            results,
+                            team2,
+                            team1,
+                            wasDraw ? PairwiseComparison.DRAW : PairwiseComparison.LOSE);
+
+        return results;
+    }
+
+    private static void UpdatePlayerRatings(GameInfo gameInfo,
+                                            Map<IPlayer, Rating> newPlayerRatings,
+                                            ITeam selfTeam,
+                                            ITeam otherTeam,
+                                            PairwiseComparison selfToOtherTeamComparison)
+    {
+        double drawMargin = DrawMargin.GetDrawMarginFromDrawProbability(gameInfo.getDrawProbability(), gameInfo.getBeta());
+        double betaSquared = square(gameInfo.getBeta());
+        double tauSquared = square(gameInfo.getDynamicsFactor());
+
+        int totalPlayers = selfTeam.size() + otherTeam.size();
+
+        double selfMeanSum = 0;
+        for (Rating r : selfTeam.values()) selfMeanSum += r.getMean();
+        double otherTeamMeanSum = 0;
+        for (Rating r : otherTeam.values()) otherTeamMeanSum += r.getMean();
+
+        double sum = 0;
+        for (Rating r : selfTeam.values()) sum += square(r.getStandardDeviation());
+        for (Rating r : otherTeam.values()) sum += square(r.getStandardDeviation());
+        
+        double c = Math.sqrt(sum + totalPlayers*betaSquared);
+
+        double winningMean = selfMeanSum;
+        double losingMean = otherTeamMeanSum;
+
+        switch (selfToOtherTeamComparison)
         {
+            case WIN: case DRAW: /* NOP */ break;
+            case LOSE:
+                winningMean = otherTeamMeanSum;
+                losingMean = selfMeanSum;
+                break;
         }
 
-         * <inheritdoc/>
-        public override IDictionary<TPlayer, Rating> CalculateNewRatings<TPlayer>(GameInfo gameInfo,
-                                                                                  IEnumerable
-                                                                                      <IDictionary<TPlayer, Rating>>
-                                                                                      teams, params int[] teamRanks)
+        double meanDelta = winningMean - losingMean;
+
+        double v;
+        double w;
+        double rankMultiplier;
+
+        if (selfToOtherTeamComparison != PairwiseComparison.DRAW)
         {
-            Guard.ArgumentNotNull(gameInfo, "gameInfo");
-            ValidateTeamCountAndPlayersCountPerTeam(teams);
-
-            RankSorter.Sort(ref teams, ref teamRanks);
-
-            IDictionary<TPlayer, Rating> team1 = teams.First();
-            IDictionary<TPlayer, Rating> team2 = teams.Last();
-
-            bool wasDraw = (teamRanks[0] == teamRanks[1]);
-
-            results = new Dictionary<TPlayer, Rating>();
-
-            UpdatePlayerRatings(gameInfo,
-                                results,
-                                team1,
-                                team2,
-                                wasDraw ? PairwiseComparison.Draw : PairwiseComparison.Win);
-
-            UpdatePlayerRatings(gameInfo,
-                                results,
-                                team2,
-                                team1,
-                                wasDraw ? PairwiseComparison.Draw : PairwiseComparison.Lose);
-
-            return results;
+            // non-draw case
+            v = TruncatedGaussianCorrectionFunctions.VExceedsMargin(meanDelta, drawMargin, c);
+            w = TruncatedGaussianCorrectionFunctions.WExceedsMargin(meanDelta, drawMargin, c);
+            rankMultiplier = selfToOtherTeamComparison.multiplier;
+        }
+        else
+        {
+            // assume draw
+            v = TruncatedGaussianCorrectionFunctions.VWithinMargin(meanDelta, drawMargin, c);
+            w = TruncatedGaussianCorrectionFunctions.WWithinMargin(meanDelta, drawMargin, c);
+            rankMultiplier = 1;
         }
 
-        private static void UpdatePlayerRatings<TPlayer>(GameInfo gameInfo,
-                                                         IDictionary<TPlayer, Rating> newPlayerRatings,
-                                                         IDictionary<TPlayer, Rating> selfTeam,
-                                                         IDictionary<TPlayer, Rating> otherTeam,
-                                                         PairwiseComparison selfToOtherTeamComparison)
+        for(Entry<IPlayer, Rating> teamPlayerRatingPair : selfTeam.entrySet())
         {
-            double drawMargin = DrawMargin.GetDrawMarginFromDrawProbability(gameInfo.DrawProbability, gameInfo.Beta);
-            double betaSquared = Square(gameInfo.Beta);
-            double tauSquared = Square(gameInfo.DynamicsFactor);
+            Rating previousPlayerRating = teamPlayerRatingPair.getValue();
 
-            int totalPlayers = selfTeam.Count() + otherTeam.Count();
+            double meanMultiplier = (square(previousPlayerRating.getStandardDeviation()) + tauSquared)/c;
+            double stdDevMultiplier = (square(previousPlayerRating.getStandardDeviation()) + tauSquared)/square(c);
 
-            double selfMeanSum = selfTeam.Values.Sum(r => r.Mean);
-            double otherTeamMeanSum = otherTeam.Values.Sum(r => r.Mean);
+            double playerMeanDelta = (rankMultiplier*meanMultiplier*v);
+            double newMean = previousPlayerRating.getMean() + playerMeanDelta;
 
-            double c = Math.Sqrt(selfTeam.Values.Sum(r => Square(r.StandardDeviation))
-                                 +
-                                 otherTeam.Values.Sum(r => Square(r.StandardDeviation))
-                                 +
-                                 totalPlayers*betaSquared);
+            double newStdDev =
+                Math.sqrt((square(previousPlayerRating.getStandardDeviation()) + tauSquared)*(1 - w*stdDevMultiplier));
 
-            double winningMean = selfMeanSum;
-            double losingMean = otherTeamMeanSum;
-
-            switch (selfToOtherTeamComparison)
-            {
-                case PairwiseComparison.Win:
-                case PairwiseComparison.Draw:
-                    // NOP
-                    break;
-                case PairwiseComparison.Lose:
-                    winningMean = otherTeamMeanSum;
-                    losingMean = selfMeanSum;
-                    break;
-            }
-
-            double meanDelta = winningMean - losingMean;
-
-            double v;
-            double w;
-            double rankMultiplier;
-
-            if (selfToOtherTeamComparison != PairwiseComparison.Draw)
-            {
-                // non-draw case
-                v = TruncatedGaussianCorrectionFunctions.VExceedsMargin(meanDelta, drawMargin, c);
-                w = TruncatedGaussianCorrectionFunctions.WExceedsMargin(meanDelta, drawMargin, c);
-                rankMultiplier = (int) selfToOtherTeamComparison;
-            }
-            else
-            {
-                // assume draw
-                v = TruncatedGaussianCorrectionFunctions.VWithinMargin(meanDelta, drawMargin, c);
-                w = TruncatedGaussianCorrectionFunctions.WWithinMargin(meanDelta, drawMargin, c);
-                rankMultiplier = 1;
-            }
-
-            foreach (var teamPlayerRatingPair in selfTeam)
-            {
-                Rating previousPlayerRating = teamPlayerRatingPair.Value;
-
-                double meanMultiplier = (Square(previousPlayerRating.StandardDeviation) + tauSquared)/c;
-                double stdDevMultiplier = (Square(previousPlayerRating.StandardDeviation) + tauSquared)/Square(c);
-
-                double playerMeanDelta = (rankMultiplier*meanMultiplier*v);
-                double newMean = previousPlayerRating.Mean + playerMeanDelta;
-
-                double newStdDev =
-                    Math.Sqrt((Square(previousPlayerRating.StandardDeviation) + tauSquared)*(1 - w*stdDevMultiplier));
-
-                newPlayerRatings[teamPlayerRatingPair.Key] = new Rating(newMean, newStdDev);
-            }
+            newPlayerRatings.put(teamPlayerRatingPair.getKey(), new Rating(newMean, newStdDev));
         }
+    }
 
-         * <inheritdoc/>
-        public override double CalculateMatchQuality<TPlayer>(GameInfo gameInfo,
-                                                              IEnumerable<IDictionary<TPlayer, Rating>> teams)
-        {
-            Guard.ArgumentNotNull(gameInfo, "gameInfo");
-            ValidateTeamCountAndPlayersCountPerTeam(teams);
+    @Override
+    public double calculateMatchQuality(GameInfo gameInfo, Collection<ITeam> teams)
+    {
+        Guard.argumentNotNull(gameInfo, "gameInfo");
+        validateTeamCountAndPlayersCountPerTeam(teams);
 
-            // We've verified that there's just two teams
-            ICollection<Rating> team1 = teams.First().Values;
-            int team1Count = team1.Count();
+        // We've verified that there's just two teams
+        Collection<Rating> team1 = teams.iterator().next().values();
+        int team1Count = team1.size();
 
-            ICollection<Rating> team2 = teams.Last().Values;
-            int team2Count = team2.Count();
+        Collection<Rating> team2 = teams.iterator().next().values();
+        int team2Count = team2.size();
 
-            int totalPlayers = team1Count + team2Count;
+        int totalPlayers = team1Count + team2Count;
 
-            double betaSquared = Square(gameInfo.Beta);
+        double betaSquared = square(gameInfo.getBeta());
 
-            double team1MeanSum = team1.Sum(r => r.Mean);
-            double team1StdDevSquared = team1.Sum(r => Square(r.StandardDeviation));
+        double team1MeanSum = 0;
+        for (Rating r : team1) team1MeanSum += r.getMean();
+        double team1StdDevSquared = 0;
+        for (Rating r : team1) team1StdDevSquared += square(r.getStandardDeviation());
 
-            double team2MeanSum = team2.Sum(r => r.Mean);
-            double team2SigmaSquared = team2.Sum(r => Square(r.StandardDeviation));
+        double team2MeanSum = 0;
+        for (Rating r : team1) team2MeanSum += r.getMean();
+        double team2SigmaSquared = 0;
+        for (Rating r : team1) team2SigmaSquared += square(r.getStandardDeviation());
 
-            // This comes from equation 4.1 in the TrueSkill paper on page 8            
-            // The equation was broken up into the part under the square root sign and 
-            // the exponential part to make the code easier to read.
+        // This comes from equation 4.1 in the TrueSkill paper on page 8            
+        // The equation was broken up into the part under the square root sign and 
+        // the exponential part to make the code easier to read.
 
-            double sqrtPart
-                = Math.Sqrt(
-                    (totalPlayers*betaSquared)
-                    /
-                    (totalPlayers*betaSquared + team1StdDevSquared + team2SigmaSquared)
-                    );
+        double sqrtPart
+            = Math.sqrt(
+                (totalPlayers*betaSquared)
+                /
+                (totalPlayers*betaSquared + team1StdDevSquared + team2SigmaSquared)
+                );
 
-            double expPart
-                = Math.Exp(
-                    (-1*Square(team1MeanSum - team2MeanSum))
-                    /
-                    (2*(totalPlayers*betaSquared + team1StdDevSquared + team2SigmaSquared))
-                    );
+        double expPart
+            = Math.exp(
+                (-1*square(team1MeanSum - team2MeanSum))
+                /
+                (2*(totalPlayers*betaSquared + team1StdDevSquared + team2SigmaSquared))
+                );
 
-            return expPart*sqrtPart;
-        }
+        return expPart*sqrtPart;
     }
 }

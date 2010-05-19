@@ -1,150 +1,152 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Moserware.Skills.Numerics;
+﻿package jskills.trueskill;
 
-namespace Moserware.Skills.TrueSkill
+import static jskills.numerics.MathUtils.square;
+
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import jskills.GameInfo;
+import jskills.Guard;
+import jskills.IPlayer;
+import jskills.ITeam;
+import jskills.PairwiseComparison;
+import jskills.RankSorter;
+import jskills.numerics.Range;
+import jskills.Rating;
+import jskills.SkillCalculator;
+
+/**
+ * Calculates the new ratings for only two players.
+ * <remarks>
+ * When you only have two players, a lot of the math simplifies. The main purpose of this class
+ * is to show the bare minimum of what a TrueSkill implementation should have.
+ * </remarks>
+ */
+public class TwoPlayerTrueSkillCalculator extends SkillCalculator
 {
-    /**
-     * Calculates the new ratings for only two players.
-     */
-     * <remarks>
-     * When you only have two players, a lot of the math simplifies. The main purpose of this class
-     * is to show the bare minimum of what a TrueSkill implementation should have.
-     * </remarks>
-    public class TwoPlayerTrueSkillCalculator : SkillCalculator
+    public TwoPlayerTrueSkillCalculator()
     {
-        public TwoPlayerTrueSkillCalculator()
-            : base(SupportedOptions.None, Range<TeamsRange>.Exactly(2), Range<PlayersRange>.Exactly(1))
+        super(EnumSet.noneOf(SupportedOptions.class), Range.<ITeam>exactly(2), Range.<IPlayer>exactly(1));
+    }
+
+    @Override
+    public Map<IPlayer, Rating> calculateNewRatings(GameInfo gameInfo, Collection<ITeam> teams, int... teamRanks)
+    {
+        // Basic argument checking
+        Guard.argumentNotNull(gameInfo, "gameInfo");
+        validateTeamCountAndPlayersCountPerTeam(teams);
+
+        // Make sure things are in order
+        List<ITeam> teamsl = RankSorter.sort(teams, teamRanks);
+
+        // Since we verified that each team has one player, we know the player is the first one
+        ITeam winningTeam = teamsl.get(0);
+        IPlayer winner = winningTeam.keySet().iterator().next();
+        Rating winnerPreviousRating = winningTeam.get(winner);
+
+        Map<IPlayer, Rating> losingTeam = teamsl.get(1);
+        IPlayer loser = losingTeam.keySet().iterator().next();
+        Rating loserPreviousRating = losingTeam.get(loser);
+
+        boolean wasDraw = (teamRanks[0] == teamRanks[1]);
+
+        Map<IPlayer, Rating> results = new HashMap<IPlayer, Rating>();
+        results.put(winner, CalculateNewRating(gameInfo, winnerPreviousRating, loserPreviousRating,
+                                             wasDraw ? PairwiseComparison.DRAW : PairwiseComparison.WIN));
+        results.put(loser, CalculateNewRating(gameInfo, loserPreviousRating, winnerPreviousRating,
+                                            wasDraw ? PairwiseComparison.DRAW : PairwiseComparison.LOSE));
+
+        // And we're done!
+        return results;
+    }
+
+    private static Rating CalculateNewRating(GameInfo gameInfo, Rating selfRating, Rating opponentRating,
+                                             PairwiseComparison comparison)
+    {
+        double drawMargin = DrawMargin.GetDrawMarginFromDrawProbability(gameInfo.getDrawProbability(), gameInfo.getBeta());
+
+        double c =
+            Math.sqrt(
+                square(selfRating.getStandardDeviation())
+                +
+                square(opponentRating.getStandardDeviation())
+                +
+                2*square(gameInfo.getBeta()));
+
+        double winningMean = selfRating.getMean();
+        double losingMean = opponentRating.getMean();
+
+        switch (comparison)
         {
+            case WIN: case DRAW: /* NOP */ break;
+            case LOSE:
+                winningMean = opponentRating.getMean();
+                losingMean = selfRating.getMean();
+                break;
         }
 
-         * <inheritdoc/>
-        public override IDictionary<TPlayer, Rating> CalculateNewRatings<TPlayer>(GameInfo gameInfo,
-                                                                                  IEnumerable
-                                                                                      <IDictionary<TPlayer, Rating>>
-                                                                                      teams, params int[] teamRanks)
+        double meanDelta = winningMean - losingMean;
+
+        double v;
+        double w;
+        double rankMultiplier;
+
+        if (comparison != PairwiseComparison.DRAW)
         {
-            // Basic argument checking
-            Guard.ArgumentNotNull(gameInfo, "gameInfo");
-            ValidateTeamCountAndPlayersCountPerTeam(teams);
-
-            // Make sure things are in order
-            RankSorter.Sort(ref teams, ref teamRanks);
-
-            // Get the teams as a list to make it easier to index
-            List<IDictionary<TPlayer, Rating>> teamList = teams.ToList();
-
-            // Since we verified that each team has one player, we know the player is the first one
-            IDictionary<TPlayer, Rating> winningTeam = teamList[0];
-            TPlayer winner = winningTeam.Keys.First();
-            Rating winnerPreviousRating = winningTeam[winner];
-
-            IDictionary<TPlayer, Rating> losingTeam = teamList[1];
-            TPlayer loser = losingTeam.Keys.First();
-            Rating loserPreviousRating = losingTeam[loser];
-
-            bool wasDraw = (teamRanks[0] == teamRanks[1]);
-
-            results = new Dictionary<TPlayer, Rating>();
-            results[winner] = CalculateNewRating(gameInfo, winnerPreviousRating, loserPreviousRating,
-                                                 wasDraw ? PairwiseComparison.Draw : PairwiseComparison.Win);
-            results[loser] = CalculateNewRating(gameInfo, loserPreviousRating, winnerPreviousRating,
-                                                wasDraw ? PairwiseComparison.Draw : PairwiseComparison.Lose);
-
-            // And we're done!
-            return results;
+            // non-draw case
+            v = TruncatedGaussianCorrectionFunctions.VExceedsMargin(meanDelta, drawMargin, c);
+            w = TruncatedGaussianCorrectionFunctions.WExceedsMargin(meanDelta, drawMargin, c);
+            rankMultiplier = comparison.multiplier;
+        }
+        else
+        {
+            v = TruncatedGaussianCorrectionFunctions.VWithinMargin(meanDelta, drawMargin, c);
+            w = TruncatedGaussianCorrectionFunctions.WWithinMargin(meanDelta, drawMargin, c);
+            rankMultiplier = 1;
         }
 
-        private static Rating CalculateNewRating(GameInfo gameInfo, Rating selfRating, Rating opponentRating,
-                                                 PairwiseComparison comparison)
-        {
-            double drawMargin = DrawMargin.GetDrawMarginFromDrawProbability(gameInfo.DrawProbability, gameInfo.Beta);
+        double meanMultiplier = square(selfRating.getStandardDeviation()) + square(gameInfo.getDynamicsFactor())/c;
 
-            double c =
-                Math.Sqrt(
-                    Square(selfRating.StandardDeviation)
-                    +
-                    Square(opponentRating.StandardDeviation)
-                    +
-                    2*Square(gameInfo.Beta));
+        double varianceWithDynamics = square(selfRating.getStandardDeviation()) + square(gameInfo.getDynamicsFactor());
+        double stdDevMultiplier = varianceWithDynamics/square(c);
 
-            double winningMean = selfRating.Mean;
-            double losingMean = opponentRating.Mean;
+        double newMean = selfRating.getMean() + (rankMultiplier*meanMultiplier*v);
+        double newStdDev = Math.sqrt(varianceWithDynamics*(1 - w*stdDevMultiplier));
 
-            switch (comparison)
-            {
-                case PairwiseComparison.Win:
-                case PairwiseComparison.Draw:
-                    // NOP
-                    break;
-                case PairwiseComparison.Lose:
-                    winningMean = opponentRating.Mean;
-                    losingMean = selfRating.Mean;
-                    break;
-            }
+        return new Rating(newMean, newStdDev);
+    }
 
-            double meanDelta = winningMean - losingMean;
+    @Override
+    public double calculateMatchQuality(GameInfo gameInfo, Collection<ITeam> teams)
+    {
+        Guard.argumentNotNull(gameInfo, "gameInfo");
+        validateTeamCountAndPlayersCountPerTeam(teams);
 
-            double v;
-            double w;
-            double rankMultiplier;
+        Rating player1Rating = teams.iterator().next().values().iterator().next();
+        Rating player2Rating = teams.iterator().next().values().iterator().next();
 
-            if (comparison != PairwiseComparison.Draw)
-            {
-                // non-draw case
-                v = TruncatedGaussianCorrectionFunctions.VExceedsMargin(meanDelta, drawMargin, c);
-                w = TruncatedGaussianCorrectionFunctions.WExceedsMargin(meanDelta, drawMargin, c);
-                rankMultiplier = (int) comparison;
-            }
-            else
-            {
-                v = TruncatedGaussianCorrectionFunctions.VWithinMargin(meanDelta, drawMargin, c);
-                w = TruncatedGaussianCorrectionFunctions.WWithinMargin(meanDelta, drawMargin, c);
-                rankMultiplier = 1;
-            }
+        // We just use equation 4.1 found on page 8 of the TrueSkill 2006 paper:
+        double betaSquared = square(gameInfo.getBeta());
+        double player1SigmaSquared = square(player1Rating.getStandardDeviation());
+        double player2SigmaSquared = square(player2Rating.getStandardDeviation());
 
-            double meanMultiplier = (Square(selfRating.StandardDeviation) + Square(gameInfo.DynamicsFactor))/c;
+        // This is the square root part of the equation:
+        double sqrtPart =
+            Math.sqrt(
+                (2*betaSquared)
+                /
+                (2*betaSquared + player1SigmaSquared + player2SigmaSquared));
 
-            double varianceWithDynamics = Square(selfRating.StandardDeviation) + Square(gameInfo.DynamicsFactor);
-            double stdDevMultiplier = varianceWithDynamics/Square(c);
+        // This is the exponent part of the equation:
+        double expPart =
+            Math.exp(
+                (-1*square(player1Rating.getMean() - player2Rating.getMean()))
+                /
+                (2*(2*betaSquared + player1SigmaSquared + player2SigmaSquared)));
 
-            double newMean = selfRating.Mean + (rankMultiplier*meanMultiplier*v);
-            double newStdDev = Math.Sqrt(varianceWithDynamics*(1 - w*stdDevMultiplier));
-
-            return new Rating(newMean, newStdDev);
-        }
-
-         * <inheritdoc/>
-        public override double CalculateMatchQuality<TPlayer>(GameInfo gameInfo,
-                                                              IEnumerable<IDictionary<TPlayer, Rating>> teams)
-        {
-            Guard.ArgumentNotNull(gameInfo, "gameInfo");
-            ValidateTeamCountAndPlayersCountPerTeam(teams);
-
-            Rating player1Rating = teams.First().Values.First();
-            Rating player2Rating = teams.Last().Values.First();
-
-            // We just use equation 4.1 found on page 8 of the TrueSkill 2006 paper:
-            double betaSquared = Square(gameInfo.Beta);
-            double player1SigmaSquared = Square(player1Rating.StandardDeviation);
-            double player2SigmaSquared = Square(player2Rating.StandardDeviation);
-
-            // This is the square root part of the equation:
-            double sqrtPart =
-                Math.Sqrt(
-                    (2*betaSquared)
-                    /
-                    (2*betaSquared + player1SigmaSquared + player2SigmaSquared));
-
-            // This is the exponent part of the equation:
-            double expPart =
-                Math.Exp(
-                    (-1*Square(player1Rating.Mean - player2Rating.Mean))
-                    /
-                    (2*(2*betaSquared + player1SigmaSquared + player2SigmaSquared)));
-
-            return sqrtPart*expPart;
-        }
+        return sqrtPart*expPart;
     }
 }

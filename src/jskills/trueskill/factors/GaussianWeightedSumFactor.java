@@ -49,6 +49,7 @@ public class GaussianWeightedSumFactor extends GaussianFactor
         // v_0 = a_1*v_1 + a_2*v_2 + ... + a_n * v_n
         _Weights[0] = new double[variableWeights.length];
         System.arraycopy(variableWeights, 0,  _Weights[0], 0, variableWeights.length);
+		_WeightsSquared[0] = new double[variableWeights.length];
         for (int i = 0; i < _Weights[0].length; i++)
             _WeightsSquared[0][i] = _Weights[0][i]*_Weights[0][i];
 
