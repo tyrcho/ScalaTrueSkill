@@ -48,7 +48,7 @@ public class PlayerPriorValuesToSkillsLayer extends
                 currentTeamSkills.add(playerSkill);
             }
 
-            getOutputVariablesGroups().add(currentTeamSkills);
+            addOutputVariableGroup(currentTeamSkills);
         }
     }
 

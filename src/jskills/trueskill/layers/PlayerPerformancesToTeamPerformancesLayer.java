@@ -33,9 +33,7 @@ public class PlayerPerformancesToTeamPerformancesLayer extends
             AddLayerFactor(createPlayerToTeamSumFactor(currentTeam, teamPerformance));
 
             // REVIEW: Does it make sense to have groups of one?
-            List<Variable<GaussianDistribution>> outVarGroup = new ArrayList<Variable<GaussianDistribution>>(1);
-            outVarGroup.add(teamPerformance);
-            getOutputVariablesGroups().add(outVarGroup);
+            addOutputVariable(teamPerformance);
         }
     }
 

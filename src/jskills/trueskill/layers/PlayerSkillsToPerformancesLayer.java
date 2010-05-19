@@ -38,7 +38,7 @@ public class PlayerSkillsToPerformancesLayer extends
                 currentTeamPlayerPerformances.add(playerPerformance);
             }
 
-            getOutputVariablesGroups().add(currentTeamPlayerPerformances);
+            addOutputVariableGroup(currentTeamPlayerPerformances);
         }
     }
 

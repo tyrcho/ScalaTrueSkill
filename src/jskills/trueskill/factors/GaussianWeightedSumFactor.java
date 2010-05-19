@@ -27,14 +27,14 @@ public class GaussianWeightedSumFactor extends GaussianFactor
     private final double[][] _WeightsSquared;        
 
     public GaussianWeightedSumFactor(Variable<GaussianDistribution> sumVariable,
-                                     List<Variable<GaussianDistribution>> variablesToSum)
+                                     List<? extends Variable<GaussianDistribution>> variablesToSum)
     {
         // By default, set the weight to 1.0, which is what null indicates
         this(sumVariable, variablesToSum, null);
     }
 
     public GaussianWeightedSumFactor(Variable<GaussianDistribution> sumVariable,
-                                     List<Variable<GaussianDistribution>> variablesToSum, double[] variableWeights)
+                                     List<? extends Variable<GaussianDistribution>> variablesToSum, double[] variableWeights)
     {
         super(CreateName(sumVariable, variablesToSum, variableWeights));
         // Have to add in this workaround because Arrays.fill returns void
@@ -226,7 +226,7 @@ public class GaussianWeightedSumFactor extends GaussianFactor
     }
 
     private static String CreateName(Variable<GaussianDistribution> sumVariable,
-                                     List<Variable<GaussianDistribution>> variablesToSum, double[] weights)
+                                     List<? extends Variable<GaussianDistribution>> variablesToSum, double[] weights)
     {
         StringBuffer sb = new StringBuffer();
         sb.append(sumVariable.toString());

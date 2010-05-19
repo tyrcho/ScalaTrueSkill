@@ -36,6 +36,15 @@ TOutputVariable extends Variable<TValue>>
     public List<List<TOutputVariable>> getOutputVariablesGroups(){
         return _OutputVariablesGroups;
     }
+    
+    public void addOutputVariableGroup(List<TOutputVariable> group) {
+        _OutputVariablesGroups.add(group);
+    }
+    
+    public void addOutputVariable(TOutputVariable var) {
+        List<TOutputVariable> g = new ArrayList<TOutputVariable>(1); g.add(var);
+        addOutputVariableGroup(g);
+    }
 
     public List<TFactor> getLocalFactors() {
         return _LocalFactors;
