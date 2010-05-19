@@ -15,11 +15,11 @@ public class GaussianPriorFactor extends GaussianFactor
 
     public GaussianPriorFactor(double mean, double variance, Variable<GaussianDistribution> variable)
     {
-        super(String.format("Prior value going to {0}", variable));
+        super(String.format("Prior value going to %s", variable));
         _NewMessage = new GaussianDistribution(mean, Math.sqrt(variance));
         CreateVariableToMessageBinding(variable,
                                        new Message<GaussianDistribution>(
-                                           GaussianDistribution.fromPrecisionMean(0, 0), "message from {0} to {1}",
+                                           GaussianDistribution.fromPrecisionMean(0, 0), "message from %s to %s",
                                            this, variable));
     }
 

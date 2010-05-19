@@ -23,7 +23,7 @@ public class TrueSkillCalculatorTests {
         TwoPlayerTestNotDrawn(calculator);
         TwoPlayerTestDrawn(calculator);
         OneOnOneMassiveUpsetDrawTest(calculator);
-                    
+
         TwoPlayerChessTestNotDrawn(calculator);
     }
 

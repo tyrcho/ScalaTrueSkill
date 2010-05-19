@@ -16,7 +16,7 @@ public class GaussianLikelihoodFactor extends GaussianFactor
     public GaussianLikelihoodFactor(double betaSquared, Variable<GaussianDistribution> variable1,
                                     Variable<GaussianDistribution> variable2)
     {
-        super(String.format("Likelihood of {0} going to {1}", variable2, variable1));
+        super(String.format("Likelihood of %s going to %s", variable2, variable1));
         _Precision = 1.0/betaSquared;
         CreateVariableToMessageBinding(variable1);
         CreateVariableToMessageBinding(variable2);

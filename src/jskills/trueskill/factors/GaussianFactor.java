@@ -26,7 +26,7 @@ public abstract class GaussianFactor extends Factor<GaussianDistribution> {
             Variable<GaussianDistribution> variable) {
         return CreateVariableToMessageBinding(variable,
                 new Message<GaussianDistribution>(GaussianDistribution
-                        .fromPrecisionMean(0, 0), "message from {0} to {1}",
+                        .fromPrecisionMean(0, 0), "message from %s to %s",
                         this, variable));
     }
 }

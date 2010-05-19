@@ -114,20 +114,20 @@ public class IteratedTeamDifferencesInnerLayer extends
         {
             Collection<Schedule<GaussianDistribution>> schedules = new ArrayList<Schedule<GaussianDistribution>>();
             schedules.add(new ScheduleStep<GaussianDistribution>(
-                    String.format("team perf to perf diff {0}",
+                    String.format("team perf to perf diff %d",
                             i),
               _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(i), 0));
             schedules.add(new ScheduleStep<GaussianDistribution>(
-                    String.format("greater than or within result factor {0}",
+                    String.format("greater than or within result factor %d",
                             i),
               _TeamDifferencesComparisonLayer.getLocalFactors().get(i),
               0));
             schedules.add(new ScheduleStep<GaussianDistribution>(
-                    String.format("team perf to perf diff factors [{0}], 2",
+                    String.format("team perf to perf diff factors [%d], 2",
                             i),
               _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(i), 2));
             Schedule<GaussianDistribution> currentForwardSchedulePiece =
-                ScheduleSequence(schedules, "current forward schedule piece {0}", i);
+                ScheduleSequence(schedules, "current forward schedule piece %d", i);
 
             forwardScheduleList.add(currentForwardSchedulePiece);
         }
@@ -142,16 +142,16 @@ public class IteratedTeamDifferencesInnerLayer extends
         {
             Collection<Schedule<GaussianDistribution>> schedules = new ArrayList<Schedule<GaussianDistribution>>();
             schedules.add(new ScheduleStep<GaussianDistribution>(
-                    String.format("teamPerformanceToPerformanceDifferenceFactors[totalTeamDifferences - 1 - {0}] @ 0",
+                    String.format("teamPerformanceToPerformanceDifferenceFactors[totalTeamDifferences - 1 - %d] @ 0",
                             i),
               _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(
                   totalTeamDifferences - 1 - i), 0));
             schedules.add(new ScheduleStep<GaussianDistribution>(
-                    String.format("greaterThanOrWithinResultFactors[totalTeamDifferences - 1 - {0}] @ 0",
+                    String.format("greaterThanOrWithinResultFactors[totalTeamDifferences - 1 - %d] @ 0",
                             i),
               _TeamDifferencesComparisonLayer.getLocalFactors().get(totalTeamDifferences - 1 - i), 0));
             schedules.add(new ScheduleStep<GaussianDistribution>(
-                    String.format("teamPerformanceToPerformanceDifferenceFactors[totalTeamDifferences - 1 - {0}] @ 1",
+                    String.format("teamPerformanceToPerformanceDifferenceFactors[totalTeamDifferences - 1 - %d] @ 1",
                             i),
               _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(
                   totalTeamDifferences - 1 - i), 1));
