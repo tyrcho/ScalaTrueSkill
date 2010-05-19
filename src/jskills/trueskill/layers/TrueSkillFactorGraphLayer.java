@@ -1,20 +1,20 @@
-﻿using Moserware.Numerics;
-using Moserware.Skills.FactorGraphs;
+﻿package jskills.trueskill.layers;
 
-namespace Moserware.Skills.TrueSkill.Layers
+import jskills.factorgraphs.Factor;
+import jskills.factorgraphs.FactorGraphLayer;
+import jskills.factorgraphs.Variable;
+import jskills.numerics.GaussianDistribution;
+import jskills.trueskill.TrueSkillFactorGraph;
+
+public abstract class TrueSkillFactorGraphLayer<TInputVariable extends Variable<GaussianDistribution>, 
+                                                TFactor extends Factor<GaussianDistribution>,
+                                                TOutputVariable extends Variable<GaussianDistribution>>
+    extends FactorGraphLayer
+            <TrueSkillFactorGraph, GaussianDistribution, Variable<GaussianDistribution>, TInputVariable,
+            TFactor, TOutputVariable> 
 {
-    internal abstract class TrueSkillFactorGraphLayer<TPlayer, TInputVariable, TFactor, TOutputVariable>
-        :
-            FactorGraphLayer
-                <TrueSkillFactorGraph<TPlayer>, GaussianDistribution, Variable<GaussianDistribution>, TInputVariable,
-                TFactor, TOutputVariable>
-        where TInputVariable : Variable<GaussianDistribution>
-        where TFactor : Factor<GaussianDistribution>
-        where TOutputVariable : Variable<GaussianDistribution>
+    public TrueSkillFactorGraphLayer(TrueSkillFactorGraph parentGraph)
     {
-        public TrueSkillFactorGraphLayer(TrueSkillFactorGraph<TPlayer> parentGraph)
-            : base(parentGraph)
-        {
-        }
+        super(parentGraph);
     }
 }

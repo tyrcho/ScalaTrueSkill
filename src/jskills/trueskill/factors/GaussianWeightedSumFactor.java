@@ -181,8 +181,12 @@ public class GaussianWeightedSumFactor extends GaussianFactor
         double newPrecisionMean = newPrecision*weightedMeanSum;
         double anotherNewPrecisionMean = anotherNewPrecision*anotherWeightedMeanSum;
 
-        GaussianDistribution newMessage = GaussianDistribution.fromPrecisionMean(newPrecisionMean, newPrecision);
         GaussianDistribution oldMarginalWithoutMessage = divide(marginal0,message0);
+
+        GaussianDistribution newMessage = GaussianDistribution.fromPrecisionMean(newPrecisionMean, newPrecision);
+        GaussianDistribution anotherNewMessage = GaussianDistribution.fromPrecisionMean(anotherNewPrecisionMean, anotherNewPrecision);
+        if(!newMessage.equals(anotherNewMessage))
+            throw new RuntimeException("newMessage and anotherNewMessage aren't the same");
 
         GaussianDistribution newMarginal = mult(oldMarginalWithoutMessage,newMessage);
 

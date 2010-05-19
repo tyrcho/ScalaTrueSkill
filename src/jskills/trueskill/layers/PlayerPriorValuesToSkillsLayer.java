@@ -1,63 +1,77 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Moserware.Numerics;
-using Moserware.Skills.FactorGraphs;
-using Moserware.Skills.TrueSkill.Factors;
+﻿package jskills.trueskill.layers;
 
-namespace Moserware.Skills.TrueSkill.Layers
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map.Entry;
+
+import jskills.IPlayer;
+import jskills.ITeam;
+import jskills.Rating;
+import jskills.factorgraphs.DefaultVariable;
+import jskills.factorgraphs.KeyedVariable;
+import jskills.factorgraphs.Schedule;
+import jskills.factorgraphs.ScheduleStep;
+import jskills.factorgraphs.Variable;
+import jskills.numerics.GaussianDistribution;
+import jskills.numerics.MathUtils;
+import jskills.trueskill.TrueSkillFactorGraph;
+import jskills.trueskill.factors.GaussianPriorFactor;
+
+// We intentionally have no Posterior schedule since the only purpose here is to 
+public class PlayerPriorValuesToSkillsLayer extends
+    TrueSkillFactorGraphLayer<DefaultVariable<GaussianDistribution>, 
+                              GaussianPriorFactor,
+                              KeyedVariable<IPlayer, GaussianDistribution>>
 {
-    // We intentionally have no Posterior schedule since the only purpose here is to 
-    internal class PlayerPriorValuesToSkillsLayer<TPlayer> :
-        TrueSkillFactorGraphLayer
-            <TPlayer, DefaultVariable<GaussianDistribution>, GaussianPriorFactor,
-            KeyedVariable<TPlayer, GaussianDistribution>>
+    private final Collection<ITeam> _Teams;
+
+    public PlayerPriorValuesToSkillsLayer(TrueSkillFactorGraph parentGraph,
+                                          Collection<ITeam> teams)
     {
-        private final IEnumerable<IDictionary<TPlayer, Rating>> _Teams;
+        super(parentGraph);
+        _Teams = teams;
+    }
 
-        public PlayerPriorValuesToSkillsLayer(TrueSkillFactorGraph<TPlayer> parentGraph,
-                                              IEnumerable<IDictionary<TPlayer, Rating>> teams)
-            : base(parentGraph)
+    @Override
+    public void BuildLayer()
+    {
+        for(ITeam currentTeam : _Teams)
         {
-            _Teams = teams;
-        }
+            List<KeyedVariable<IPlayer, GaussianDistribution>> currentTeamSkills = new ArrayList<KeyedVariable<IPlayer, GaussianDistribution>>();
 
-        public override void BuildLayer()
-        {
-            foreach (var currentTeam in _Teams)
+            for(Entry<IPlayer, Rating> currentTeamPlayer : currentTeam.entrySet())
             {
-                currentTeamSkills = new List<KeyedVariable<TPlayer, GaussianDistribution>>();
-
-                foreach (var currentTeamPlayer in currentTeam)
-                {
-                    KeyedVariable<TPlayer, GaussianDistribution> playerSkill =
-                        CreateSkillOutputVariable(currentTeamPlayer.Key);
-                    AddLayerFactor(CreatePriorFactor(currentTeamPlayer.Key, currentTeamPlayer.Value, playerSkill));
-                    currentTeamSkills.Add(playerSkill);
-                }
-
-                OutputVariablesGroups.Add(currentTeamSkills);
+                KeyedVariable<IPlayer, GaussianDistribution> playerSkill =
+                    CreateSkillOutputVariable(currentTeamPlayer.getKey());
+                AddLayerFactor(CreatePriorFactor(currentTeamPlayer.getKey(), currentTeamPlayer.getValue(), playerSkill));
+                currentTeamSkills.add(playerSkill);
             }
-        }
 
-        public override Schedule<GaussianDistribution> CreatePriorSchedule()
-        {
-            return ScheduleSequence(
-                from prior in LocalFactors
-                select new ScheduleStep<GaussianDistribution>("Prior to Skill Step", prior, 0),
-                "All priors");
+            getOutputVariablesGroups().add(currentTeamSkills);
         }
+    }
 
-        private GaussianPriorFactor CreatePriorFactor(TPlayer player, Rating priorRating,
-                                                      Variable<GaussianDistribution> skillsVariable)
-        {
-            return new GaussianPriorFactor(priorRating.Mean,
-                                           Square(priorRating.StandardDeviation) +
-                                           Square(ParentFactorGraph.GameInfo.DynamicsFactor), skillsVariable);
+    @Override
+    public Schedule<GaussianDistribution> createPriorSchedule()
+    {
+        Collection<Schedule<GaussianDistribution>> schedules = new ArrayList<Schedule<GaussianDistribution>>();
+        for (GaussianPriorFactor prior : getLocalFactors()) {
+            schedules.add(new ScheduleStep<GaussianDistribution>("Prior to Skill Step", prior, 0));
         }
+        return ScheduleSequence(schedules, "All priors");
+    }
 
-        private KeyedVariable<TPlayer, GaussianDistribution> CreateSkillOutputVariable(TPlayer key)
-        {
-            return ParentFactorGraph.VariableFactory.CreateKeyedVariable(key, "{0}'s skill", key);
-        }
+    private GaussianPriorFactor CreatePriorFactor(IPlayer player, Rating priorRating,
+                                                  Variable<GaussianDistribution> skillsVariable)
+    {
+        return new GaussianPriorFactor(priorRating.getMean(),
+                                       MathUtils.square(priorRating.getStandardDeviation()) +
+                                       MathUtils.square(getParentFactorGraph().getGameInfo().getDynamicsFactor()), skillsVariable);
+    }
+
+    private KeyedVariable<IPlayer, GaussianDistribution> CreateSkillOutputVariable(IPlayer key)
+    {
+        return new KeyedVariable<IPlayer, GaussianDistribution>(key, GaussianDistribution.UNIFORM, "%s's skill", key);
     }
 }

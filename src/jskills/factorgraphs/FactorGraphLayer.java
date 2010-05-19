@@ -30,6 +30,7 @@ TOutputVariable extends Variable<TValue>>
 
     public TParentFactorGraph ParentFactorGraph;
     public TParentFactorGraph getParentFactorGraph() { return ParentFactorGraph; }
+    @SuppressWarnings("unused") // TODO remove if really unnecessary
     private void setParentFactorGraph( TParentFactorGraph parent ) { ParentFactorGraph = parent; }
     
     public List<List<TOutputVariable>> getOutputVariablesGroups(){
@@ -41,11 +42,13 @@ TOutputVariable extends Variable<TValue>>
     }
 
     @Override
+    @SuppressWarnings("unchecked") // TODO there has to be a safer way to do this
     public Collection<Factor<TValue>> getUntypedFactors() {
         return (Collection<Factor<TValue>>) _LocalFactors;
     }
 
     @Override
+    @SuppressWarnings("unchecked") // TODO there has to be a safer way to do this
     public void SetRawInputVariablesGroups(Object value)
     {
         List<List<TInputVariable>> newList = (List<List<TInputVariable>>)value;
