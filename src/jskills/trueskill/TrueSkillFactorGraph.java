@@ -20,6 +20,7 @@ import jskills.factorgraphs.Schedule;
 import jskills.factorgraphs.ScheduleSequence;
 import jskills.numerics.GaussianDistribution;
 import jskills.trueskill.layers.PlayerPriorValuesToSkillsLayer;
+import jskills.trueskill.layers.PlayerSkillsToPerformancesLayer;
 
 public class TrueSkillFactorGraph extends FactorGraph<TrueSkillFactorGraph>
 {

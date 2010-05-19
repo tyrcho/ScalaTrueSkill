@@ -1,64 +1,77 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Moserware.Numerics;
-using Moserware.Skills.FactorGraphs;
-using Moserware.Skills.TrueSkill.Factors;
+﻿package jskills.trueskill.layers;
 
-namespace Moserware.Skills.TrueSkill.Layers
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import jskills.IPlayer;
+import jskills.factorgraphs.KeyedVariable;
+import jskills.factorgraphs.Schedule;
+import jskills.factorgraphs.ScheduleStep;
+import jskills.numerics.GaussianDistribution;
+import jskills.numerics.MathUtils;
+import jskills.trueskill.TrueSkillFactorGraph;
+import jskills.trueskill.factors.GaussianLikelihoodFactor;
+
+public class PlayerSkillsToPerformancesLayer extends
+    TrueSkillFactorGraphLayer<KeyedVariable<IPlayer, GaussianDistribution>, 
+                              GaussianLikelihoodFactor,
+                              KeyedVariable<IPlayer, GaussianDistribution>>
 {
-    internal class PlayerSkillsToPerformancesLayer<TPlayer> :
-        TrueSkillFactorGraphLayer
-            <TPlayer, KeyedVariable<TPlayer, GaussianDistribution>, GaussianLikelihoodFactor,
-            KeyedVariable<TPlayer, GaussianDistribution>>
+    public PlayerSkillsToPerformancesLayer(TrueSkillFactorGraph parentGraph)
     {
-        public PlayerSkillsToPerformancesLayer(TrueSkillFactorGraph<TPlayer> parentGraph)
-            : base(parentGraph)
-        {
-        }
+        super(parentGraph);
+    }
 
-        public override void BuildLayer()
+    @Override
+    public void BuildLayer()
+    {
+        for(List<KeyedVariable<IPlayer, GaussianDistribution>> currentTeam : getInputVariablesGroups())
         {
-            foreach (var currentTeam in InputVariablesGroups)
+            List<KeyedVariable<IPlayer, GaussianDistribution>> currentTeamPlayerPerformances = new ArrayList<KeyedVariable<IPlayer, GaussianDistribution>>();
+
+            for(KeyedVariable<IPlayer, GaussianDistribution> playerSkillVariable : currentTeam)
             {
-                currentTeamPlayerPerformances = new List<KeyedVariable<TPlayer, GaussianDistribution>>();
-
-                foreach (var playerSkillVariable in currentTeam)
-                {
-                    KeyedVariable<TPlayer, GaussianDistribution> playerPerformance =
-                        CreateOutputVariable(playerSkillVariable.Key);
-                    AddLayerFactor(CreateLikelihood(playerSkillVariable, playerPerformance));
-                    currentTeamPlayerPerformances.Add(playerPerformance);
-                }
-
-                OutputVariablesGroups.Add(currentTeamPlayerPerformances);
+                KeyedVariable<IPlayer, GaussianDistribution> playerPerformance =
+                    CreateOutputVariable(playerSkillVariable.getKey());
+                AddLayerFactor(CreateLikelihood(playerSkillVariable, playerPerformance));
+                currentTeamPlayerPerformances.add(playerPerformance);
             }
-        }
 
-        private GaussianLikelihoodFactor CreateLikelihood(KeyedVariable<TPlayer, GaussianDistribution> playerSkill,
-                                                          KeyedVariable<TPlayer, GaussianDistribution> playerPerformance)
-        {
-            return new GaussianLikelihoodFactor(Square(ParentFactorGraph.GameInfo.Beta), playerPerformance, playerSkill);
+            getOutputVariablesGroups().add(currentTeamPlayerPerformances);
         }
+    }
 
-        private KeyedVariable<TPlayer, GaussianDistribution> CreateOutputVariable(TPlayer key)
-        {
-            return ParentFactorGraph.VariableFactory.CreateKeyedVariable(key, "{0}'s performance", key);
-        }
+    private GaussianLikelihoodFactor CreateLikelihood(KeyedVariable<IPlayer, GaussianDistribution> playerSkill,
+                                                      KeyedVariable<IPlayer, GaussianDistribution> playerPerformance)
+    {
+        return new GaussianLikelihoodFactor(MathUtils.square(ParentFactorGraph.getGameInfo().getBeta()), playerPerformance, playerSkill);
+    }
 
-        public override Schedule<GaussianDistribution> CreatePriorSchedule()
-        {
-            return ScheduleSequence(
-                from likelihood in LocalFactors
-                select new ScheduleStep<GaussianDistribution>("Skill to Perf step", likelihood, 0),
-                "All skill to performance sending");
-        }
+    private KeyedVariable<IPlayer, GaussianDistribution> CreateOutputVariable(IPlayer key)
+    {
+        return new KeyedVariable<IPlayer, GaussianDistribution>(key, GaussianDistribution.UNIFORM, "%s's performance", key);
+    }
 
-        public override Schedule<GaussianDistribution> CreatePosteriorSchedule()
-        {
-            return ScheduleSequence(
-                from likelihood in LocalFactors
-                select new ScheduleStep<GaussianDistribution>("name", likelihood, 1),
-                "All skill to performance sending");
+    @Override
+    public Schedule<GaussianDistribution> createPriorSchedule()
+    {
+        Collection<Schedule<GaussianDistribution>> schedules = new ArrayList<Schedule<GaussianDistribution>>();
+        for (GaussianLikelihoodFactor likelihood : getLocalFactors()) {
+            schedules.add(new ScheduleStep<GaussianDistribution>("Skill to Perf step", likelihood, 0));
         }
+        return ScheduleSequence(schedules,
+            "All skill to performance sending");
+    }
+
+    @Override
+    public Schedule<GaussianDistribution> createPosteriorSchedule()
+    {
+        Collection<Schedule<GaussianDistribution>> schedules = new ArrayList<Schedule<GaussianDistribution>>();
+        for (GaussianLikelihoodFactor likelihood : getLocalFactors()) {
+            schedules.add(new ScheduleStep<GaussianDistribution>("Skill to Perf step", likelihood, 1));
+        }
+        return ScheduleSequence(schedules,
+            "All skill to performance sending");
     }
 }
