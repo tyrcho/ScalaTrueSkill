@@ -3,6 +3,7 @@
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -40,9 +41,8 @@ public class DuellingEloCalculator extends SkillCalculator {
         // This implements that algorithm.
 
         validateTeamCountAndPlayersCountPerTeam(teams);
-        RankSorter.sort(teams, teamRanks);
-
-        ITeam[] teamsList = teams.toArray(new ITeam[0]);
+        List<ITeam> teamsl = RankSorter.sort(teams, teamRanks);
+        ITeam[] teamsList = teamsl.toArray(new ITeam[0]);
 
         Map<IPlayer, Map<IPlayer, Double>> deltas = new HashMap<IPlayer, Map<IPlayer, Double>>();
 

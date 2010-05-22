@@ -21,10 +21,11 @@ public class DuellingEloTest {
     public void twoOnTwoDuellingTest() {
         DuellingEloCalculator calculator = new DuellingEloCalculator(new GaussianEloCalculator());
 
+        GameInfo gameInfo = GameInfo.getDefaultGameInfo();
+
         Player<Integer> player1 = new Player<Integer>(1);
         Player<Integer> player2 = new Player<Integer>(2);
 
-        GameInfo gameInfo = GameInfo.getDefaultGameInfo();
 
         Team team1 = new Team()
             .addPlayer(player1, gameInfo.getDefaultRating())
@@ -37,8 +38,8 @@ public class DuellingEloTest {
                     .addPlayer(player3, gameInfo.getDefaultRating())
                     .addPlayer(player4, gameInfo.getDefaultRating());
 
-        Collection<ITeam> teams = Team.concat(team1, team2);
-        Map<IPlayer, Rating> newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, 1, 2);
+        Collection<ITeam> teams = Team.concat(team2, team1);
+        Map<IPlayer, Rating> newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, 2, 1);
 
         // TODO: Verify?
         AssertRating(37, newRatingsWinLose.get(player1));
