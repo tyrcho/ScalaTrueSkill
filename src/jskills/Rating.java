@@ -9,17 +9,17 @@ import lombok.Data;
 
 /** Container for a player's rating. **/
 @Data public class Rating {
-    
+
     private static final int defaultConservativeStandardDeviationMultiplier = 3;
-    
+
     private final double conservativeStandardDeviationMultiplier;
-    
+
     /** The statistical mean value of the rating (also known as μ). **/
     private final double mean;
-    
+
     /** The standard deviation (the spread) of the rating. This is also known as σ. **/
     private final double standardDeviation;
-    
+
     /** The variance of the rating (standard deviation squared) **/
     public double getVariance() { return square(getStandardDeviation()); }
 
@@ -78,7 +78,7 @@ import lombok.Data;
         return String.format("Mean(μ)=%f, Std-Dev(σ)=%f",
                              mean, standardDeviation);
     }
-    
+
     public static double calcMeanMean(Collection<Rating> ratings) {
         double ret = 0;
         for (Rating rating : ratings) ret += rating.mean;
