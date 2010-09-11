@@ -5,6 +5,7 @@ import static jskills.numerics.MathUtils.square;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -143,11 +144,13 @@ public class TwoTeamTrueSkillCalculator extends SkillCalculator
         Guard.argumentNotNull(gameInfo, "gameInfo");
         validateTeamCountAndPlayersCountPerTeam(teams);
 
+        Iterator<ITeam> teamsIt = teams.iterator();
+        
         // We've verified that there's just two teams
-        Collection<Rating> team1 = teams.iterator().next().values();
+        Collection<Rating> team1 = teamsIt.next().values();
         int team1Count = team1.size();
 
-        Collection<Rating> team2 = teams.iterator().next().values();
+        Collection<Rating> team2 = teamsIt.next().values();
         int team2Count = team2.size();
 
         int totalPlayers = team1Count + team2Count;
@@ -160,9 +163,9 @@ public class TwoTeamTrueSkillCalculator extends SkillCalculator
         for (Rating r : team1) team1StdDevSquared += square(r.getStandardDeviation());
 
         double team2MeanSum = 0;
-        for (Rating r : team1) team2MeanSum += r.getMean();
+        for (Rating r : team2) team2MeanSum += r.getMean();
         double team2SigmaSquared = 0;
-        for (Rating r : team1) team2SigmaSquared += square(r.getStandardDeviation());
+        for (Rating r : team2) team2SigmaSquared += square(r.getStandardDeviation());
 
         // This comes from equation 4.1 in the TrueSkill paper on page 8            
         // The equation was broken up into the part under the square root sign and 

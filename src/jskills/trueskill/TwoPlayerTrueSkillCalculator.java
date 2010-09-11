@@ -5,6 +5,7 @@ import static jskills.numerics.MathUtils.square;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -108,7 +109,7 @@ public class TwoPlayerTrueSkillCalculator extends SkillCalculator
             rankMultiplier = 1;
         }
 
-        double meanMultiplier = square(selfRating.getStandardDeviation()) + square(gameInfo.getDynamicsFactor())/c;
+        double meanMultiplier = (square(selfRating.getStandardDeviation()) + square(gameInfo.getDynamicsFactor()))/c;
 
         double varianceWithDynamics = square(selfRating.getStandardDeviation()) + square(gameInfo.getDynamicsFactor());
         double stdDevMultiplier = varianceWithDynamics/square(c);
@@ -125,8 +126,10 @@ public class TwoPlayerTrueSkillCalculator extends SkillCalculator
         Guard.argumentNotNull(gameInfo, "gameInfo");
         validateTeamCountAndPlayersCountPerTeam(teams);
 
-        Rating player1Rating = teams.iterator().next().values().iterator().next();
-        Rating player2Rating = teams.iterator().next().values().iterator().next();
+        Iterator<ITeam> teamIt = teams.iterator();
+        
+        Rating player1Rating = teamIt.next().values().iterator().next();
+        Rating player2Rating = teamIt.next().values().iterator().next();
 
         // We just use equation 4.1 found on page 8 of the TrueSkill 2006 paper:
         double betaSquared = square(gameInfo.getBeta());
