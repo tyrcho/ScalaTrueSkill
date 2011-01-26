@@ -1,4 +1,4 @@
-﻿package jskills.trueskill.layers;
+package jskills.trueskill.layers;
 
 import jskills.GameInfo;
 import jskills.factorgraphs.DefaultVariable;

@@ -1,4 +1,4 @@
-﻿package jskills.elo;
+package jskills.elo;
 
 import static jskills.elo.EloAssert.assertChessRating;
 import jskills.PairwiseComparison;

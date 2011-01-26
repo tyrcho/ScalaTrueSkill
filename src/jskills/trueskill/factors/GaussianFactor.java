@@ -1,4 +1,4 @@
-﻿package jskills.trueskill.factors;
+package jskills.trueskill.factors;
 
 import static jskills.numerics.GaussianDistribution.logProductNormalization;
 import jskills.factorgraphs.Factor;

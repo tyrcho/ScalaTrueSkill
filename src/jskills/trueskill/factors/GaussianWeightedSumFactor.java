@@ -1,4 +1,4 @@
-﻿package jskills.trueskill.factors;
+package jskills.trueskill.factors;
 
 import static jskills.numerics.GaussianDistribution.divide;
 import static jskills.numerics.GaussianDistribution.mult;

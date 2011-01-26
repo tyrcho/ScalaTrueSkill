@@ -1,4 +1,4 @@
-﻿package jskills.trueskill.factors;
+package jskills.trueskill.factors;
 
 import jskills.factorgraphs.Message;
 import jskills.factorgraphs.Variable;

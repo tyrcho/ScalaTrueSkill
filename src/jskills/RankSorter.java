@@ -1,4 +1,4 @@
-﻿package jskills;
+package jskills;
 
 import java.util.ArrayList;
 import java.util.Arrays;

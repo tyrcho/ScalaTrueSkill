@@ -1,4 +1,4 @@
-﻿package jskills.factorgraphs;
+package jskills.factorgraphs;
 
 public abstract class Schedule<T>
 {

@@ -1,4 +1,4 @@
-﻿package jskills.numerics;
+package jskills.numerics;
 
 import lombok.Data;
 

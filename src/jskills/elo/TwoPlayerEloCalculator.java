@@ -1,4 +1,4 @@
-﻿package jskills.elo;
+package jskills.elo;
 
 import java.util.ArrayList;
 import java.util.Collection;

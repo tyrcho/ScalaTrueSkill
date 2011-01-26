@@ -1,4 +1,4 @@
-﻿package jskills.trueskill.layers;
+package jskills.trueskill.layers;
 
 import jskills.factorgraphs.Factor;
 import jskills.factorgraphs.FactorGraphLayer;

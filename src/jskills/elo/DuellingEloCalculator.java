@@ -1,4 +1,4 @@
-﻿package jskills.elo;
+package jskills.elo;
 
 import java.util.Collection;
 import java.util.EnumSet;

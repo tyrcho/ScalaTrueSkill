@@ -1,4 +1,4 @@
-﻿package jskills.elo;
+package jskills.elo;
 
 import jskills.Rating;
 

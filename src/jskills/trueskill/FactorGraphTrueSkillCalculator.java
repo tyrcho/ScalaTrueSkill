@@ -1,4 +1,4 @@
-﻿package jskills.trueskill;
+package jskills.trueskill;
 
 import static jskills.numerics.MathUtils.square;
 

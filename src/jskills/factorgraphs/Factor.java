@@ -1,4 +1,4 @@
-﻿package jskills.factorgraphs;
+package jskills.factorgraphs;
 
 import static jskills.Guard.argumentIsValidIndex;
 

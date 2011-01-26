@@ -1,4 +1,4 @@
-﻿package jskills.numerics;
+package jskills.numerics;
 
 import static java.lang.Math.sqrt;
 import static jskills.numerics.MathUtils.square;

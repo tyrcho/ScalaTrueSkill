@@ -1,4 +1,4 @@
-﻿package jskills;
+package jskills;
 
 import static jskills.numerics.MathUtils.square;
 

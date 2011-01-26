@@ -1,4 +1,4 @@
-﻿package jskills.factorgraphs;
+package jskills.factorgraphs;
 
 import java.util.ArrayList;
 import java.util.Collection;

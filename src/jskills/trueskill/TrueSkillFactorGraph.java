@@ -1,4 +1,4 @@
-﻿package jskills.trueskill;
+package jskills.trueskill;
 
 import java.util.ArrayList;
 import java.util.Collection;
