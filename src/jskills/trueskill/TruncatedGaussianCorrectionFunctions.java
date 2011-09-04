@@ -15,7 +15,7 @@ public class TruncatedGaussianCorrectionFunctions
      * <remarks>In the reference F# implementation, this is referred to as "the additive 
      * correction of a single-sided truncated Gaussian with unit variance."</remarks>
      * @param teamPerformanceDifference 
-     * @param drawMargin In the paper, it's referred to as just "ε".
+     * @param drawMargin In the paper, it's referred to as just "?".
      * @returns 
      */
     public static double VExceedsMargin(double teamPerformanceDifference, double drawMargin, double c)

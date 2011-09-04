@@ -34,9 +34,9 @@ public class DuellingEloCalculator extends SkillCalculator {
         // On page 6 of the TrueSkill paper, the authors write:
         /* "When we had to process a team game or a game with more than two 
          * teams we used the so-called *duelling* heuristic: For each player, 
-         * compute the Δ's in comparison to all other players based on the team 
+         * compute the ?'s in comparison to all other players based on the team 
          * outcome of the player and every other player and perform an update 
-         * with the average of the Δ's." 
+         * with the average of the ?'s." 
          */
         // This implements that algorithm.
 
