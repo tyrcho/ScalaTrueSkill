@@ -2,15 +2,16 @@ package jskills.factorgraphs;
 
 public class VariableFactory<TValue> {
 
-    // using a Func<TValue> to encourage fresh copies in case it's overwritten
-    protected final Func<TValue> variablePriorInitializer;
+	// using a Func<TValue> to encourage fresh copies in case it's overwritten
+	protected final Func<TValue> variablePriorInitializer;
 
-    public VariableFactory(Func<TValue> variablePriorInitializer) {
-        this.variablePriorInitializer = variablePriorInitializer;
-    }
+	public VariableFactory(Func<TValue> variablePriorInitializer) {
+		this.variablePriorInitializer = variablePriorInitializer;
+	}
 
-    public Variable<TValue> createBasicVariable(String nameFormat, Object... args) {
-        return new Variable<TValue>(String.format(nameFormat, args), 
-                                    variablePriorInitializer.eval());
-    }
+	public Variable<TValue> createBasicVariable(String nameFormat,
+			Object... args) {
+		return new Variable<TValue>(variablePriorInitializer.eval(),
+				String.format(nameFormat, args));
+	}
 }
