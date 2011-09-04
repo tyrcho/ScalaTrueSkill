@@ -3,6 +3,7 @@
 	<classpathentry excluding="jskills/factorgraphs/KeyedVariableFactory.java|jskills/factorgraphs/VariableFactory.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/lombok.jar" sourcepath="lib/lombok.zip"/>
 	<classpathentry kind="lib" path="lib/testng.jar" sourcepath="lib/testng.zip"/>
 	<classpathentry kind="lib" path="lib/ejml-0.11.jar" sourcepath="lib/ejml-0.11-src.zip"/>
