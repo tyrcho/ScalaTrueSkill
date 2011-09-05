@@ -37,13 +37,14 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
     // This implements that algorithm.
 
     validateTeamCountAndPlayersCountPerTeam(teams);
-    val teamsl = RankSorter.sort(teams, teamRanks: _*);
+    val tr = teamRanks.toList.toArray[Int]
+    val teamsl = RankSorter.sort(teams, tr);
     val teamsList = teamsl.toArray(new Array[ITeam](0));
 
     val deltas = new HashMap[IPlayer, Map[IPlayer, Double]]();
 
-    for (ixCurrentTeam <- 0 to teamsList.length) {
-      for (ixOtherTeam <- 0 to teamsList.length) {
+    for (ixCurrentTeam <- 0 until teamsList.length) {
+      for (ixOtherTeam <- 0 until teamsList.length) {
         if (ixOtherTeam != ixCurrentTeam) {
 
           val currentTeam = teamsList(ixCurrentTeam);
@@ -53,8 +54,8 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
           // other-current is what we want)
           val comparison = PairwiseComparison
             .fromMultiplier(Math
-              .signum(teamRanks(ixOtherTeam)
-                - teamRanks(ixCurrentTeam)));
+              .signum(tr(ixOtherTeam)
+                - tr(ixCurrentTeam)));
 
           for (
             currentTeamPlayerRatingPair <- currentTeam
@@ -125,13 +126,13 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
 
     val teamList = teams.toArray(new Array[ITeam](0))
 
-    for (ixCurrentTeam <- 0 to teamList.length) {
+    for (ixCurrentTeam <- 0 until teamList.length) {
       val currentTeamAverageRating = new EloRating(
         Rating.calcMeanMean(teamList(ixCurrentTeam).values()));
       val currentTeam = new Team(new Player[Integer](ixCurrentTeam),
         currentTeamAverageRating);
 
-      for (ixOtherTeam <- ixCurrentTeam + 1 to teamList.length) {
+      for (ixOtherTeam <- ixCurrentTeam + 1 until teamList.length) {
         val otherTeamAverageRating = new EloRating(
           Rating.calcMeanMean(teamList(ixOtherTeam).values()));
         val otherTeam = new Team(new Player[Integer](ixOtherTeam),
