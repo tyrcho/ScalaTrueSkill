@@ -10,73 +10,74 @@ import jskills.numerics.Range;
  * Base class for all skill calculator implementations.
  */
 public abstract class SkillCalculator {
-    
-    public enum SupportedOptions { PartialPlay, PartialUpdate; }
 
-    private final EnumSet<SupportedOptions> supportedOptions;
-    private final Range<IPlayer> playersPerTeamAllowed;
-    private final Range<ITeam> totalTeamsAllowed;
-    
-    protected SkillCalculator(EnumSet<SupportedOptions> supportedOptions,
-                              Range<ITeam> totalTeamsAllowed, 
-                              Range<IPlayer> playerPerTeamAllowed) {
-        this.supportedOptions = supportedOptions;
-        this.totalTeamsAllowed = totalTeamsAllowed;
-        this.playersPerTeamAllowed = playerPerTeamAllowed;
-    }
+	public enum SupportedOptions {
+		PartialPlay, PartialUpdate;
+	}
 
-    public boolean isSupported(SupportedOptions option) {
-        return supportedOptions.contains(option);
-    }
-    
-    /**
-     * Calculates new ratings based on the prior ratings and team ranks.
-     * 
-     * @param gameInfo
-     *            Parameters for the game.
-     * @param teams
-     *            A mapping of team players and their ratings.
-     * @param teamRanks
-     *            The ranks of the teams where 1 is first place. For a tie,
-     *            repeat the number (e.g. 1, 2, 2)
-     * @returns All the players and their new ratings.
-     */
-    public abstract Map<IPlayer, Rating> calculateNewRatings(GameInfo gameInfo,
-            Collection<ITeam> teams, int... teamRanks);
+	private final EnumSet<SupportedOptions> supportedOptions;
+	private final Range playersPerTeamAllowed;
+	private final Range totalTeamsAllowed;
 
-    /**
-     * Calculates the match quality as the likelihood of all teams drawing.
-     * 
-     * @param gameInfo
-     *            Parameters for the game.
-     * @param teams
-     *            A mapping of team players and their ratings.
-     * @returns The quality of the match between the teams as a percentage (0% =
-     *          bad, 100% = well matched).
-     */
-    public abstract double calculateMatchQuality(GameInfo gameInfo,
-            Collection<ITeam> teams);
+	protected SkillCalculator(EnumSet<SupportedOptions> supportedOptions,
+			Range totalTeamsAllowed, Range playerPerTeamAllowed) {
+		this.supportedOptions = supportedOptions;
+		this.totalTeamsAllowed = totalTeamsAllowed;
+		this.playersPerTeamAllowed = playerPerTeamAllowed;
+	}
 
-    protected void validateTeamCountAndPlayersCountPerTeam(
-            Collection<ITeam> teams) {
-        validateTeamCountAndPlayersCountPerTeam(teams, totalTeamsAllowed, playersPerTeamAllowed);
-    }
+	public boolean isSupported(SupportedOptions option) {
+		return supportedOptions.contains(option);
+	}
 
-    private static void validateTeamCountAndPlayersCountPerTeam(
-            Collection<ITeam> teams, 
-            Range<ITeam> totalTeams,
-            Range<IPlayer> playersPerTeam) {
-        Guard.argumentNotNull(teams, "teams");
-        int countOfTeams = 0;
-        for (ITeam currentTeam : teams) {
-            if (!playersPerTeam.isInRange(currentTeam.size())) {
-                throw new IllegalArgumentException();
-            }
-            countOfTeams++;
-        }
+	/**
+	 * Calculates new ratings based on the prior ratings and team ranks.
+	 * 
+	 * @param gameInfo
+	 *            Parameters for the game.
+	 * @param teams
+	 *            A mapping of team players and their ratings.
+	 * @param teamRanks
+	 *            The ranks of the teams where 1 is first place. For a tie,
+	 *            repeat the number (e.g. 1, 2, 2)
+	 * @returns All the players and their new ratings.
+	 */
+	public abstract Map<IPlayer, Rating> calculateNewRatings(GameInfo gameInfo,
+			Collection<ITeam> teams, int... teamRanks);
 
-        if (!totalTeams.isInRange(countOfTeams)) {
-            throw new IllegalArgumentException();
-        }
-    }
+	/**
+	 * Calculates the match quality as the likelihood of all teams drawing.
+	 * 
+	 * @param gameInfo
+	 *            Parameters for the game.
+	 * @param teams
+	 *            A mapping of team players and their ratings.
+	 * @returns The quality of the match between the teams as a percentage (0% =
+	 *          bad, 100% = well matched).
+	 */
+	public abstract double calculateMatchQuality(GameInfo gameInfo,
+			Collection<ITeam> teams);
+
+	protected void validateTeamCountAndPlayersCountPerTeam(
+			Collection<ITeam> teams) {
+		validateTeamCountAndPlayersCountPerTeam(teams, totalTeamsAllowed,
+				playersPerTeamAllowed);
+	}
+
+	private static void validateTeamCountAndPlayersCountPerTeam(
+			Collection<ITeam> teams, Range totalTeams,
+			Range playersPerTeam) {
+		Guard.argumentNotNull(teams, "teams");
+		int countOfTeams = 0;
+		for (ITeam currentTeam : teams) {
+			if (!playersPerTeam.isInRange(currentTeam.size())) {
+				throw new IllegalArgumentException();
+			}
+			countOfTeams++;
+		}
+
+		if (!totalTeams.isInRange(countOfTeams)) {
+			throw new IllegalArgumentException();
+		}
+	}
 }
