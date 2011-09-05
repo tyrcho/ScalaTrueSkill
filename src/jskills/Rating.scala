@@ -18,17 +18,17 @@ object Rating {
     // posterior skills of each player ... in the canonical space of
     // parameters"
 
-    val precisionDifference = posteriorGaussian.getPrecision() - priorGaussian.getPrecision();
+    val precisionDifference = posteriorGaussian.precision - priorGaussian.precision;
     val partialPrecisionDifference = updatePercentage * precisionDifference;
 
-    val precisionMeanDifference = posteriorGaussian.getPrecisionMean() - priorGaussian.getPrecisionMean();
+    val precisionMeanDifference = posteriorGaussian.precisionMean - priorGaussian.precisionMean;
     val partialPrecisionMeanDifference = updatePercentage * precisionMeanDifference;
 
     val partialPosteriorGaussion = GaussianDistribution.fromPrecisionMean(
-      priorGaussian.getPrecisionMean() + partialPrecisionMeanDifference,
-      priorGaussian.getPrecision() + partialPrecisionDifference);
+      priorGaussian.precisionMean + partialPrecisionMeanDifference,
+      priorGaussian.precision + partialPrecisionDifference);
 
-    new Rating(partialPosteriorGaussion.getMean(), partialPosteriorGaussion.getStandardDeviation(),
+    new Rating(partialPosteriorGaussion.mean, partialPosteriorGaussion.standardDeviation,
       prior.getConservativeStandardDeviationMultiplier());
   }
 

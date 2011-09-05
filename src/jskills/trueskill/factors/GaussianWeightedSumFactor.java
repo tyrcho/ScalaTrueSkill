@@ -1,7 +1,7 @@
 package jskills.trueskill.factors;
 
 import static jskills.numerics.GaussianDistribution.divide;
-import static jskills.numerics.GaussianDistribution.mult;
+import static jskills.numerics.GaussianDistribution.prod;
 import static jskills.numerics.GaussianDistribution.sub;
 
 import java.util.ArrayList;
@@ -189,7 +189,7 @@ public class GaussianWeightedSumFactor extends GaussianFactor
         if(!newMessage.equals(anotherNewMessage))
             throw new RuntimeException("newMessage and anotherNewMessage aren't the same");
 
-        GaussianDistribution newMarginal = mult(oldMarginalWithoutMessage,newMessage);
+        GaussianDistribution newMarginal = prod(oldMarginalWithoutMessage,newMessage);
 
         // Update the message and marginal
 

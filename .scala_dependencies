@@ -1,18 +1,18 @@
 T:\dev\java\workspace\scala\ScalaTrueSkill\bin;D:\eclipse-jee-helios-SR2-win32\configuration\org.eclipse.osgi\bundles\728\1\.cp\lib\scala-library.jar;D:\eclipse-jee-helios-SR2-win32\configuration\org.eclipse.osgi\bundles\728\1\.cp\lib\scala-dbc.jar;D:\eclipse-jee-helios-SR2-win32\configuration\org.eclipse.osgi\bundles\728\1\.cp\lib\scala-swing.jar;C:\Program Files (x86)\Java\jre6\lib\resources.jar;C:\Program Files (x86)\Java\jre6\lib\rt.jar;C:\Program Files (x86)\Java\jre6\lib\jsse.jar;C:\Program Files (x86)\Java\jre6\lib\jce.jar;C:\Program Files (x86)\Java\jre6\lib\charsets.jar;C:\Program Files (x86)\Java\jre6\lib\ext\dnsns.jar;C:\Program Files (x86)\Java\jre6\lib\ext\localedata.jar;C:\Program Files (x86)\Java\jre6\lib\ext\QTJava.zip;C:\Program Files (x86)\Java\jre6\lib\ext\sunjce_provider.jar;C:\Program Files (x86)\Java\jre6\lib\ext\sunmscapi.jar;C:\Program Files (x86)\Java\jre6\lib\ext\sunpkcs11.jar;T:\dev\java\workspace\scala\ScalaTrueSkill\lib\ejml-0.11.jar;T:\dev\java\workspace\scala\ScalaTrueSkill\lib\lombok.jar;T:\dev\java\workspace\scala\ScalaTrueSkill\lib\testng.jar
 -------
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Rating.scala
-T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java
-T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\IPlayer.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\SkillCalculator.java
+T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\IPlayer.java
+T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\ITeam.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\GameInfo.scala
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\PairwiseComparison.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\PairwiseComparison.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\trueskill\layers\TrueSkillFactorGraphLayer.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\factorgraphs\Variable.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\trueskill\layers\TrueSkillFactorGraphLayer.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\factorgraphs\Factor.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\trueskill\layers\TrueSkillFactorGraphLayer.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\factorgraphs\FactorGraphLayer.java
+T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\trueskill\layers\TrueSkillFactorGraphLayer.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.scala
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\trueskill\layers\TrueSkillFactorGraphLayer.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\trueskill\TrueSkillFactorGraph.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\trueskill\layers\TrueSkillFactorGraphLayer.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\trueskill\layers\TrueSkillFactorGraphLayer.java
-T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\trueskill\layers\TrueSkillFactorGraphLayer.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\EloRating.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Rating.scala
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\factorgraphs\FactorGraphLayerBase.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\factorgraphs\Factor.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\factorgraphs\FactorGraphLayerBase.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\factorgraphs\Schedule.java
@@ -20,9 +20,9 @@ T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\factorgraphs\FactorGraphL
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\RankSorter.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Guard.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\RankSorter.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\RankSorter.scala
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\SkillCalculator.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Rating.scala
-T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\SkillCalculator.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\Range.scala
-T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\SkillCalculator.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\IPlayer.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\SkillCalculator.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\SkillCalculator.java
+T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\SkillCalculator.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\IPlayer.java
+T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\SkillCalculator.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\Range.scala
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\SkillCalculator.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\ITeam.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\SkillCalculator.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\GameInfo.scala
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\MathUtils.scala
@@ -30,11 +30,11 @@ T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Rating.scala
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Player.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Team.java
-T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\SkillCalculator.java
-T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\Range.scala
-T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\IPlayer.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java
+T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\SkillCalculator.java
+T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\IPlayer.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\EloRating.java
+T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\Range.scala
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\PairwiseComparison.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\ITeam.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\GameInfo.scala
@@ -46,7 +46,7 @@ T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\ITeam.java -> T:\dev\java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\ITeam.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\IPlayer.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Rating.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\MathUtils.scala
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Rating.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Rating.scala
-T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Rating.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.java
+T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Rating.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.scala
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\MathUtils.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\MathUtils.scala
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\Range.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\Range.scala
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\factorgraphs\FactorGraphLayer.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\factorgraphs\Variable.java
@@ -64,10 +64,11 @@ T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Player.java -> T:\dev\jav
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Player.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Player.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Player.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\IPlayer.java
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Player.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\ISupportPartialPlay.java
-T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Rating.scala
-T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.java
+T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\MathUtils.scala
+T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Rating.scala
+T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.scala
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\trueskill\factors\GaussianFactor.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\factorgraphs\Factor.java
-T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\trueskill\factors\GaussianFactor.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.java
+T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\trueskill\factors\GaussianFactor.java -> T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.scala
 -------
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\GameInfo.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\bin\jskills\GameInfo.class
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\GameInfo.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\bin\jskills\GameInfo$.class
@@ -85,9 +86,13 @@ T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Rating.scala -> T:\dev\ja
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\Rating.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\bin\jskills\Rating$.class
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\MathUtils.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\bin\jskills\numerics\MathUtils$.class
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\MathUtils.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\bin\jskills\numerics\MathUtils.class
+T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\bin\jskills\numerics\GaussianDistribution.class
+T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\bin\jskills\numerics\GaussianDistribution$$anonfun$InverseErrorFunctionCumulativeTo$1.class
+T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\bin\jskills\numerics\GaussianDistribution$$anonfun$errorFunctionCumulativeTo$1.class
+T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\bin\jskills\numerics\GaussianDistribution$.class
+T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\Range.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\bin\jskills\numerics\Range.class
+T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\Range.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\bin\jskills\numerics\Range$.class
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\RankSorter.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\bin\jskills\RankSorter$$anonfun$sort$1.class
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\RankSorter.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\bin\jskills\RankSorter$$anonfun$1.class
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\RankSorter.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\bin\jskills\RankSorter.class
 T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\RankSorter.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\bin\jskills\RankSorter$.class
-T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\Range.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\bin\jskills\numerics\Range.class
-T:\dev\java\workspace\scala\ScalaTrueSkill\src\jskills\numerics\Range.scala -> T:\dev\java\workspace\scala\ScalaTrueSkill\bin\jskills\numerics\Range$.class
