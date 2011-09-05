@@ -65,8 +65,7 @@ public abstract class SkillCalculator {
 	}
 
 	private static void validateTeamCountAndPlayersCountPerTeam(
-			Collection<ITeam> teams, Range totalTeams,
-			Range playersPerTeam) {
+			Collection<ITeam> teams, Range totalTeams, Range playersPerTeam) {
 		Guard.argumentNotNull(teams, "teams");
 		int countOfTeams = 0;
 		for (ITeam currentTeam : teams) {
