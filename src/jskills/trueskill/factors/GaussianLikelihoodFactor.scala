@@ -23,20 +23,16 @@ class GaussianLikelihoodFactor(betaSquared: Double, variable1: Variable[Gaussian
     message2: Message[GaussianDistribution],
     variable1: Variable[GaussianDistribution],
     variable2: Variable[GaussianDistribution]): Double = {
-    val message1Value = new GaussianDistribution(
-      message1.getValue())
-    val message2Value = new GaussianDistribution(
-      message2.getValue())
+    val message1Value = new GaussianDistribution(message1.getValue())
+    val message2Value = new GaussianDistribution(message2.getValue())
 
-    val marginal1 = new GaussianDistribution(
-      variable1.getValue())
-    val marginal2 = new GaussianDistribution(
-      variable2.getValue())
+    val marginal1 = new GaussianDistribution(variable1.getValue())
+    val marginal2 = new GaussianDistribution(variable2.getValue())
 
-    val a = precision / (precision + marginal2.getPrecision() - message2Value
-      .getPrecision())
+    val a = precision / (precision + marginal2.getPrecision() - message2Value.getPrecision())
 
-    val newMessage = GaussianDistribution.fromPrecisionMean(a * (marginal2.getPrecisionMean() - message2Value.getPrecisionMean()),
+    val newMessage = GaussianDistribution.fromPrecisionMean(
+      a * (marginal2.getPrecisionMean() - message2Value.getPrecisionMean()),
       a * (marginal2.getPrecision() - message2Value.getPrecision()))
 
     val oldMarginalWithoutMessage = divide(marginal1, message1Value)

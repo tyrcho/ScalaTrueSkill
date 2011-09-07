@@ -20,20 +20,15 @@ class GaussianWithinFactor(epsilon: Double, variable: Variable[GaussianDistribut
     val messageFromVariable = divide(marginal, message)
     val mean = messageFromVariable.getMean()
     val std = messageFromVariable.getStandardDeviation()
-    val z = cumulativeTo((epsilon - mean) / std)
-    -cumulativeTo((-epsilon - mean) / std)
+    val z = cumulativeTo((epsilon - mean) / std) - cumulativeTo((-epsilon - mean) / std)
 
-    return -logProductNormalization(messageFromVariable, message)
-    +Math.log(z)
+    return -logProductNormalization(messageFromVariable, message) + Math.log(z)
   }
 
   override protected def updateMessage(message: Message[GaussianDistribution], variable: Variable[GaussianDistribution]): Double = {
-    val oldMarginal = new GaussianDistribution(
-      variable.getValue())
-    val oldMessage = new GaussianDistribution(
-      message.getValue())
-    val messageFromVariable = divide(oldMarginal,
-      oldMessage)
+    val oldMarginal = new GaussianDistribution(variable.getValue())
+    val oldMessage = new GaussianDistribution(message.getValue())
+    val messageFromVariable = divide(oldMarginal, oldMessage)
 
     val c = messageFromVariable.getPrecision()
     var d = messageFromVariable.getPrecisionMean()

@@ -13,7 +13,7 @@ import jskills.numerics.GaussianDistribution
 import collection.JavaConversions._
 
 object GaussianWeightedSumFactor {
-  def CreateName(sumVariable: Variable[GaussianDistribution],
+  def createName(sumVariable: Variable[GaussianDistribution],
     variablesToSum: List[_ <: Variable[GaussianDistribution]],
     weights: Array[Double]): String =
     {
@@ -55,7 +55,7 @@ class GaussianWeightedSumFactor(
   sumVariable: Variable[GaussianDistribution],
   variablesToSum: List[_ <: Variable[GaussianDistribution]],
   var variableWeights: Array[Double] = null)
-  extends GaussianFactor(GaussianWeightedSumFactor.CreateName(sumVariable, variablesToSum, variableWeights)) // By default, set the weight to 1.0, which is what null indicates
+  extends GaussianFactor(GaussianWeightedSumFactor.createName(sumVariable, variablesToSum, variableWeights)) // By default, set the weight to 1.0, which is what null indicates
   {
   val variableIndexOrdersForWeights = new ArrayList[Array[Int]]()
 
@@ -132,9 +132,7 @@ class GaussianWeightedSumFactor(
 
   CreateVariableToMessageBinding(sumVariable)
 
-  for (currentVariable <- variablesToSum) {
-    CreateVariableToMessageBinding(currentVariable)
-  }
+  variablesToSum foreach CreateVariableToMessageBinding
 
   override def getLogNormalization(): Double = {
     val vars = getVariables()

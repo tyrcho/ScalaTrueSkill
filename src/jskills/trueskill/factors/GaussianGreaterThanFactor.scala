@@ -17,15 +17,12 @@ class GaussianGreaterThanFactor(epsilon: Double, variable: Variable[GaussianDist
     val message = getMessages().get(0).getValue()
     val messageFromVariable = divide(marginal, message)
     return -logProductNormalization(messageFromVariable, message)
-    +Math.log(cumulativeTo((messageFromVariable.getMean() - epsilon)
-      / messageFromVariable.getStandardDeviation()))
+    +Math.log(cumulativeTo((messageFromVariable.getMean() - epsilon) / messageFromVariable.getStandardDeviation()))
   }
 
   override protected def updateMessage(message: Message[GaussianDistribution], variable: Variable[GaussianDistribution]): Double = {
-    val oldMarginal = new GaussianDistribution(
-      variable.getValue())
-    val oldMessage = new GaussianDistribution(
-      message.getValue())
+    val oldMarginal = new GaussianDistribution(variable.getValue())
+    val oldMessage = new GaussianDistribution(message.getValue())
     val messageFromVar = divide(oldMarginal, oldMessage)
 
     val c = messageFromVar.getPrecision()

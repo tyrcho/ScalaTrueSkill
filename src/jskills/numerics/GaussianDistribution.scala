@@ -85,6 +85,7 @@ object GaussianDistribution {
     val pp = if (p < 1.0) p else 2 - p;
     val t = sqrt(-2 * log(pp / 2.0)); // Initial guess
     var x = -0.70711 * ((2.30753 + t * 0.27061) / (1.0 + t * (0.99229 + t * 0.04481)) - t);
+
     for (j <- 0 until 2) {
       val err = errorFunctionCumulativeTo(x) - pp;
       x += err / (1.1283791670955126 * exp(-(x * x)) - x * err); // Halley

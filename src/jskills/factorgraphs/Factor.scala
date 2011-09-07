@@ -30,10 +30,7 @@ abstract class Factor[T](@BeanProperty name: String) {
     throw new UnsupportedOperationException();
 
   /** Resets the marginal of the variables a factor is connected to **/
-  def ResetMarginals() {
-    for (variable <- messageToVariableBinding.values())
-      variable.resetToPrior();
-  }
+  def ResetMarginals() { messageToVariableBinding.values foreach (_.resetToPrior) }
 
   /**
    * Sends the ith message to the marginal and returns the log-normalization
