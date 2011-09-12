@@ -16,9 +16,10 @@ import jskills.Rating
 import jskills.SkillCalculator
 import jskills.Team
 import jskills.numerics.MathUtils
-import jskills.numerics.Range;
+import jskills.numerics.Range
 import jskills.SkillCalculator.SupportedOptions
 import collection.JavaConversions._
+import java.util.Arrays
 
 class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
   extends SkillCalculator(EnumSet.noneOf(classOf[SupportedOptions]), Range.atLeast(2), Range
@@ -105,7 +106,7 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
     player2Rating: Rating,
     weakToStrongComparison: PairwiseComparison) {
 
-    val t1 = Team.concat(new Team(player1, player1Rating), new Team(player2, player2Rating))
+    val t1 = Arrays.asList(new Team(player2, player2Rating).asInstanceOf[ITeam], new Team(player1, player1Rating).asInstanceOf[ITeam])
 
     val duelOutcomes = if (weakToStrongComparison == PairwiseComparison.WIN)
       twoPlayerEloCalculator.calculateNewRatings(gameInfo, t1, 1, 2)
@@ -140,7 +141,7 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
 
         minQuality = Math.min(
           minQuality, twoPlayerEloCalculator.calculateMatchQuality(gameInfo,
-            Team.concat(currentTeam, otherTeam)));
+            Arrays.asList(currentTeam, otherTeam)));
       }
     }
 

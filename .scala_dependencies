@@ -1,22 +1,22 @@
 E:\ScalaTrueSkill\bin;E:\dev\eclipse\eclipse-jee-helios-SR2-win32\configuration\org.eclipse.osgi\bundles\728\1\.cp\lib\scala-library.jar;E:\dev\eclipse\eclipse-jee-helios-SR2-win32\configuration\org.eclipse.osgi\bundles\728\1\.cp\lib\scala-dbc.jar;E:\dev\eclipse\eclipse-jee-helios-SR2-win32\configuration\org.eclipse.osgi\bundles\728\1\.cp\lib\scala-swing.jar;C:\Program Files\Java\jre6\lib\resources.jar;C:\Program Files\Java\jre6\lib\rt.jar;C:\Program Files\Java\jre6\lib\jsse.jar;C:\Program Files\Java\jre6\lib\jce.jar;C:\Program Files\Java\jre6\lib\charsets.jar;C:\Program Files\Java\jre6\lib\ext\dnsns.jar;C:\Program Files\Java\jre6\lib\ext\localedata.jar;C:\Program Files\Java\jre6\lib\ext\QTJava.zip;C:\Program Files\Java\jre6\lib\ext\sunjce_provider.jar;C:\Program Files\Java\jre6\lib\ext\sunmscapi.jar;C:\Program Files\Java\jre6\lib\ext\sunpkcs11.jar;C:\Program Files\Java\jre6\lib\ext\__skillsoftLoaded.jar;E:\ScalaTrueSkill\lib\ejml-0.11.jar;E:\ScalaTrueSkill\lib\lombok.jar;E:\ScalaTrueSkill\lib\testng.jar
 -------
-E:\ScalaTrueSkill\src\jskills\ITeam.scala -> E:\ScalaTrueSkill\src\jskills\Rating.scala
 E:\ScalaTrueSkill\src\jskills\ITeam.scala -> E:\ScalaTrueSkill\src\jskills\IPlayer.scala
+E:\ScalaTrueSkill\src\jskills\ITeam.scala -> E:\ScalaTrueSkill\src\jskills\Rating.scala
 E:\ScalaTrueSkill\src\jskills\trueskill\layers\TrueSkillFactorGraphLayer.java -> E:\ScalaTrueSkill\src\jskills\factorgraphs\FactorGraphLayer.java
 E:\ScalaTrueSkill\src\jskills\trueskill\layers\TrueSkillFactorGraphLayer.java -> E:\ScalaTrueSkill\src\jskills\factorgraphs\Variable.scala
 E:\ScalaTrueSkill\src\jskills\trueskill\layers\TrueSkillFactorGraphLayer.java -> E:\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.scala
-E:\ScalaTrueSkill\src\jskills\trueskill\layers\TrueSkillFactorGraphLayer.java -> E:\ScalaTrueSkill\src\jskills\trueskill\TrueSkillFactorGraph.java
-E:\ScalaTrueSkill\src\jskills\trueskill\layers\TrueSkillFactorGraphLayer.java -> E:\ScalaTrueSkill\src\jskills\factorgraphs\Factor.scala
 E:\ScalaTrueSkill\src\jskills\trueskill\layers\TrueSkillFactorGraphLayer.java -> E:\ScalaTrueSkill\src\jskills\trueskill\layers\TrueSkillFactorGraphLayer.java
+E:\ScalaTrueSkill\src\jskills\trueskill\layers\TrueSkillFactorGraphLayer.java -> E:\ScalaTrueSkill\src\jskills\factorgraphs\Factor.scala
+E:\ScalaTrueSkill\src\jskills\trueskill\layers\TrueSkillFactorGraphLayer.java -> E:\ScalaTrueSkill\src\jskills\trueskill\TrueSkillFactorGraph.java
 E:\ScalaTrueSkill\src\jskills\factorgraphs\FactorGraphLayerBase.java -> E:\ScalaTrueSkill\src\jskills\factorgraphs\Schedule.java
 E:\ScalaTrueSkill\src\jskills\factorgraphs\FactorGraphLayerBase.java -> E:\ScalaTrueSkill\src\jskills\factorgraphs\Factor.scala
 E:\ScalaTrueSkill\src\jskills\factorgraphs\FactorGraphLayerBase.java -> E:\ScalaTrueSkill\src\jskills\factorgraphs\FactorGraphLayerBase.java
 E:\ScalaTrueSkill\src\jskills\RankSorter.scala -> E:\ScalaTrueSkill\src\jskills\Guard.scala
 E:\ScalaTrueSkill\src\jskills\RankSorter.scala -> E:\ScalaTrueSkill\src\jskills\RankSorter.scala
-E:\ScalaTrueSkill\src\jskills\SkillCalculator.java -> E:\ScalaTrueSkill\src\jskills\Rating.scala
 E:\ScalaTrueSkill\src\jskills\SkillCalculator.java -> E:\ScalaTrueSkill\src\jskills\IPlayer.scala
-E:\ScalaTrueSkill\src\jskills\SkillCalculator.java -> E:\ScalaTrueSkill\src\jskills\numerics\Range.scala
+E:\ScalaTrueSkill\src\jskills\SkillCalculator.java -> E:\ScalaTrueSkill\src\jskills\Rating.scala
 E:\ScalaTrueSkill\src\jskills\SkillCalculator.java -> E:\ScalaTrueSkill\src\jskills\ITeam.scala
+E:\ScalaTrueSkill\src\jskills\SkillCalculator.java -> E:\ScalaTrueSkill\src\jskills\numerics\Range.scala
 E:\ScalaTrueSkill\src\jskills\SkillCalculator.java -> E:\ScalaTrueSkill\src\jskills\SkillCalculator.java
 E:\ScalaTrueSkill\src\jskills\SkillCalculator.java -> E:\ScalaTrueSkill\src\jskills\GameInfo.scala
 E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerPriorValuesToSkillsLayer.scala -> E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerPriorValuesToSkillsLayer.scala
@@ -46,9 +46,9 @@ E:\ScalaTrueSkill\src\jskills\factorgraphs\ScheduleStep.java -> E:\ScalaTrueSkil
 E:\ScalaTrueSkill\src\jskills\GameInfo.scala -> E:\ScalaTrueSkill\src\jskills\Rating.scala
 E:\ScalaTrueSkill\src\jskills\GameInfo.scala -> E:\ScalaTrueSkill\src\jskills\GameInfo.scala
 E:\ScalaTrueSkill\src\jskills\Player.java -> E:\ScalaTrueSkill\src\jskills\IPlayer.scala
-E:\ScalaTrueSkill\src\jskills\Player.java -> E:\ScalaTrueSkill\src\jskills\ISupportPartialUpdate.java
+E:\ScalaTrueSkill\src\jskills\Player.java -> E:\ScalaTrueSkill\src\jskills\ISupportPartialUpdate.scala
+E:\ScalaTrueSkill\src\jskills\Player.java -> E:\ScalaTrueSkill\src\jskills\ISupportPartialPlay.scala
 E:\ScalaTrueSkill\src\jskills\Player.java -> E:\ScalaTrueSkill\src\jskills\Player.java
-E:\ScalaTrueSkill\src\jskills\Player.java -> E:\ScalaTrueSkill\src\jskills\ISupportPartialPlay.java
 E:\ScalaTrueSkill\src\jskills\elo\EloRating.scala -> E:\ScalaTrueSkill\src\jskills\Rating.scala
 E:\ScalaTrueSkill\src\jskills\elo\EloRating.scala -> E:\ScalaTrueSkill\src\jskills\elo\EloRating.scala
 E:\ScalaTrueSkill\src\jskills\Guard.scala -> E:\ScalaTrueSkill\src\jskills\Guard.scala
@@ -96,9 +96,9 @@ E:\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> E:\ScalaTrueSki
 E:\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> E:\ScalaTrueSkill\src\jskills\IPlayer.scala
 E:\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> E:\ScalaTrueSkill\src\jskills\Player.java
 E:\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> E:\ScalaTrueSkill\src\jskills\ITeam.scala
-E:\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> E:\ScalaTrueSkill\src\jskills\SkillCalculator.java
 E:\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> E:\ScalaTrueSkill\src\jskills\numerics\Range.scala
 E:\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> E:\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java
+E:\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> E:\ScalaTrueSkill\src\jskills\SkillCalculator.java
 E:\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> E:\ScalaTrueSkill\src\jskills\Team.scala
 E:\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> E:\ScalaTrueSkill\src\jskills\PairwiseComparison.java
 E:\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> E:\ScalaTrueSkill\src\jskills\GameInfo.scala
@@ -108,8 +108,8 @@ E:\ScalaTrueSkill\src\jskills\numerics\MathUtils.scala -> E:\ScalaTrueSkill\src\
 E:\ScalaTrueSkill\src\jskills\numerics\Range.scala -> E:\ScalaTrueSkill\src\jskills\numerics\Range.scala
 E:\ScalaTrueSkill\src\jskills\factorgraphs\FactorGraph.java -> E:\ScalaTrueSkill\src\jskills\factorgraphs\FactorGraph.java
 E:\ScalaTrueSkill\src\jskills\trueskill\factors\GaussianWithinFactor.scala -> E:\ScalaTrueSkill\src\jskills\factorgraphs\Variable.scala
-E:\ScalaTrueSkill\src\jskills\trueskill\factors\GaussianWithinFactor.scala -> E:\ScalaTrueSkill\src\jskills\trueskill\factors\GaussianFactor.scala
 E:\ScalaTrueSkill\src\jskills\trueskill\factors\GaussianWithinFactor.scala -> E:\ScalaTrueSkill\src\jskills\trueskill\factors\GaussianWithinFactor.scala
+E:\ScalaTrueSkill\src\jskills\trueskill\factors\GaussianWithinFactor.scala -> E:\ScalaTrueSkill\src\jskills\trueskill\factors\GaussianFactor.scala
 E:\ScalaTrueSkill\src\jskills\trueskill\factors\GaussianWithinFactor.scala -> E:\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.scala
 E:\ScalaTrueSkill\src\jskills\trueskill\factors\GaussianWithinFactor.scala -> E:\ScalaTrueSkill\src\jskills\factorgraphs\Factor.scala
 E:\ScalaTrueSkill\src\jskills\trueskill\factors\GaussianWithinFactor.scala -> E:\ScalaTrueSkill\src\jskills\trueskill\TruncatedGaussianCorrectionFunctions.java
@@ -122,14 +122,14 @@ E:\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java -> E:\ScalaTrueSki
 E:\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java -> E:\ScalaTrueSkill\src\jskills\IPlayer.scala
 E:\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java -> E:\ScalaTrueSkill\src\jskills\elo\KFactor.scala
 E:\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java -> E:\ScalaTrueSkill\src\jskills\ITeam.scala
-E:\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java -> E:\ScalaTrueSkill\src\jskills\SkillCalculator.java
 E:\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java -> E:\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java
+E:\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java -> E:\ScalaTrueSkill\src\jskills\SkillCalculator.java
 E:\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java -> E:\ScalaTrueSkill\src\jskills\PairwiseComparison.java
 E:\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java -> E:\ScalaTrueSkill\src\jskills\GameInfo.scala
 E:\ScalaTrueSkill\src\jskills\elo\TwoPlayerEloCalculator.java -> E:\ScalaTrueSkill\src\jskills\elo\EloRating.scala
 E:\ScalaTrueSkill\src\jskills\PairwiseComparison.java -> E:\ScalaTrueSkill\src\jskills\PairwiseComparison.java
-E:\ScalaTrueSkill\src\jskills\Team.scala -> E:\ScalaTrueSkill\src\jskills\Rating.scala
 E:\ScalaTrueSkill\src\jskills\Team.scala -> E:\ScalaTrueSkill\src\jskills\IPlayer.scala
+E:\ScalaTrueSkill\src\jskills\Team.scala -> E:\ScalaTrueSkill\src\jskills\Rating.scala
 E:\ScalaTrueSkill\src\jskills\Team.scala -> E:\ScalaTrueSkill\src\jskills\ITeam.scala
 E:\ScalaTrueSkill\src\jskills\Team.scala -> E:\ScalaTrueSkill\src\jskills\Team.scala
 E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerSkillsToPerformancesLayer.scala -> E:\ScalaTrueSkill\src\jskills\numerics\MathUtils.scala
@@ -141,9 +141,9 @@ E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerSkillsToPerformancesLayer.s
 E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerSkillsToPerformancesLayer.scala -> E:\ScalaTrueSkill\src\jskills\factorgraphs\Schedule.java
 E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerSkillsToPerformancesLayer.scala -> E:\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.scala
 E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerSkillsToPerformancesLayer.scala -> E:\ScalaTrueSkill\src\jskills\trueskill\factors\GaussianLikelihoodFactor.scala
-E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerSkillsToPerformancesLayer.scala -> E:\ScalaTrueSkill\src\jskills\trueskill\TrueSkillFactorGraph.java
-E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerSkillsToPerformancesLayer.scala -> E:\ScalaTrueSkill\src\jskills\GameInfo.scala
 E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerSkillsToPerformancesLayer.scala -> E:\ScalaTrueSkill\src\jskills\trueskill\layers\TrueSkillFactorGraphLayer.java
+E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerSkillsToPerformancesLayer.scala -> E:\ScalaTrueSkill\src\jskills\GameInfo.scala
+E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerSkillsToPerformancesLayer.scala -> E:\ScalaTrueSkill\src\jskills\trueskill\TrueSkillFactorGraph.java
 E:\ScalaTrueSkill\src\jskills\Rating.scala -> E:\ScalaTrueSkill\src\jskills\numerics\MathUtils.scala
 E:\ScalaTrueSkill\src\jskills\Rating.scala -> E:\ScalaTrueSkill\src\jskills\Rating.scala
 E:\ScalaTrueSkill\src\jskills\Rating.scala -> E:\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.scala
@@ -169,9 +169,9 @@ E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerPerformancesToTeamPerforman
 E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerPerformancesToTeamPerformancesLayer.scala -> E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerPerformancesToTeamPerformancesLayer.scala
 E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerPerformancesToTeamPerformancesLayer.scala -> E:\ScalaTrueSkill\src\jskills\trueskill\factors\GaussianWeightedSumFactor.scala
 E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerPerformancesToTeamPerformancesLayer.scala -> E:\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.scala
-E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerPerformancesToTeamPerformancesLayer.scala -> E:\ScalaTrueSkill\src\jskills\trueskill\TrueSkillFactorGraph.java
-E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerPerformancesToTeamPerformancesLayer.scala -> E:\ScalaTrueSkill\src\jskills\factorgraphs\Factor.scala
 E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerPerformancesToTeamPerformancesLayer.scala -> E:\ScalaTrueSkill\src\jskills\trueskill\layers\TrueSkillFactorGraphLayer.java
+E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerPerformancesToTeamPerformancesLayer.scala -> E:\ScalaTrueSkill\src\jskills\factorgraphs\Factor.scala
+E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerPerformancesToTeamPerformancesLayer.scala -> E:\ScalaTrueSkill\src\jskills\trueskill\TrueSkillFactorGraph.java
 -------
 E:\ScalaTrueSkill\src\jskills\trueskill\factors\GaussianGreaterThanFactor.scala -> E:\ScalaTrueSkill\bin\jskills\trueskill\factors\GaussianGreaterThanFactor.class
 E:\ScalaTrueSkill\src\jskills\factorgraphs\Variable.scala -> E:\ScalaTrueSkill\bin\jskills\factorgraphs\Variable.class
@@ -202,6 +202,7 @@ E:\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> E:\ScalaTrueSki
 E:\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> E:\ScalaTrueSkill\bin\jskills\elo\DuellingEloCalculator$$anonfun$calculateNewRatings$2.class
 E:\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> E:\ScalaTrueSkill\bin\jskills\elo\DuellingEloCalculator$$anonfun$calculateNewRatings$2$$anonfun$apply$2.class
 E:\ScalaTrueSkill\src\jskills\elo\DuellingEloCalculator.scala -> E:\ScalaTrueSkill\bin\jskills\elo\DuellingEloCalculator$$anonfun$calculateNewRatings$1$$anonfun$apply$mcVI$sp$1$$anonfun$apply$mcVI$sp$3.class
+E:\ScalaTrueSkill\src\jskills\ISupportPartialPlay.scala -> E:\ScalaTrueSkill\bin\jskills\ISupportPartialPlay.class
 E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerPriorValuesToSkillsLayer.scala -> E:\ScalaTrueSkill\bin\jskills\trueskill\layers\PlayerPriorValuesToSkillsLayer$$anonfun$BuildLayer$1.class
 E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerPriorValuesToSkillsLayer.scala -> E:\ScalaTrueSkill\bin\jskills\trueskill\layers\PlayerPriorValuesToSkillsLayer$$anonfun$BuildLayer$1$$anonfun$apply$1.class
 E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerPriorValuesToSkillsLayer.scala -> E:\ScalaTrueSkill\bin\jskills\trueskill\layers\PlayerPriorValuesToSkillsLayer.class
@@ -214,12 +215,13 @@ E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerSkillsToPerformancesLayer.s
 E:\ScalaTrueSkill\src\jskills\trueskill\layers\PlayerSkillsToPerformancesLayer.scala -> E:\ScalaTrueSkill\bin\jskills\trueskill\layers\PlayerSkillsToPerformancesLayer$$anonfun$BuildLayer$1$$anonfun$apply$1.class
 E:\ScalaTrueSkill\src\jskills\numerics\Range.scala -> E:\ScalaTrueSkill\bin\jskills\numerics\Range.class
 E:\ScalaTrueSkill\src\jskills\numerics\Range.scala -> E:\ScalaTrueSkill\bin\jskills\numerics\Range$.class
-E:\ScalaTrueSkill\src\jskills\trueskill\factors\GaussianWithinFactor.scala -> E:\ScalaTrueSkill\bin\jskills\trueskill\factors\GaussianWithinFactor.class
+E:\ScalaTrueSkill\src\jskills\ISupportPartialUpdate.scala -> E:\ScalaTrueSkill\bin\jskills\ISupportPartialUpdate.class
 E:\ScalaTrueSkill\src\jskills\GameInfo.scala -> E:\ScalaTrueSkill\bin\jskills\GameInfo.class
 E:\ScalaTrueSkill\src\jskills\GameInfo.scala -> E:\ScalaTrueSkill\bin\jskills\GameInfo$.class
 E:\ScalaTrueSkill\src\jskills\numerics\MathUtils.scala -> E:\ScalaTrueSkill\bin\jskills\numerics\MathUtils$.class
 E:\ScalaTrueSkill\src\jskills\numerics\MathUtils.scala -> E:\ScalaTrueSkill\bin\jskills\numerics\MathUtils.class
 E:\ScalaTrueSkill\src\jskills\elo\KFactor.scala -> E:\ScalaTrueSkill\bin\jskills\elo\KFactor.class
+E:\ScalaTrueSkill\src\jskills\trueskill\factors\GaussianWithinFactor.scala -> E:\ScalaTrueSkill\bin\jskills\trueskill\factors\GaussianWithinFactor.class
 E:\ScalaTrueSkill\src\jskills\elo\EloRating.scala -> E:\ScalaTrueSkill\bin\jskills\elo\EloRating.class
 E:\ScalaTrueSkill\src\jskills\elo\FideEloCalculator.scala -> E:\ScalaTrueSkill\bin\jskills\elo\FideEloCalculator.class
 E:\ScalaTrueSkill\src\jskills\numerics\GaussianDistribution.scala -> E:\ScalaTrueSkill\bin\jskills\numerics\GaussianDistribution.class
