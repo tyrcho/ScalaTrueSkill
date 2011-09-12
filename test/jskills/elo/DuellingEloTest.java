@@ -2,6 +2,7 @@ package jskills.elo;
 
 import static org.testng.Assert.assertEquals;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
@@ -28,16 +29,18 @@ public class DuellingEloTest {
 		Player<Integer> player1 = new Player<Integer>(1);
 		Player<Integer> player2 = new Player<Integer>(2);
 
-		Team team1 = new Team().addPlayer(player1, gameInfo.getDefaultRating())
+		ITeam team1 = new Team()
+				.addPlayer(player1, gameInfo.getDefaultRating())
 				.addPlayer(player2, gameInfo.getDefaultRating());
 
 		Player<Integer> player3 = new Player<Integer>(3);
 		Player<Integer> player4 = new Player<Integer>(4);
 
-		Team team2 = new Team().addPlayer(player3, gameInfo.getDefaultRating())
+		ITeam team2 = new Team()
+				.addPlayer(player3, gameInfo.getDefaultRating())
 				.addPlayer(player4, gameInfo.getDefaultRating());
 
-		Collection<ITeam> teams = Team.concat(team2, team1);
+		Collection<ITeam> teams = Arrays.asList(team1, team2);
 		Map<IPlayer, Rating> newRatingsWinLose = calculator
 				.calculateNewRatings(gameInfo, teams, 2, 1);
 

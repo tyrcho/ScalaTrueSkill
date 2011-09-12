@@ -2,6 +2,7 @@ package jskills.elo;
 
 import static org.testng.Assert.assertEquals;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
@@ -26,9 +27,9 @@ public class EloAssert {
         Player<Integer> player1 = new Player<Integer>(1);
         Player<Integer> player2 = new Player<Integer>(2);
 
-        Collection<ITeam> teams = Team.concat(
-            new Team(player1, new EloRating(player1BeforeRating)),
-            new Team(player2, new EloRating(player2BeforeRating)));
+		ITeam team1 = new Team(player1, new EloRating(player1BeforeRating));
+		ITeam team2 = new Team(player2, new EloRating(player2BeforeRating));
+		Collection<ITeam> teams = Arrays.asList(team1, team2);
 
         GameInfo chessGameInfo = new GameInfo(1200, 0, 200, 0, 0);
 
