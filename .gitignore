@@ -4,3 +4,4 @@ bin
 deploy
 deploy/*
 test-output
+.scala_dependencies
