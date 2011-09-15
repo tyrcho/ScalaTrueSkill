@@ -36,7 +36,7 @@ abstract class Factor[T](@BeanProperty name: String) {
    * Sends the ith message to the marginal and returns the log-normalization
    * constant
    */
-  protected def SendMessage(messageIndex: Int): Double = {
+  def SendMessage(messageIndex: Int): Double = {
     argumentIsValidIndex(messageIndex, messages.size(), "messageIndex");
     val message = messages.get(messageIndex);
     val variable = messageToVariableBinding.get(message);
