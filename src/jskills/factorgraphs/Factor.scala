@@ -21,7 +21,7 @@ abstract class Factor[T](@BeanProperty name: String) {
   def getNumberOfMessages(): Int = messages.size()
 
   /** Update the message and marginal of the i-th variable that the factor is connected to **/
-  protected def updateMessage(messageIndex: Int): Double = {
+  def updateMessage(messageIndex: Int): Double = {
     argumentIsValidIndex(messageIndex, messages.size(), "messageIndex");
     return updateMessage(messages.get(messageIndex), messageToVariableBinding.get(messages.get(messageIndex)));
   }
