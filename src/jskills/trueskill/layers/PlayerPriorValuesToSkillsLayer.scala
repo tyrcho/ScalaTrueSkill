@@ -20,7 +20,7 @@ import jskills.trueskill.factors.GaussianPriorFactor;
 import collection.JavaConversions._
 
 // We intentionally have no Posterior schedule since the only purpose here is to 
-class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: Collection[ITeam])
+class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: Collection[_ <: ITeam])
   extends TrueSkillFactorGraphLayer[DefaultVariable[GaussianDistribution], GaussianPriorFactor, KeyedVariable[IPlayer, GaussianDistribution]](parentGraph) {
 
   override def BuildLayer() {

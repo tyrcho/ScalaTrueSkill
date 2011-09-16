@@ -28,7 +28,7 @@ import scala.reflect.BeanProperty
 import collection.JavaConversions._
 
 class TrueSkillFactorGraph(
-  @BeanProperty val gameInfo: GameInfo, teams: Collection[ITeam], teamRanks: Array[Int])
+  @BeanProperty val gameInfo: GameInfo, teams: Collection[_ <: ITeam], teamRanks: Array[Int])
   extends FactorGraph[TrueSkillFactorGraph] {
   val _Layers = new ArrayList[FactorGraphLayerBase[GaussianDistribution]]();
   val _PriorLayer = new PlayerPriorValuesToSkillsLayer(this, teams);

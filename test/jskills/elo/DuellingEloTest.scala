@@ -25,15 +25,15 @@ class DuellingEloTest {
 
     val gameInfo = GameInfo.getDefaultGameInfo();
 
-    val player1 = new Player[Integer](1);
-    val player2 = new Player[Integer](2);
+    val player1 = new Player(1);
+    val player2 = new Player(2);
 
     val team1 = new Team()
       .addPlayer(player1, gameInfo.getDefaultRating())
       .addPlayer(player2, gameInfo.getDefaultRating());
 
-    val player3 = new Player[Integer](3);
-    val player4 = new Player[Integer](4);
+    val player3 = new Player(3);
+    val player4 = new Player(4);
 
     val team2 = new Team()
       .addPlayer(player3, gameInfo.getDefaultRating())

@@ -66,6 +66,8 @@ abstract class SkillCalculator(supportedOptions: Seq[SupportedOptions],
 }
 
 abstract class SupportedOptions {
+}
+object SupportedOptions {
   case object PartialPlay extends SupportedOptions
   case object PartialUpdate extends SupportedOptions
 }
