@@ -12,9 +12,9 @@ class TeamPerformancesToTeamPerformanceDifferencesLayer(parentGraph: TrueSkillFa
   extends TrueSkillFactorGraphLayer[Variable[GaussianDistribution], GaussianWeightedSumFactor, Variable[GaussianDistribution]](parentGraph) {
 
   override def BuildLayer() {
-    for (i <- 0 until getInputVariablesGroups().size() - 1) {
-      val strongerTeam = getInputVariablesGroups().get(i).get(0);
-      val weakerTeam = getInputVariablesGroups().get(i + 1).get(0);
+    for (i <- 0 until inputVariablesGroups.size() - 1) {
+      val strongerTeam = inputVariablesGroups.get(i).get(0);
+      val weakerTeam = inputVariablesGroups.get(i + 1).get(0);
 
       val currentDifference = createOutputVariable();
       AddLayerFactor(CreateTeamPerformanceToDifferenceFactor(

@@ -19,7 +19,7 @@ class PlayerPerformancesToTeamPerformancesLayer(parentGraph: TrueSkillFactorGrap
   extends TrueSkillFactorGraphLayer[KeyedVariable[IPlayer, GaussianDistribution], GaussianWeightedSumFactor, Variable[GaussianDistribution]](parentGraph) {
 
   override def BuildLayer() {
-    for (currentTeam <- getInputVariablesGroups()) {
+    for (currentTeam <- inputVariablesGroups) {
       val teamPerformance = CreateOutputVariable(currentTeam);
       AddLayerFactor(createPlayerToTeamSumFactor(currentTeam,
         teamPerformance));
@@ -31,7 +31,7 @@ class PlayerPerformancesToTeamPerformancesLayer(parentGraph: TrueSkillFactorGrap
 
   override def createPriorSchedule(): Schedule[GaussianDistribution] = {
     val schedules = new ArrayList[Schedule[GaussianDistribution]]();
-    for (weightedSumFactor <- getLocalFactors()) {
+    for (weightedSumFactor <- localFactors) {
       schedules.add(new ScheduleStep[GaussianDistribution](
         "Perf to Team Perf Step", weightedSumFactor, 0));
     }
@@ -50,7 +50,7 @@ class PlayerPerformancesToTeamPerformancesLayer(parentGraph: TrueSkillFactorGrap
 
   override def createPosteriorSchedule(): Schedule[GaussianDistribution] = {
     val schedules = new ArrayList[Schedule[GaussianDistribution]]();
-    for (currentFactor <- getLocalFactors()) {
+    for (currentFactor <- localFactors) {
       // TODO is there an off by 1 error here?
       for (i <- 0 until currentFactor.getNumberOfMessages()) {
         schedules.add(new ScheduleStep[GaussianDistribution](

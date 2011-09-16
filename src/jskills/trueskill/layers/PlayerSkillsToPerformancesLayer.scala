@@ -18,7 +18,7 @@ class PlayerSkillsToPerformancesLayer(parentGraph: TrueSkillFactorGraph)
   extends TrueSkillFactorGraphLayer[KeyedVariable[IPlayer, GaussianDistribution], GaussianLikelihoodFactor, KeyedVariable[IPlayer, GaussianDistribution]](parentGraph) {
 
   override def BuildLayer() {
-    for (currentTeam <- getInputVariablesGroups()) {
+    for (currentTeam <- inputVariablesGroups) {
       val currentTeamPlayerPerformances = new ArrayList[KeyedVariable[IPlayer, GaussianDistribution]]();
 
       for (playerSkillVariable <- currentTeam) {
@@ -33,14 +33,14 @@ class PlayerSkillsToPerformancesLayer(parentGraph: TrueSkillFactorGraph)
   private def CreateLikelihood(
     playerSkill: KeyedVariable[IPlayer, GaussianDistribution],
     playerPerformance: KeyedVariable[IPlayer, GaussianDistribution]): GaussianLikelihoodFactor =
-    new GaussianLikelihoodFactor(MathUtils.square(ParentFactorGraph.getGameInfo().getBeta()), playerPerformance, playerSkill);
+    new GaussianLikelihoodFactor(MathUtils.square(parentGraph.getGameInfo().getBeta()), playerPerformance, playerSkill);
 
   private def CreateOutputVariable(key: IPlayer): KeyedVariable[IPlayer, GaussianDistribution] =
     new KeyedVariable[IPlayer, GaussianDistribution](key, GaussianDistribution.UNIFORM, "%s's performance", key);
 
   override def createPriorSchedule(): Schedule[GaussianDistribution] = {
     val schedules = new ArrayList[Schedule[GaussianDistribution]]();
-    for (likelihood <- getLocalFactors()) {
+    for (likelihood <- localFactors) {
       schedules.add(new ScheduleStep[GaussianDistribution](
         "Skill to Perf step", likelihood, 0));
     }
@@ -49,7 +49,7 @@ class PlayerSkillsToPerformancesLayer(parentGraph: TrueSkillFactorGraph)
 
   override def createPosteriorSchedule(): Schedule[GaussianDistribution] = {
     val schedules = new ArrayList[Schedule[GaussianDistribution]]();
-    for (likelihood <- getLocalFactors()) {
+    for (likelihood <- localFactors) {
       schedules.add(new ScheduleStep[GaussianDistribution]("Skill to Perf step", likelihood, 1));
     }
     return ScheduleSequence(schedules, "All skill to performance sending");

@@ -48,7 +48,7 @@ class TrueSkillFactorGraph(
         currentLayer.SetRawInputVariablesGroups(lastOutput);
       }
       currentLayer.BuildLayer();
-      lastOutput = currentLayer.GetRawOutputVariablesGroups();
+      lastOutput = currentLayer.getOutputVariablesGroups();
     }
   }
 

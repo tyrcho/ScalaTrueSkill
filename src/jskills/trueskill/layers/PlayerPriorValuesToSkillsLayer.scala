@@ -43,7 +43,7 @@ class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: C
 
   override def createPriorSchedule(): Schedule[GaussianDistribution] = {
     val schedules = new ArrayList[Schedule[GaussianDistribution]]();
-    for (prior <- getLocalFactors()) {
+    for (prior <- localFactors) {
       schedules.add(new ScheduleStep[GaussianDistribution](
         "Prior to Skill Step", prior, 0));
     }
@@ -52,7 +52,7 @@ class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: C
 
   private def CreatePriorFactor(player: IPlayer, priorRating: Rating, skillsVariable: Variable[GaussianDistribution]): GaussianPriorFactor =
     new GaussianPriorFactor(priorRating.getMean(),
-      MathUtils.square(priorRating.getStandardDeviation()) + MathUtils.square(getParentFactorGraph().getGameInfo().getDynamicsFactor()),
+      MathUtils.square(priorRating.getStandardDeviation()) + MathUtils.square(parentGraph.getGameInfo().getDynamicsFactor()),
       skillsVariable)
 
   private def CreateSkillOutputVariable(key: IPlayer): KeyedVariable[IPlayer, GaussianDistribution] =

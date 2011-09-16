@@ -32,16 +32,16 @@ class IteratedTeamDifferencesInnerLayer(parentGraph: TrueSkillFactorGraph,
   }
 
   override def BuildLayer() {
-    teamPerformancesToTeamPerformanceDifferencesLayer.SetRawInputVariablesGroups(getInputVariablesGroups());
+    teamPerformancesToTeamPerformanceDifferencesLayer.SetRawInputVariablesGroups(inputVariablesGroups);
     teamPerformancesToTeamPerformanceDifferencesLayer.BuildLayer();
 
     teamDifferencesComparisonLayer.SetRawInputVariablesGroups(
-      teamPerformancesToTeamPerformanceDifferencesLayer.GetRawOutputVariablesGroups());
+      teamPerformancesToTeamPerformanceDifferencesLayer.getOutputVariablesGroups());
     teamDifferencesComparisonLayer.BuildLayer();
   }
 
   override def createPriorSchedule(): Schedule[GaussianDistribution] = {
-    var loop = (getInputVariablesGroups().size()) match {
+    var loop = (inputVariablesGroups.size()) match {
       case 0 =>
         throw new IllegalArgumentException();
       case 1 =>
@@ -100,7 +100,7 @@ class IteratedTeamDifferencesInnerLayer(parentGraph: TrueSkillFactorGraph,
           i),
         teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(i), 2));
       val currentForwardSchedulePiece =
-        ScheduleSequence(schedules, "current forward schedule piece %d", i.asInstanceOf[AnyRef]);
+        ScheduleSequence(schedules, "current forward schedule piece %s", i);
 
       forwardScheduleList.add(currentForwardSchedulePiece);
     }

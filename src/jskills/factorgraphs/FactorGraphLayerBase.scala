@@ -1,6 +1,7 @@
 package jskills.factorgraphs;
 
 import java.util.Collection;
+import java.util.List;
 
 abstract class FactorGraphLayerBase[TValue] {
 
@@ -12,8 +13,7 @@ abstract class FactorGraphLayerBase[TValue] {
 
   def createPosteriorSchedule(): Schedule[TValue] = null
 
-  // HACK
+  def getOutputVariablesGroups(): List[_ <: List[_ <: Any]]
 
-  def SetRawInputVariablesGroups(value: Any);
-  def GetRawOutputVariablesGroups(): Object
+  def SetRawInputVariablesGroups(o: Any)
 }
