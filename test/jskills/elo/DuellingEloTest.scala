@@ -52,6 +52,6 @@ class DuellingEloTest {
   }
 
   def AssertRating(expected: Double, actual: Rating) {
-    assertEquals(expected, actual.getMean(), ErrorTolerance)
+    assertEquals(expected, actual.mean, ErrorTolerance)
   }
 }

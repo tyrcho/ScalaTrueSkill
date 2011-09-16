@@ -11,10 +11,10 @@ abstract class GaussianFactor(name: String) extends Factor[GaussianDistribution]
 
   /** Sends the factor-graph message with and returns the log-normalization constant **/
   override protected def SendMessage(message: Message[GaussianDistribution], variable: Variable[GaussianDistribution]): Double = {
-    val marginal = variable.getValue()
-    val messageValue = message.getValue()
+    val marginal = variable.value
+    val messageValue = message.value
     val logZ = GaussianDistribution.logProductNormalization(marginal, messageValue)
-    variable.setValue(marginal.mult(messageValue))
+    variable.value = marginal.mult(messageValue)
     return logZ
   }
 

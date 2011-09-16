@@ -7,12 +7,12 @@ import java.util.List
 import java.util.Map
 import collection.JavaConversions._
 import jskills.Guard._
-import scala.reflect.BeanProperty
 
-abstract class Factor[T](@BeanProperty name: String) {
-  @BeanProperty protected val messages = new ArrayList[Message[T]]()
-  @BeanProperty val messageToVariableBinding = new HashMap[Message[T], Variable[T]]()
-  @BeanProperty val variables: List[Variable[T]] = new ArrayList[Variable[T]]()
+
+abstract class Factor[T]( name: String) {
+   protected val messages = new ArrayList[Message[T]]()
+   val messageToVariableBinding = new HashMap[Message[T], Variable[T]]()
+   val variables: List[Variable[T]] = new ArrayList[Variable[T]]()
 
   /** Returns the log-normalization constant of that factor **/
   def getLogNormalization(): Double

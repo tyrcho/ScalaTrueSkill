@@ -43,7 +43,7 @@ class PlayerPerformancesToTeamPerformancesLayer(parentGraph: TrueSkillFactorGrap
     val weights = new Array[Double](teamMembers.size())
     for (i <- 0 until weights.length) {
       weights(i) = PartialPlay.getPartialPlayPercentage(teamMembers
-        .get(i).getKey())
+        .get(i).key)
     }
     return new GaussianWeightedSumFactor(sumVariable, teamMembers, weights)
   }
@@ -63,7 +63,7 @@ class PlayerPerformancesToTeamPerformancesLayer(parentGraph: TrueSkillFactorGrap
   private def CreateOutputVariable(team: List[KeyedVariable[IPlayer, GaussianDistribution]]): Variable[GaussianDistribution] = {
     val sb = new StringBuilder()
     for (teamMember <- team) {
-      sb.append(teamMember.getKey().toString())
+      sb.append(teamMember.key.toString())
       sb.append(", ")
     }
     sb.delete(sb.length() - 2, sb.length())

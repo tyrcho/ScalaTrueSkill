@@ -18,13 +18,13 @@ class GaussianPriorFactor(mean: Double, variance: Double, variable: Variable[Gau
       this, variable))
 
   override protected def updateMessage(message: Message[GaussianDistribution], variable: Variable[GaussianDistribution]): Double = {
-    val oldMarginal = new GaussianDistribution(variable.getValue())
+    val oldMarginal = new GaussianDistribution(variable.value)
     val oldMessage = message
     val newMarginal = GaussianDistribution.fromPrecisionMean(
-      oldMarginal.getPrecisionMean() + newMessage.getPrecisionMean() - oldMessage.getValue().getPrecisionMean(),
-      oldMarginal.getPrecision() + newMessage.getPrecision() - oldMessage.getValue().getPrecision())
-    variable.setValue(newMarginal)
-    message.setValue(newMessage)
+      oldMarginal.precisionMean + newMessage.precisionMean - oldMessage.value.precisionMean,
+      oldMarginal.precision + newMessage.precision - oldMessage.value.precision)
+    variable.value = newMarginal
+    message.value = newMessage
     return sub(oldMarginal, newMarginal)
   }
 

@@ -40,7 +40,7 @@ object EloAssert {
         case PairwiseComparison.DRAW => Seq(1, 1)
       })
 
-    assertEquals(player1AfterRating, result.get(player1).getMean(), ErrorTolerance)
-    assertEquals(player2AfterRating, result.get(player2).getMean(), ErrorTolerance)
+    assertEquals(player1AfterRating, result.get(player1).mean, ErrorTolerance)
+    assertEquals(player2AfterRating, result.get(player2).mean, ErrorTolerance)
   }
 }

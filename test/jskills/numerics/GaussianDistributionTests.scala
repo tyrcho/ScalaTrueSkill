@@ -36,9 +36,8 @@ class GaussianDistributionTests {
     val product = GaussianDistribution.prod(
       standardNormal, shiftedGaussian)
 
-    assertEquals(0.2, product.getMean(), ErrorTolerance)
-    assertEquals(3.0 / sqrt(10), product.getStandardDeviation(),
-      ErrorTolerance)
+    assertEquals(0.2, product.mean, ErrorTolerance)
+    assertEquals(3.0 / sqrt(10), product.standardDeviation, ErrorTolerance)
 
     val m4s5 = new GaussianDistribution(4, 5)
     val m6s7 = new GaussianDistribution(6, 7)
@@ -46,10 +45,10 @@ class GaussianDistributionTests {
     val product2 = GaussianDistribution.prod(m4s5, m6s7)
 
     val expectedMean = (4 * square(7) + 6 * square(5)) / (square(5) + square(7))
-    assertEquals(expectedMean, product2.getMean(), ErrorTolerance)
+    assertEquals(expectedMean, product2.mean, ErrorTolerance)
 
     val expectedSigma = sqrt(((square(5) * square(7)) / (square(5) + square(7))))
-    assertEquals(expectedSigma, product2.getStandardDeviation(),
+    assertEquals(expectedSigma, product2.standardDeviation,
       ErrorTolerance)
   }
 
@@ -61,10 +60,10 @@ class GaussianDistributionTests {
     val standardNormal = new GaussianDistribution(0, 1)
 
     val productDividedByStandardNormal = GaussianDistribution.divide(product, standardNormal)
-    assertEquals(2.0, productDividedByStandardNormal.getMean(),
+    assertEquals(2.0, productDividedByStandardNormal.mean,
       ErrorTolerance)
     assertEquals(3.0,
-      productDividedByStandardNormal.getStandardDeviation(),
+      productDividedByStandardNormal.standardDeviation,
       ErrorTolerance)
 
     val product2 = new GaussianDistribution(
@@ -72,8 +71,8 @@ class GaussianDistributionTests {
       sqrt(((square(5) * square(7)) / (square(5) + square(7)))))
     val m4s5 = new GaussianDistribution(4, 5)
     val product2DividedByM4S5 = GaussianDistribution.divide(product2, m4s5)
-    assertEquals(6.0, product2DividedByM4S5.getMean(), ErrorTolerance)
-    assertEquals(7.0, product2DividedByM4S5.getStandardDeviation(),
+    assertEquals(6.0, product2DividedByM4S5.mean, ErrorTolerance)
+    assertEquals(7.0, product2DividedByM4S5.standardDeviation,
       ErrorTolerance)
   }
 

@@ -85,7 +85,7 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
           currentTeamPlayerPair.getKey()).values()
         val currentPlayerAverageDuellingDelta = MathUtils.mean(aa)
         result.put(currentTeamPlayerPair.getKey(), new EloRating(
-          currentTeamPlayerPair.getValue().getMean()
+          currentTeamPlayerPair.getValue().mean
             + currentPlayerAverageDuellingDelta))
       }
     }
@@ -157,7 +157,7 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
       duels.put(self, selfToOpponentDuelDeltas)
     }
 
-    selfToOpponentDuelDeltas.put(opponent, selfAfterRating.getMean()
-      - selfBeforeRating.getMean())
+    selfToOpponentDuelDeltas.put(opponent, selfAfterRating.mean
+      - selfBeforeRating.mean)
   }
 }

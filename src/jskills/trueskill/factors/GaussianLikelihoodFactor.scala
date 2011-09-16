@@ -16,32 +16,32 @@ class GaussianLikelihoodFactor(betaSquared: Double, variable1: Variable[Gaussian
   CreateVariableToMessageBinding(variable1)
   CreateVariableToMessageBinding(variable2)
 
-  override def getLogNormalization(): Double = logRatioNormalization(variables.get(0).getValue(), messages.get(0).getValue())
+  override def getLogNormalization(): Double = logRatioNormalization(variables.get(0).value, messages.get(0).value)
 
   private def UpdateHelper(
     message1: Message[GaussianDistribution],
     message2: Message[GaussianDistribution],
     variable1: Variable[GaussianDistribution],
     variable2: Variable[GaussianDistribution]): Double = {
-    val message1Value = new GaussianDistribution(message1.getValue())
-    val message2Value = new GaussianDistribution(message2.getValue())
+    val message1Value = new GaussianDistribution(message1.value)
+    val message2Value = new GaussianDistribution(message2.value)
 
-    val marginal1 = new GaussianDistribution(variable1.getValue())
-    val marginal2 = new GaussianDistribution(variable2.getValue())
+    val marginal1 = new GaussianDistribution(variable1.value)
+    val marginal2 = new GaussianDistribution(variable2.value)
 
-    val a = precision / (precision + marginal2.getPrecision() - message2Value.getPrecision())
+    val a = precision / (precision + marginal2.precision - message2Value.precision)
 
     val newMessage = GaussianDistribution.fromPrecisionMean(
-      a * (marginal2.getPrecisionMean() - message2Value.getPrecisionMean()),
-      a * (marginal2.getPrecision() - message2Value.getPrecision()))
+      a * (marginal2.precisionMean - message2Value.precisionMean),
+      a * (marginal2.precision - message2Value.precision))
 
     val oldMarginalWithoutMessage = divide(marginal1, message1Value)
 
     val newMarginal = prod(oldMarginalWithoutMessage, newMessage)
 
     // Update the message and marginal
-    message1.setValue(newMessage)
-    variable1.setValue(newMarginal)
+    message1.value = newMessage
+    variable1.value = newMarginal
 
     // Return the difference in the new marginal
     return sub(newMarginal, marginal1)
@@ -49,8 +49,8 @@ class GaussianLikelihoodFactor(betaSquared: Double, variable1: Variable[Gaussian
 
   override def updateMessage(messageIndex: Int): Double = {
     messageIndex match {
-      case 0 => UpdateHelper(getMessages().get(0), getMessages().get(1), getVariables().get(0), getVariables().get(1))
-      case 1 => UpdateHelper(getMessages().get(1), getMessages().get(0), getVariables().get(1), getVariables().get(0))
+      case 0 => UpdateHelper(messages.get(0), messages.get(1), variables.get(0), variables.get(1))
+      case 1 => UpdateHelper(messages.get(1), messages.get(0), variables.get(1), variables.get(0))
       case _ => throw new IllegalArgumentException()
     }
   }

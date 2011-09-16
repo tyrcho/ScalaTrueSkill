@@ -3,7 +3,7 @@ package jskills.numerics
 import java.lang.Math._
 import jskills.numerics.MathUtils._
 import jskills.Rating
-import scala.reflect.BeanProperty
+
 /**
  * Immutable representation of the Gaussian distribution of one variable. Not
  * normalized:
@@ -26,17 +26,17 @@ import scala.reflect.BeanProperty
  */
 class GaussianDistribution(
   /** The peak of the Gaussian, \u03bc **/
-  @BeanProperty val mean: Double,
+   val mean: Double,
   /** The width of the Gaussian, \u03c3, where the height drops to max/e **/
-  @BeanProperty val standardDeviation: Double,
+   val standardDeviation: Double,
   /** The square of the standard deviation, \u03c3^2 **/
-  @BeanProperty val variance: Double,
+   val variance: Double,
   // Precision and PrecisionMean are used because they make multiplying and
   // dividing simpler (see the accompanying math paper for more details)
   /** 1/\u03c3^2 **/
-  @BeanProperty val precision: Double,
+   val precision: Double,
   /** Precision times mean, \u03bc/\u03c3^2 **/
-  @BeanProperty val precisionMean: Double) {
+   val precisionMean: Double) {
   /**
    * The normalization constant multiplies the exponential and causes the
    * integral over (-Inf,Inf) to equal 1
@@ -49,7 +49,7 @@ class GaussianDistribution(
 
   def this(mean: Double, standardDeviation: Double) = this(mean, standardDeviation, square(standardDeviation), 1.0 / square(standardDeviation), mean / square(standardDeviation))
 
-  def this(rating: Rating) = this(rating.getMean(), rating.getStandardDeviation())
+  def this(rating: Rating) = this(rating.mean, rating.standardDeviation)
 
   def this(distribution: GaussianDistribution) =
     this(distribution.mean, distribution.standardDeviation, distribution.variance, distribution.precision, distribution.precisionMean)

@@ -65,13 +65,13 @@ class TwoTeamTrueSkillCalculator
     val totalPlayers = selfTeam.size() + otherTeam.size()
 
     var selfMeanSum = 0.0
-    for (r <- selfTeam.values()) selfMeanSum += r.getMean()
+    for (r <- selfTeam.values()) selfMeanSum += r.mean
     var otherTeamMeanSum = 0.0
-    for (r <- otherTeam.values()) otherTeamMeanSum += r.getMean()
+    for (r <- otherTeam.values()) otherTeamMeanSum += r.mean
 
     var sum = 0.0
-    for (r <- selfTeam.values()) sum += square(r.getStandardDeviation())
-    for (r <- otherTeam.values()) sum += square(r.getStandardDeviation())
+    for (r <- selfTeam.values()) sum += square(r.standardDeviation)
+    for (r <- otherTeam.values()) sum += square(r.standardDeviation)
 
     val c = Math.sqrt(sum + totalPlayers * betaSquared)
 
@@ -111,18 +111,17 @@ class TwoTeamTrueSkillCalculator
     for (teamPlayerRatingPair <- selfTeam.entrySet()) {
       val previousPlayerRating = teamPlayerRatingPair.getValue()
 
-      val meanMultiplier = (square(previousPlayerRating.getStandardDeviation()) + tauSquared) / c
-      val stdDevMultiplier = (square(previousPlayerRating.getStandardDeviation()) + tauSquared) / square(c)
+      val meanMultiplier = (square(previousPlayerRating.standardDeviation) + tauSquared) / c
+      val stdDevMultiplier = (square(previousPlayerRating.standardDeviation) + tauSquared) / square(c)
 
       val playerMeanDelta = (rankMultiplier * meanMultiplier * v)
-      val newMean = previousPlayerRating.getMean() + playerMeanDelta
+      val newMean = previousPlayerRating.mean + playerMeanDelta
 
       val newStdDev = Math.sqrt((square(previousPlayerRating
-        .getStandardDeviation()) + tauSquared)
+        .standardDeviation) + tauSquared)
         * (1 - w * stdDevMultiplier))
 
-      newPlayerRatings.put(teamPlayerRatingPair.getKey(), new Rating(
-        newMean, newStdDev))
+      newPlayerRatings.put(teamPlayerRatingPair.getKey(), new Rating(newMean, newStdDev))
     }
   }
 
@@ -144,14 +143,14 @@ class TwoTeamTrueSkillCalculator
     val betaSquared = square(gameInfo.beta)
 
     var team1MeanSum = 0.0
-    for (r <- team1) team1MeanSum += r.getMean()
+    for (r <- team1) team1MeanSum += r.mean
     var team1StdDevSquared = 0.0
-    for (r <- team1) team1StdDevSquared += square(r.getStandardDeviation())
+    for (r <- team1) team1StdDevSquared += square(r.standardDeviation)
 
     var team2MeanSum = 0.0
-    for (r <- team2) team2MeanSum += r.getMean()
+    for (r <- team2) team2MeanSum += r.mean
     var team2SigmaSquared = 0.0
-    for (r <- team2) team2SigmaSquared += square(r.getStandardDeviation())
+    for (r <- team2) team2SigmaSquared += square(r.standardDeviation)
 
     // This comes from equation 4.1 in the TrueSkill paper on page 8
     // The equation was broken up into the part under the square root sign

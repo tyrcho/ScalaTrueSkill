@@ -15,29 +15,29 @@ class GaussianWithinFactor(epsilon: Double, variable: Variable[GaussianDistribut
   CreateVariableToMessageBinding(variable)
 
   override def getLogNormalization(): Double = {
-    val marginal = variables.get(0).getValue()
-    val message = messages.get(0).getValue()
+    val marginal = variables.get(0).value
+    val message = messages.get(0).value
     val messageFromVariable = divide(marginal, message)
-    val mean = messageFromVariable.getMean()
-    val std = messageFromVariable.getStandardDeviation()
+    val mean = messageFromVariable.mean
+    val std = messageFromVariable.standardDeviation
     val z = cumulativeTo((epsilon - mean) / std) - cumulativeTo((-epsilon - mean) / std)
 
     return -logProductNormalization(messageFromVariable, message) + Math.log(z)
   }
 
   override protected def updateMessage(message: Message[GaussianDistribution], variable: Variable[GaussianDistribution]): Double = {
-    val oldMarginal = new GaussianDistribution(variable.getValue())
-    val oldMessage = new GaussianDistribution(message.getValue())
+    val oldMarginal = new GaussianDistribution(variable.value)
+    val oldMessage = new GaussianDistribution(message.value)
     val messageFromVariable = divide(oldMarginal, oldMessage)
 
-    val c = messageFromVariable.getPrecision()
-    var d = messageFromVariable.getPrecisionMean()
+    val c = messageFromVariable.precision
+    var d = messageFromVariable.precisionMean
 
     val sqrtC = Math.sqrt(c)
     val dOnSqrtC = d / sqrtC
 
     val epsilonTimesSqrtC = epsilon * sqrtC
-    d = messageFromVariable.getPrecisionMean()
+    d = messageFromVariable.precisionMean
 
     val denominator = 1.0 - WWithinMargin(dOnSqrtC, epsilonTimesSqrtC)
     val newPrecision = c / denominator
@@ -47,8 +47,8 @@ class GaussianWithinFactor(epsilon: Double, variable: Variable[GaussianDistribut
     val newMessage = divide(prod(oldMessage, newMarginal), oldMarginal)
 
     // Update the message and marginal
-    message.setValue(newMessage)
-    variable.setValue(newMarginal)
+    message.value = newMessage
+    variable.value = newMarginal
 
     // Return the difference in the new marginal
     return sub(newMarginal, oldMarginal)

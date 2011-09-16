@@ -34,8 +34,8 @@ abstract class TwoPlayerEloCalculator(kFactor: KFactor)
     for (team <- teamsl)
       players.add(team.keySet().toArray(new Array[IPlayer](1))(0))
 
-    val player1Rating = teamsl.get(0).get(players.get(0)).getMean()
-    val player2Rating = teamsl.get(1).get(players.get(1)).getMean()
+    val player1Rating = teamsl.get(0).get(players.get(0)).mean
+    val player2Rating = teamsl.get(1).get(players.get(1)).mean
 
     result.put(
       players.get(0),
@@ -74,8 +74,8 @@ abstract class TwoPlayerEloCalculator(kFactor: KFactor)
 
     // Extract each player's rating from their team
     val teamit = teams.iterator()
-    val player1Rating = teamit.next().get(players.get(0)).getMean()
-    val player2Rating = teamit.next().get(players.get(1)).getMean()
+    val player1Rating = teamit.next().get(players.get(0)).mean
+    val player2Rating = teamit.next().get(players.get(1)).mean
 
     // The TrueSkill paper mentions that they used s1 - s2 (rating
     // difference) to determine match quality. I convert that to a

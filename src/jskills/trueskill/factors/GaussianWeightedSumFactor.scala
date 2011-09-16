@@ -135,14 +135,12 @@ class GaussianWeightedSumFactor(
   variablesToSum foreach CreateVariableToMessageBinding
 
   override def getLogNormalization(): Double = {
-    val vars = getVariables()
-    val messages = getMessages()
-
+    val vars = variables
     var result = 0.0
 
     // We start at 1 since offset 0 has the sum
     for (i <- 1 until vars.size()) {
-      result += GaussianDistribution.logRatioNormalization(vars.get(i).getValue(), messages.get(i).getValue())
+      result += GaussianDistribution.logRatioNormalization(vars.get(i).value, messages.get(i).value)
     }
 
     return result
@@ -156,8 +154,8 @@ class GaussianWeightedSumFactor(
       // Potentially look at http://mathworld.wolfram.com/NormalSumDistribution.html for clues as 
       // to what it's doing
 
-      val message0 = new GaussianDistribution(messages.get(0).getValue())
-      val marginal0 = new GaussianDistribution(variables.get(0).getValue())
+      val message0 = new GaussianDistribution(messages.get(0).value)
+      val marginal0 = new GaussianDistribution(variables.get(0).value)
 
       // The math works out so that 1/newPrecision = sum of a_i^2 /marginalsWithoutMessages(i)
       var inverseOfNewPrecisionSum = 0.0
@@ -169,16 +167,16 @@ class GaussianWeightedSumFactor(
         // These flow directly from the paper
 
         inverseOfNewPrecisionSum += weightsSquared(i) /
-          (variables.get(i + 1).getValue().getPrecision() - messages.get(i + 1).getValue().getPrecision())
+          (variables.get(i + 1).value.precision - messages.get(i + 1).value.precision)
 
-        val diff = divide(variables.get(i + 1).getValue(), messages.get(i + 1).getValue())
-        anotherInverseOfNewPrecisionSum += weightsSquared(i) / diff.getPrecision()
+        val diff = divide(variables.get(i + 1).value, messages.get(i + 1).value)
+        anotherInverseOfNewPrecisionSum += weightsSquared(i) / diff.precision
 
         weightedMeanSum += weights(i) *
-          (variables.get(i + 1).getValue().getPrecisionMean() - messages.get(i + 1).getValue().getPrecisionMean()) /
-          (variables.get(i + 1).getValue().getPrecision() - messages.get(i + 1).getValue().getPrecision())
+          (variables.get(i + 1).value.precisionMean - messages.get(i + 1).value.precisionMean) /
+          (variables.get(i + 1).value.precision - messages.get(i + 1).value.precision)
 
-        anotherWeightedMeanSum += weights(i) * diff.getPrecisionMean() / diff.getPrecision()
+        anotherWeightedMeanSum += weights(i) * diff.precisionMean / diff.precision
       }
 
       val newPrecision = 1.0 / inverseOfNewPrecisionSum
@@ -198,8 +196,8 @@ class GaussianWeightedSumFactor(
 
       // Update the message and marginal
 
-      messages.get(0).setValue(newMessage)
-      variables.get(0).setValue(newMarginal)
+      messages.get(0).value = newMessage
+      variables.get(0).value = newMarginal
 
       // Return the difference in the new marginal
       return sub(newMarginal, marginal0)
@@ -207,8 +205,8 @@ class GaussianWeightedSumFactor(
 
   override def updateMessage(messageIndex: Int): Double =
     {
-      val allMessages = getMessages()
-      val allVariables = getVariables()
+      val allMessages = messages
+      val allVariables = variables
 
       Guard.argumentIsValidIndex(messageIndex, allMessages.size(), "messageIndex")
 

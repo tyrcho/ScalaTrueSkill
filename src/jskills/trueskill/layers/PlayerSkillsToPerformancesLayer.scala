@@ -22,7 +22,7 @@ class PlayerSkillsToPerformancesLayer(parentGraph: TrueSkillFactorGraph)
       val currentTeamPlayerPerformances = new ArrayList[KeyedVariable[IPlayer, GaussianDistribution]]()
 
       for (playerSkillVariable <- currentTeam) {
-        val playerPerformance = CreateOutputVariable(playerSkillVariable.getKey())
+        val playerPerformance = CreateOutputVariable(playerSkillVariable.key)
         AddLayerFactor(CreateLikelihood(playerSkillVariable, playerPerformance))
         currentTeamPlayerPerformances.add(playerPerformance)
       }
@@ -33,7 +33,7 @@ class PlayerSkillsToPerformancesLayer(parentGraph: TrueSkillFactorGraph)
   private def CreateLikelihood(
     playerSkill: KeyedVariable[IPlayer, GaussianDistribution],
     playerPerformance: KeyedVariable[IPlayer, GaussianDistribution]): GaussianLikelihoodFactor =
-    new GaussianLikelihoodFactor(MathUtils.square(parentGraph.getGameInfo().beta), playerPerformance, playerSkill)
+    new GaussianLikelihoodFactor(MathUtils.square(parentGraph.gameInfo.beta), playerPerformance, playerSkill)
 
   private def CreateOutputVariable(key: IPlayer): KeyedVariable[IPlayer, GaussianDistribution] =
     new KeyedVariable[IPlayer, GaussianDistribution](key, GaussianDistribution.UNIFORM, "%s's performance", key)

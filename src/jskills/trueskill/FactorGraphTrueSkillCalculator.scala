@@ -101,7 +101,7 @@ class FactorGraphTrueSkillCalculator
     val playerRatingValues = new ArrayList[Double]()
     for (currentTeam <- teamAssignmentsList)
       for (currentRating <- currentTeam.values())
-        playerRatingValues.add(currentRating.getMean())
+        playerRatingValues.add(currentRating.mean)
 
     return playerRatingValues
   }

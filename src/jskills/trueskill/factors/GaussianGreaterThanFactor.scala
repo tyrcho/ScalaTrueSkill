@@ -13,27 +13,27 @@ class GaussianGreaterThanFactor(epsilon: Double, variable: Variable[GaussianDist
   CreateVariableToMessageBinding(variable)
 
   override def getLogNormalization(): Double = {
-    val marginal = getVariables().get(0).getValue()
-    val message = getMessages().get(0).getValue()
+    val marginal = variables.get(0).value
+    val message = messages.get(0).value
     val messageFromVariable = divide(marginal, message)
     return -logProductNormalization(messageFromVariable, message)
-    +Math.log(cumulativeTo((messageFromVariable.getMean() - epsilon) / messageFromVariable.getStandardDeviation()))
+    +Math.log(cumulativeTo((messageFromVariable.mean - epsilon) / messageFromVariable.standardDeviation))
   }
 
   override protected def updateMessage(message: Message[GaussianDistribution], variable: Variable[GaussianDistribution]): Double = {
-    val oldMarginal = new GaussianDistribution(variable.getValue())
-    val oldMessage = new GaussianDistribution(message.getValue())
+    val oldMarginal = new GaussianDistribution(variable.value)
+    val oldMessage = new GaussianDistribution(message.value)
     val messageFromVar = divide(oldMarginal, oldMessage)
 
-    val c = messageFromVar.getPrecision()
-    var d = messageFromVar.getPrecisionMean()
+    val c = messageFromVar.precision
+    var d = messageFromVar.precisionMean
 
     val sqrtC = Math.sqrt(c)
 
     val dOnSqrtC = d / sqrtC
 
     val epsilsonTimesSqrtC = epsilon * sqrtC
-    d = messageFromVar.getPrecisionMean()
+    d = messageFromVar.precisionMean
 
     val denom = 1.0 - WExceedsMargin(dOnSqrtC, epsilsonTimesSqrtC)
 
@@ -47,8 +47,8 @@ class GaussianGreaterThanFactor(epsilon: Double, variable: Variable[GaussianDist
       oldMarginal)
 
     // Update the message and marginal
-    message.setValue(newMessage)
-    variable.setValue(newMarginal)
+    message.value = newMessage
+    variable.value = newMarginal
 
     // Return the difference in the new marginal
     return sub(newMarginal, oldMarginal)

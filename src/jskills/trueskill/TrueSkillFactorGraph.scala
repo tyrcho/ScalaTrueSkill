@@ -24,11 +24,11 @@ import jskills.trueskill.layers.PlayerPriorValuesToSkillsLayer
 import jskills.trueskill.layers.PlayerSkillsToPerformancesLayer
 import jskills.trueskill.layers.TeamDifferencesComparisonLayer
 import jskills.trueskill.layers.TeamPerformancesToTeamPerformanceDifferencesLayer
-import scala.reflect.BeanProperty
+
 import collection.JavaConversions._
 
 class TrueSkillFactorGraph(
-  @BeanProperty val gameInfo: GameInfo, teams: Collection[_ <: ITeam], teamRanks: Array[Int])
+  val gameInfo: GameInfo, teams: Collection[_ <: ITeam], teamRanks: Array[Int])
   extends FactorGraph[TrueSkillFactorGraph] {
   val _Layers = new ArrayList[FactorGraphLayerBase[GaussianDistribution]]()
   val _PriorLayer = new PlayerPriorValuesToSkillsLayer(this, teams)
@@ -98,7 +98,7 @@ class TrueSkillFactorGraph(
     val result = new HashMap[IPlayer, Rating]()
     for (currentTeam <- _PriorLayer.getOutputVariablesGroups()) {
       for (currentPlayer <- currentTeam) {
-        result.put(currentPlayer.getKey(), new Rating(currentPlayer.getValue().getMean(), currentPlayer.getValue().getStandardDeviation()))
+        result.put(currentPlayer.key, new Rating(currentPlayer.value.mean, currentPlayer.value.standardDeviation))
       }
     }
 

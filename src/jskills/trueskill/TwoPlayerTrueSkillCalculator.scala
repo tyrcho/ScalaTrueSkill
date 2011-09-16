@@ -66,15 +66,15 @@ class TwoPlayerTrueSkillCalculator
     comparison: PairwiseComparison): Rating = {
     val drawMargin = DrawMargin.GetDrawMarginFromDrawProbability(gameInfo.drawProbability, gameInfo.beta)
 
-    val c = Math.sqrt(square(selfRating.getStandardDeviation()) + square(opponentRating.getStandardDeviation()) + 2 * square(gameInfo.beta))
+    val c = Math.sqrt(square(selfRating.standardDeviation) + square(opponentRating.standardDeviation) + 2 * square(gameInfo.beta))
 
-    var winningMean = selfRating.getMean()
-    var losingMean = opponentRating.getMean()
+    var winningMean = selfRating.mean
+    var losingMean = opponentRating.mean
 
     comparison match {
       case PairwiseComparison.LOSE => {
-        winningMean = opponentRating.getMean()
-        losingMean = selfRating.getMean()
+        winningMean = opponentRating.mean
+        losingMean = selfRating.mean
       }
       case _ =>
     }
@@ -96,12 +96,12 @@ class TwoPlayerTrueSkillCalculator
       rankMultiplier = 1
     }
 
-    val meanMultiplier = (square(selfRating.getStandardDeviation()) + square(gameInfo.dynamicsFactor)) / c
+    val meanMultiplier = (square(selfRating.standardDeviation) + square(gameInfo.dynamicsFactor)) / c
 
-    val varianceWithDynamics = square(selfRating.getStandardDeviation()) + square(gameInfo.dynamicsFactor)
+    val varianceWithDynamics = square(selfRating.standardDeviation) + square(gameInfo.dynamicsFactor)
     val stdDevMultiplier = varianceWithDynamics / square(c)
 
-    val newMean = selfRating.getMean() + (rankMultiplier * meanMultiplier * v)
+    val newMean = selfRating.mean + (rankMultiplier * meanMultiplier * v)
     val newStdDev = Math.sqrt(varianceWithDynamics
       * (1 - w * stdDevMultiplier))
 
@@ -120,9 +120,9 @@ class TwoPlayerTrueSkillCalculator
     // We just use equation 4.1 found on page 8 of the TrueSkill 2006 paper:
     val betaSquared = square(gameInfo.beta)
     val player1SigmaSquared = square(player1Rating
-      .getStandardDeviation())
+      .standardDeviation)
     val player2SigmaSquared = square(player2Rating
-      .getStandardDeviation())
+      .standardDeviation)
 
     // This is the square root part of the equation:
     val sqrtPart = Math.sqrt((2 * betaSquared)
@@ -130,8 +130,8 @@ class TwoPlayerTrueSkillCalculator
 
     // This is the exponent part of the equation:
     val expPart = Math
-      .exp((-1 * square(player1Rating.getMean()
-        - player2Rating.getMean()))
+      .exp((-1 * square(player1Rating.mean
+        - player2Rating.mean))
         / (2 * (2 * betaSquared + player1SigmaSquared + player2SigmaSquared)))
 
     return sqrtPart * expPart

@@ -1,5 +1,5 @@
 package jskills
-import scala.reflect.BeanProperty
+
 /**
  * Represents a player who has a {@link Rating}.
  */
@@ -14,12 +14,12 @@ class Player[T](
    * indicates the player didn't play and 1.0 indicates the player played 100%
    * of the time.
    */
-  @BeanProperty val partialPlayPercentage: Double = Player.DefaultPartialPlayPercentage,
+  val partialPlayPercentage: Double = Player.DefaultPartialPlayPercentage,
   /**
    * Indicated how much of a skill update a player should receive where 0.0
    * represents no update and 1.0 represents 100% of the update.
    */
-  @BeanProperty val partialUpdatePercentage: Double = Player.DefaultPartialUpdatePercentage)
+  val partialUpdatePercentage: Double = Player.DefaultPartialUpdatePercentage)
   extends IPlayer with ISupportPartialPlay with ISupportPartialUpdate {
 
   //for java calls
@@ -27,6 +27,10 @@ class Player[T](
 
   //for java calls
   def this(id: T, partialPlayPercentage: Double) { this(id, partialPlayPercentage, Player.DefaultPartialUpdatePercentage) }
+
+  def getPartialUpdatePercentage() = partialUpdatePercentage
+
+  def getPartialPlayPercentage() = partialPlayPercentage
 
   override def hashCode(): Int = {
     val prime = 31

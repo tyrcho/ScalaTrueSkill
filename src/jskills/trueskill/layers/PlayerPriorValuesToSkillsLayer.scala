@@ -32,8 +32,7 @@ class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: C
           .entrySet()
       ) {
         val playerSkill = CreateSkillOutputVariable(currentTeamPlayer.getKey())
-        AddLayerFactor(CreatePriorFactor(currentTeamPlayer.getKey(),
-          currentTeamPlayer.getValue(), playerSkill))
+        AddLayerFactor(CreatePriorFactor(currentTeamPlayer.getKey(), currentTeamPlayer.getValue(), playerSkill))
         currentTeamSkills.add(playerSkill)
       }
 
@@ -51,8 +50,8 @@ class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: C
   }
 
   private def CreatePriorFactor(player: IPlayer, priorRating: Rating, skillsVariable: Variable[GaussianDistribution]): GaussianPriorFactor =
-    new GaussianPriorFactor(priorRating.getMean(),
-      MathUtils.square(priorRating.getStandardDeviation()) + MathUtils.square(parentGraph.getGameInfo().dynamicsFactor),
+    new GaussianPriorFactor(priorRating.mean,
+      MathUtils.square(priorRating.standardDeviation) + MathUtils.square(parentGraph.gameInfo.dynamicsFactor),
       skillsVariable)
 
   private def CreateSkillOutputVariable(key: IPlayer): KeyedVariable[IPlayer, GaussianDistribution] =

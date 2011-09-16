@@ -962,8 +962,8 @@ object TrueSkillCalculatorTests {
   //------------------------------------------------------------------------------
 
   private def assertRating(expectedMean: Double, expectedStandardDeviation: Double, actual: Rating) {
-    assertEquals(actual.getMean(), expectedMean, ErrorTolerance)
-    assertEquals(actual.getStandardDeviation(), expectedStandardDeviation, ErrorTolerance)
+    assertEquals(actual.mean, expectedMean, ErrorTolerance)
+    assertEquals(actual.standardDeviation, expectedStandardDeviation, ErrorTolerance)
   }
 
   private def assertMatchQuality(expectedMatchQuality: Double, actualMatchQuality: Double) {
