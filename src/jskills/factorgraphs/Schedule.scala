@@ -1,4 +1,4 @@
-package jskills.factorgraphs;
+package jskills.factorgraphs
 
 abstract class Schedule[T](name: String) {
   def visit(depth: Int, maxDepth: Int): Double

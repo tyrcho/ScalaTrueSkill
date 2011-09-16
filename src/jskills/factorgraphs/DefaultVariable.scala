@@ -1,7 +1,7 @@
-package jskills.factorgraphs;
+package jskills.factorgraphs
 
 class DefaultVariable[TValue] extends Variable[TValue](null.asInstanceOf[TValue], "Default") {
   override def setValue(value: TValue) {
-    throw new UnsupportedOperationException();
+    throw new UnsupportedOperationException()
   }
 }

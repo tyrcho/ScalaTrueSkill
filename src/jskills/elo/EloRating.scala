@@ -1,6 +1,6 @@
-package jskills.elo;
+package jskills.elo
 
-import jskills.Rating;
+import jskills.Rating
 
 /**
  * An Elo rating represented by a single number (mean).

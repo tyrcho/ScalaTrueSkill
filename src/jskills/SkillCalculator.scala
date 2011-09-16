@@ -1,10 +1,10 @@
-package jskills;
+package jskills
 
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.Map;
+import java.util.Collection
+import java.util.EnumSet
+import java.util.Map
 
-import jskills.numerics.Range;
+import jskills.numerics.Range
 import collection.JavaConversions._
 
 /**
@@ -14,7 +14,7 @@ abstract class SkillCalculator(supportedOptions: Seq[SupportedOptions],
   totalTeamsAllowed: Range,
   playerPerTeamAllowed: Range) {
 
-  def isSupported(option: SupportedOptions) = supportedOptions.contains(option);
+  def isSupported(option: SupportedOptions) = supportedOptions.contains(option)
 
   /**
    * Calculates new ratings based on the prior ratings and team ranks.
@@ -45,22 +45,22 @@ abstract class SkillCalculator(supportedOptions: Seq[SupportedOptions],
 
   protected def validateTeamCountAndPlayersCountPerTeam(
     teams: Collection[_ <: ITeam]) {
-    validateTeamCountAndPlayersCountPerTeam(teams, totalTeamsAllowed, playerPerTeamAllowed);
+    validateTeamCountAndPlayersCountPerTeam(teams, totalTeamsAllowed, playerPerTeamAllowed)
   }
 
   private def validateTeamCountAndPlayersCountPerTeam(
     teams: Collection[_ <: ITeam], totalTeams: Range, playersPerTeam: Range) {
-    Guard.argumentNotNull(teams, "teams");
-    var countOfTeams = 0;
+    Guard.argumentNotNull(teams, "teams")
+    var countOfTeams = 0
     for (currentTeam <- teams) {
       if (!playersPerTeam.isInRange(currentTeam.size())) {
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException()
       }
-      countOfTeams += 1;
+      countOfTeams += 1
     }
 
     if (!totalTeams.isInRange(countOfTeams)) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException()
     }
   }
 }

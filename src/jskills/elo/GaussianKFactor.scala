@@ -1,6 +1,6 @@
-package jskills.elo;
+package jskills.elo
 
-import jskills.GameInfo;
+import jskills.GameInfo
 
 class GaussianKFactor(value: Double = GaussianKFactor.StableDynamicsKFactor) extends KFactor(value) {
   def this(gameInfo: GameInfo, latestGameWeightingFactor: Double) {
@@ -9,5 +9,5 @@ class GaussianKFactor(value: Double = GaussianKFactor.StableDynamicsKFactor) ext
 }
 object GaussianKFactor {
   // From paper
-  val StableDynamicsKFactor = 24.0;
+  val StableDynamicsKFactor = 24.0
 }

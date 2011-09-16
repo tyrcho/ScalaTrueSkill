@@ -1,6 +1,6 @@
-package jskills.numerics;
+package jskills.numerics
 
-import java.util.Collection;
+import java.util.Collection
 import collection.JavaConversions._
 
 /**

@@ -1,4 +1,4 @@
-package jskills;
+package jskills
 
 /**
  * Represents a comparison between two players.

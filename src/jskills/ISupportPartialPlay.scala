@@ -1,4 +1,4 @@
-package jskills;
+package jskills
 
 /**
  * Indicates support for allowing partial play (where a player only plays a part

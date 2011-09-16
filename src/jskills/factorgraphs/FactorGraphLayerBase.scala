@@ -1,7 +1,7 @@
-package jskills.factorgraphs;
+package jskills.factorgraphs
 
-import java.util.Collection;
-import java.util.List;
+import java.util.Collection
+import java.util.List
 
 abstract class FactorGraphLayerBase[TValue] {
 

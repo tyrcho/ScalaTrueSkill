@@ -1,4 +1,4 @@
-package jskills;
+package jskills
 
 import collection.JavaConversions._
 import jskills.numerics.MathUtils.square
@@ -18,18 +18,18 @@ object Rating {
     // posterior skills of each player ... in the canonical space of
     // parameters"
 
-    val precisionDifference = posteriorGaussian.precision - priorGaussian.precision;
-    val partialPrecisionDifference = updatePercentage * precisionDifference;
+    val precisionDifference = posteriorGaussian.precision - priorGaussian.precision
+    val partialPrecisionDifference = updatePercentage * precisionDifference
 
-    val precisionMeanDifference = posteriorGaussian.precisionMean - priorGaussian.precisionMean;
-    val partialPrecisionMeanDifference = updatePercentage * precisionMeanDifference;
+    val precisionMeanDifference = posteriorGaussian.precisionMean - priorGaussian.precisionMean
+    val partialPrecisionMeanDifference = updatePercentage * precisionMeanDifference
 
     val partialPosteriorGaussion = GaussianDistribution.fromPrecisionMean(
       priorGaussian.precisionMean + partialPrecisionMeanDifference,
-      priorGaussian.precision + partialPrecisionDifference);
+      priorGaussian.precision + partialPrecisionDifference)
 
     new Rating(partialPosteriorGaussion.mean, partialPosteriorGaussion.standardDeviation,
-      prior.getConservativeStandardDeviationMultiplier());
+      prior.getConservativeStandardDeviationMultiplier())
   }
 
   def calcMeanMean(ratings: Collection[Rating]): Double = (ratings map (_.mean) sum) / ratings.size

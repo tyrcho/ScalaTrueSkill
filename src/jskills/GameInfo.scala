@@ -1,20 +1,20 @@
-package jskills;
+package jskills
 
 import scala.reflect.BeanProperty
 
 object GameInfo {
-  private val defaultInitialMean = 25.0;
-  private val defaultBeta = defaultInitialMean / 6.0;
-  private val defaultDrawProbability = 0.10;
-  @BeanProperty val defaultDynamicsFactor = defaultInitialMean / 300.0;
-  private val defaultInitialStandardDeviation = defaultInitialMean / 3.0;
+  private val defaultInitialMean = 25.0
+  private val defaultBeta = defaultInitialMean / 6.0
+  private val defaultDrawProbability = 0.10
+  @BeanProperty val defaultDynamicsFactor = defaultInitialMean / 300.0
+  private val defaultInitialStandardDeviation = defaultInitialMean / 3.0
   def getDefaultGameInfo(): GameInfo = {
     // We return a fresh copy since we have public setters that can mutate state
     new GameInfo(defaultInitialMean,
       defaultInitialStandardDeviation,
       defaultBeta,
       defaultDynamicsFactor,
-      defaultDrawProbability);
+      defaultDrawProbability)
   }
 
 }
@@ -29,6 +29,6 @@ class GameInfo(
   @BeanProperty val drawProbability: Double) {
 
   def getDefaultRating(): Rating = {
-    new Rating(initialMean, initialStandardDeviation);
+    new Rating(initialMean, initialStandardDeviation)
   }
 }

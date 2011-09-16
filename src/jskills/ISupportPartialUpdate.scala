@@ -1,4 +1,4 @@
-package jskills;
+package jskills
 
 /**
  * Indicates support for allowing partial update (where a player only gets part

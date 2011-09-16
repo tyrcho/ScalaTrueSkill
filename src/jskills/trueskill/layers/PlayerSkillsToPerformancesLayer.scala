@@ -1,17 +1,17 @@
-package jskills.trueskill.layers;
+package jskills.trueskill.layers
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.ArrayList
+import java.util.Collection
+import java.util.List
 
-import jskills.IPlayer;
-import jskills.factorgraphs.KeyedVariable;
-import jskills.factorgraphs.Schedule;
-import jskills.factorgraphs.ScheduleStep;
-import jskills.numerics.GaussianDistribution;
-import jskills.numerics.MathUtils;
-import jskills.trueskill.TrueSkillFactorGraph;
-import jskills.trueskill.factors.GaussianLikelihoodFactor;
+import jskills.IPlayer
+import jskills.factorgraphs.KeyedVariable
+import jskills.factorgraphs.Schedule
+import jskills.factorgraphs.ScheduleStep
+import jskills.numerics.GaussianDistribution
+import jskills.numerics.MathUtils
+import jskills.trueskill.TrueSkillFactorGraph
+import jskills.trueskill.factors.GaussianLikelihoodFactor
 import collection.JavaConversions._
 
 class PlayerSkillsToPerformancesLayer(parentGraph: TrueSkillFactorGraph)
@@ -19,39 +19,39 @@ class PlayerSkillsToPerformancesLayer(parentGraph: TrueSkillFactorGraph)
 
   override def BuildLayer() {
     for (currentTeam <- inputVariablesGroups) {
-      val currentTeamPlayerPerformances = new ArrayList[KeyedVariable[IPlayer, GaussianDistribution]]();
+      val currentTeamPlayerPerformances = new ArrayList[KeyedVariable[IPlayer, GaussianDistribution]]()
 
       for (playerSkillVariable <- currentTeam) {
-        val playerPerformance = CreateOutputVariable(playerSkillVariable.getKey());
-        AddLayerFactor(CreateLikelihood(playerSkillVariable, playerPerformance));
-        currentTeamPlayerPerformances.add(playerPerformance);
+        val playerPerformance = CreateOutputVariable(playerSkillVariable.getKey())
+        AddLayerFactor(CreateLikelihood(playerSkillVariable, playerPerformance))
+        currentTeamPlayerPerformances.add(playerPerformance)
       }
-      addOutputVariableGroup(currentTeamPlayerPerformances);
+      addOutputVariableGroup(currentTeamPlayerPerformances)
     }
   }
 
   private def CreateLikelihood(
     playerSkill: KeyedVariable[IPlayer, GaussianDistribution],
     playerPerformance: KeyedVariable[IPlayer, GaussianDistribution]): GaussianLikelihoodFactor =
-    new GaussianLikelihoodFactor(MathUtils.square(parentGraph.getGameInfo().getBeta()), playerPerformance, playerSkill);
+    new GaussianLikelihoodFactor(MathUtils.square(parentGraph.getGameInfo().getBeta()), playerPerformance, playerSkill)
 
   private def CreateOutputVariable(key: IPlayer): KeyedVariable[IPlayer, GaussianDistribution] =
-    new KeyedVariable[IPlayer, GaussianDistribution](key, GaussianDistribution.UNIFORM, "%s's performance", key);
+    new KeyedVariable[IPlayer, GaussianDistribution](key, GaussianDistribution.UNIFORM, "%s's performance", key)
 
   override def createPriorSchedule(): Schedule[GaussianDistribution] = {
-    val schedules = new ArrayList[Schedule[GaussianDistribution]]();
+    val schedules = new ArrayList[Schedule[GaussianDistribution]]()
     for (likelihood <- localFactors) {
       schedules.add(new ScheduleStep[GaussianDistribution](
-        "Skill to Perf step", likelihood, 0));
+        "Skill to Perf step", likelihood, 0))
     }
-    return ScheduleSequence(schedules, "All skill to performance sending");
+    return ScheduleSequence(schedules, "All skill to performance sending")
   }
 
   override def createPosteriorSchedule(): Schedule[GaussianDistribution] = {
-    val schedules = new ArrayList[Schedule[GaussianDistribution]]();
+    val schedules = new ArrayList[Schedule[GaussianDistribution]]()
     for (likelihood <- localFactors) {
-      schedules.add(new ScheduleStep[GaussianDistribution]("Skill to Perf step", likelihood, 1));
+      schedules.add(new ScheduleStep[GaussianDistribution]("Skill to Perf step", likelihood, 1))
     }
-    return ScheduleSequence(schedules, "All skill to performance sending");
+    return ScheduleSequence(schedules, "All skill to performance sending")
   }
 }

@@ -1,3 +1,3 @@
-package jskills;
+package jskills
 
 trait IPlayer 

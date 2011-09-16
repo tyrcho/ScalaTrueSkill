@@ -1,4 +1,4 @@
-package jskills.numerics;
+package jskills.numerics
 /**
  * A very limited implementation of an immutable range of Integers, including
  * endpoints. There is no such thing as an empty range.

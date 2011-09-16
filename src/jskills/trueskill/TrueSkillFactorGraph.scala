@@ -1,4 +1,4 @@
-package jskills.trueskill;
+package jskills.trueskill
 
 import java.util.ArrayList
 import java.util.Collection
@@ -23,85 +23,85 @@ import jskills.trueskill.layers.PlayerPerformancesToTeamPerformancesLayer
 import jskills.trueskill.layers.PlayerPriorValuesToSkillsLayer
 import jskills.trueskill.layers.PlayerSkillsToPerformancesLayer
 import jskills.trueskill.layers.TeamDifferencesComparisonLayer
-import jskills.trueskill.layers.TeamPerformancesToTeamPerformanceDifferencesLayer;
+import jskills.trueskill.layers.TeamPerformancesToTeamPerformanceDifferencesLayer
 import scala.reflect.BeanProperty
 import collection.JavaConversions._
 
 class TrueSkillFactorGraph(
   @BeanProperty val gameInfo: GameInfo, teams: Collection[_ <: ITeam], teamRanks: Array[Int])
   extends FactorGraph[TrueSkillFactorGraph] {
-  val _Layers = new ArrayList[FactorGraphLayerBase[GaussianDistribution]]();
-  val _PriorLayer = new PlayerPriorValuesToSkillsLayer(this, teams);
+  val _Layers = new ArrayList[FactorGraphLayerBase[GaussianDistribution]]()
+  val _PriorLayer = new PlayerPriorValuesToSkillsLayer(this, teams)
 
-  _Layers.add(_PriorLayer);
-  _Layers.add(new PlayerSkillsToPerformancesLayer(this));
-  _Layers.add(new PlayerPerformancesToTeamPerformancesLayer(this));
+  _Layers.add(_PriorLayer)
+  _Layers.add(new PlayerSkillsToPerformancesLayer(this))
+  _Layers.add(new PlayerPerformancesToTeamPerformancesLayer(this))
   _Layers.add(new IteratedTeamDifferencesInnerLayer(
     this,
     new TeamPerformancesToTeamPerformanceDifferencesLayer(this),
-    new TeamDifferencesComparisonLayer(this, teamRanks)));
+    new TeamDifferencesComparisonLayer(this, teamRanks)))
 
   def BuildGraph() {
     var lastOutput: Any = null
     for (currentLayer <- _Layers) {
       if (lastOutput != null) {
-        currentLayer.SetRawInputVariablesGroups(lastOutput);
+        currentLayer.SetRawInputVariablesGroups(lastOutput)
       }
-      currentLayer.BuildLayer();
-      lastOutput = currentLayer.getOutputVariablesGroups();
+      currentLayer.BuildLayer()
+      lastOutput = currentLayer.getOutputVariablesGroups()
     }
   }
 
   def RunSchedule() {
-    val fullSchedule = CreateFullSchedule();
-    fullSchedule.visit();
+    val fullSchedule = CreateFullSchedule()
+    fullSchedule.visit()
   }
 
   def GetProbabilityOfRanking(): Double = {
-    val factorList = new FactorList[GaussianDistribution]();
+    val factorList = new FactorList[GaussianDistribution]()
 
     for (currentLayer <- _Layers) {
       for (currentFactor <- currentLayer.getUntypedFactors()) {
-        factorList.addFactor(currentFactor);
+        factorList.addFactor(currentFactor)
       }
     }
 
-    val logZ = factorList.getLogNormalization();
-    return Math.exp(logZ);
+    val logZ = factorList.getLogNormalization()
+    return Math.exp(logZ)
   }
 
   private def CreateFullSchedule(): Schedule[GaussianDistribution] = {
-    val fullSchedule = new ArrayList[Schedule[GaussianDistribution]]();
+    val fullSchedule = new ArrayList[Schedule[GaussianDistribution]]()
 
     for (currentLayer <- _Layers) {
-      val currentPriorSchedule = currentLayer.createPriorSchedule();
+      val currentPriorSchedule = currentLayer.createPriorSchedule()
       if (currentPriorSchedule != null) {
-        fullSchedule.add(currentPriorSchedule);
+        fullSchedule.add(currentPriorSchedule)
       }
     }
 
     // Getting as a list to use reverse()
-    val allLayers = new ArrayList[FactorGraphLayerBase[GaussianDistribution]](_Layers);
-    Collections.reverse(allLayers);
+    val allLayers = new ArrayList[FactorGraphLayerBase[GaussianDistribution]](_Layers)
+    Collections.reverse(allLayers)
 
     for (currentLayer <- allLayers) {
-      val currentPosteriorSchedule = currentLayer.createPosteriorSchedule();
+      val currentPosteriorSchedule = currentLayer.createPosteriorSchedule()
       if (currentPosteriorSchedule != null) {
-        fullSchedule.add(currentPosteriorSchedule);
+        fullSchedule.add(currentPosteriorSchedule)
       }
     }
 
-    return new ScheduleSequence[GaussianDistribution]("Full schedule", fullSchedule);
+    return new ScheduleSequence[GaussianDistribution]("Full schedule", fullSchedule)
   }
 
   def GetUpdatedRatings(): Map[IPlayer, Rating] = {
-    val result = new HashMap[IPlayer, Rating]();
+    val result = new HashMap[IPlayer, Rating]()
     for (currentTeam <- _PriorLayer.getOutputVariablesGroups()) {
       for (currentPlayer <- currentTeam) {
-        result.put(currentPlayer.getKey(), new Rating(currentPlayer.getValue().getMean(), currentPlayer.getValue().getStandardDeviation()));
+        result.put(currentPlayer.getKey(), new Rating(currentPlayer.getValue().getMean(), currentPlayer.getValue().getStandardDeviation()))
       }
     }
 
-    return result;
+    return result
   }
 }

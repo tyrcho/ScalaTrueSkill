@@ -1,4 +1,4 @@
-package jskills.elo;
+package jskills.elo
 
 /** @see http://ratings.fide.com/calculator_rtd.phtml for details **/
 class FideKFactor(value: Double = -1) extends KFactor(value) {
