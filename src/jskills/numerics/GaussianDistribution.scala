@@ -26,17 +26,17 @@ import jskills.Rating
  */
 class GaussianDistribution(
   /** The peak of the Gaussian, \u03bc **/
-   val mean: Double,
+  val mean: Double,
   /** The width of the Gaussian, \u03c3, where the height drops to max/e **/
-   val standardDeviation: Double,
+  val standardDeviation: Double,
   /** The square of the standard deviation, \u03c3^2 **/
-   val variance: Double,
+  val variance: Double,
   // Precision and PrecisionMean are used because they make multiplying and
   // dividing simpler (see the accompanying math paper for more details)
   /** 1/\u03c3^2 **/
-   val precision: Double,
+  val precision: Double,
   /** Precision times mean, \u03bc/\u03c3^2 **/
-   val precisionMean: Double) {
+  val precisionMean: Double) {
   /**
    * The normalization constant multiplies the exponential and causes the
    * integral over (-Inf,Inf) to equal 1
@@ -56,7 +56,7 @@ class GaussianDistribution(
 
   def mult(other: GaussianDistribution): GaussianDistribution = GaussianDistribution.prod(this, other)
 
-  override def toString() = format("Mean(\u03bc)=%f, Std-Dev(\u03c3)=%f", mean, standardDeviation)
+  override def toString = format("Mean(\u03bc)=%f, Std-Dev(\u03c3)=%f", mean, standardDeviation)
 
   override def equals(o: Any): Boolean = {
     o match {

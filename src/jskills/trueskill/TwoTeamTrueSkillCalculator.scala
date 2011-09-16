@@ -43,13 +43,11 @@ class TwoTeamTrueSkillCalculator
 
     val results = new HashMap[IPlayer, Rating]()
 
-    UpdatePlayerRatings(gameInfo, results, team1, team2,
-      if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.WIN)
+    UpdatePlayerRatings(gameInfo, results, team1, team2, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.WIN)
 
-    UpdatePlayerRatings(gameInfo, results, team2, team1,
-      if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.LOSE)
+    UpdatePlayerRatings(gameInfo, results, team2, team1, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.LOSE)
 
-    return results
+    results
   }
 
   private def UpdatePlayerRatings(gameInfo: GameInfo,
@@ -57,21 +55,17 @@ class TwoTeamTrueSkillCalculator
     selfTeam: ITeam,
     otherTeam: ITeam,
     selfToOtherTeamComparison: PairwiseComparison) {
-    val drawMargin = DrawMargin.GetDrawMarginFromDrawProbability(
-      gameInfo.drawProbability, gameInfo.beta)
+    val drawMargin = DrawMargin.GetDrawMarginFromDrawProbability(gameInfo.drawProbability, gameInfo.beta)
     val betaSquared = square(gameInfo.beta)
     val tauSquared = square(gameInfo.dynamicsFactor)
 
     val totalPlayers = selfTeam.size() + otherTeam.size()
 
-    var selfMeanSum = 0.0
-    for (r <- selfTeam.values()) selfMeanSum += r.mean
-    var otherTeamMeanSum = 0.0
-    for (r <- otherTeam.values()) otherTeamMeanSum += r.mean
+    val selfMeanSum = selfTeam.values() map (_.mean) sum
+    val otherTeamMeanSum = otherTeam.values() map (_.mean) sum
 
-    var sum = 0.0
-    for (r <- selfTeam.values()) sum += square(r.standardDeviation)
-    for (r <- otherTeam.values()) sum += square(r.standardDeviation)
+    val sum = (selfTeam.values().toList ::: otherTeam.values().toList) map
+      (r => square(r.standardDeviation)) sum
 
     val c = Math.sqrt(sum + totalPlayers * betaSquared)
 
@@ -94,17 +88,13 @@ class TwoTeamTrueSkillCalculator
 
     if (selfToOtherTeamComparison != PairwiseComparison.DRAW) {
       // non-draw case
-      v = TruncatedGaussianCorrectionFunctions.VExceedsMargin(meanDelta,
-        drawMargin, c)
-      w = TruncatedGaussianCorrectionFunctions.WExceedsMargin(meanDelta,
-        drawMargin, c)
+      v = TruncatedGaussianCorrectionFunctions.VExceedsMargin(meanDelta, drawMargin, c)
+      w = TruncatedGaussianCorrectionFunctions.WExceedsMargin(meanDelta, drawMargin, c)
       rankMultiplier = selfToOtherTeamComparison.multiplier
     } else {
       // assume draw
-      v = TruncatedGaussianCorrectionFunctions.VWithinMargin(meanDelta,
-        drawMargin, c)
-      w = TruncatedGaussianCorrectionFunctions.WWithinMargin(meanDelta,
-        drawMargin, c)
+      v = TruncatedGaussianCorrectionFunctions.VWithinMargin(meanDelta, drawMargin, c)
+      w = TruncatedGaussianCorrectionFunctions.WWithinMargin(meanDelta, drawMargin, c)
       rankMultiplier = 1
     }
 
@@ -117,9 +107,7 @@ class TwoTeamTrueSkillCalculator
       val playerMeanDelta = (rankMultiplier * meanMultiplier * v)
       val newMean = previousPlayerRating.mean + playerMeanDelta
 
-      val newStdDev = Math.sqrt((square(previousPlayerRating
-        .standardDeviation) + tauSquared)
-        * (1 - w * stdDevMultiplier))
+      val newStdDev = Math.sqrt((square(previousPlayerRating.standardDeviation) + tauSquared) * (1 - w * stdDevMultiplier))
 
       newPlayerRatings.put(teamPlayerRatingPair.getKey(), new Rating(newMean, newStdDev))
     }
@@ -142,28 +130,22 @@ class TwoTeamTrueSkillCalculator
 
     val betaSquared = square(gameInfo.beta)
 
-    var team1MeanSum = 0.0
-    for (r <- team1) team1MeanSum += r.mean
-    var team1StdDevSquared = 0.0
-    for (r <- team1) team1StdDevSquared += square(r.standardDeviation)
+    val team1MeanSum = team1 map (_.mean) sum
+    val team1StdDevSquared = team1 map (r => square(r.standardDeviation)) sum
 
-    var team2MeanSum = 0.0
-    for (r <- team2) team2MeanSum += r.mean
-    var team2SigmaSquared = 0.0
-    for (r <- team2) team2SigmaSquared += square(r.standardDeviation)
+    val team2MeanSum = team2 map (_.mean) sum
+    val team2SigmaSquared = team2 map (r => square(r.standardDeviation)) sum
 
     // This comes from equation 4.1 in the TrueSkill paper on page 8
     // The equation was broken up into the part under the square root sign
     // and
     // the exponential part to make the code easier to read.
 
-    val sqrtPart = Math
-      .sqrt((totalPlayers * betaSquared)
-        / (totalPlayers * betaSquared + team1StdDevSquared + team2SigmaSquared))
+    val sqrtPart = Math.sqrt((totalPlayers * betaSquared)
+      / (totalPlayers * betaSquared + team1StdDevSquared + team2SigmaSquared))
 
-    val expPart = Math
-      .exp((-1 * square(team1MeanSum - team2MeanSum))
-        / (2 * (totalPlayers * betaSquared + team1StdDevSquared + team2SigmaSquared)))
+    val expPart = Math.exp((-1 * square(team1MeanSum - team2MeanSum))
+      / (2 * (totalPlayers * betaSquared + team1StdDevSquared + team2SigmaSquared)))
 
     return expPart * sqrtPart
   }

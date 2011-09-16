@@ -57,8 +57,7 @@ class TwoPlayerTrueSkillCalculator
       CalculateNewRating(gameInfo, loserPreviousRating,
         winnerPreviousRating, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.LOSE))
 
-    // And we're done!
-    return results
+    results
   }
 
   private def CalculateNewRating(gameInfo: GameInfo,
@@ -102,8 +101,7 @@ class TwoPlayerTrueSkillCalculator
     val stdDevMultiplier = varianceWithDynamics / square(c)
 
     val newMean = selfRating.mean + (rankMultiplier * meanMultiplier * v)
-    val newStdDev = Math.sqrt(varianceWithDynamics
-      * (1 - w * stdDevMultiplier))
+    val newStdDev = Math.sqrt(varianceWithDynamics * (1 - w * stdDevMultiplier))
 
     return new Rating(newMean, newStdDev)
   }
@@ -119,14 +117,11 @@ class TwoPlayerTrueSkillCalculator
 
     // We just use equation 4.1 found on page 8 of the TrueSkill 2006 paper:
     val betaSquared = square(gameInfo.beta)
-    val player1SigmaSquared = square(player1Rating
-      .standardDeviation)
-    val player2SigmaSquared = square(player2Rating
-      .standardDeviation)
+    val player1SigmaSquared = square(player1Rating.standardDeviation)
+    val player2SigmaSquared = square(player2Rating.standardDeviation)
 
     // This is the square root part of the equation:
-    val sqrtPart = Math.sqrt((2 * betaSquared)
-      / (2 * betaSquared + player1SigmaSquared + player2SigmaSquared))
+    val sqrtPart = Math.sqrt((2 * betaSquared) / (2 * betaSquared + player1SigmaSquared + player2SigmaSquared))
 
     // This is the exponent part of the equation:
     val expPart = Math
@@ -134,6 +129,6 @@ class TwoPlayerTrueSkillCalculator
         - player2Rating.mean))
         / (2 * (2 * betaSquared + player1SigmaSquared + player2SigmaSquared)))
 
-    return sqrtPart * expPart
+    sqrtPart * expPart
   }
 }

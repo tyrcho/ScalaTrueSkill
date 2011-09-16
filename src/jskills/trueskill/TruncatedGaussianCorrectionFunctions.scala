@@ -44,20 +44,16 @@ object TruncatedGaussianCorrectionFunctions {
     val denominator = cumulativeTo(teamPerformanceDifference - drawMargin)
 
     if (denominator < 2.222758749e-162) {
-      if (teamPerformanceDifference < 0.0) {
-        return 1.0
-      }
-      return 0.0
+      if (teamPerformanceDifference < 0.0) 1.0 else 0.0
+    } else {
+      val vWin = VExceedsMargin(teamPerformanceDifference, drawMargin)
+      vWin * (vWin + teamPerformanceDifference - drawMargin)
     }
-
-    val vWin = VExceedsMargin(teamPerformanceDifference, drawMargin)
-    return vWin * (vWin + teamPerformanceDifference - drawMargin)
   }
 
   // the additive correction of a double-sided truncated Gaussian with unit variance
-  def VWithinMargin(teamPerformanceDifference: Double, drawMargin: Double, c: Double): Double = {
+  def VWithinMargin(teamPerformanceDifference: Double, drawMargin: Double, c: Double): Double =
     VWithinMargin(teamPerformanceDifference / c, drawMargin / c)
-  }
 
   // from F#:
   def VWithinMargin(teamPerformanceDifference: Double, drawMargin: Double): Double = {
@@ -65,22 +61,17 @@ object TruncatedGaussianCorrectionFunctions {
     val denominator =
       cumulativeTo(drawMargin - teamPerformanceDifferenceAbsoluteValue) -
         cumulativeTo(-drawMargin - teamPerformanceDifferenceAbsoluteValue)
-    if (denominator < 2.222758749e-162) {
-      if (teamPerformanceDifference < 0.0) {
-        return -teamPerformanceDifference - drawMargin
-      }
+    if (denominator < 2.222758749e-162)
+      if (teamPerformanceDifference < 0.0)
+        -teamPerformanceDifference - drawMargin
+      else -teamPerformanceDifference + drawMargin
+    else {
+      val numerator = at(-drawMargin - teamPerformanceDifferenceAbsoluteValue) -
+        at(drawMargin - teamPerformanceDifferenceAbsoluteValue)
 
-      return -teamPerformanceDifference + drawMargin
+      if (teamPerformanceDifference < 0.0) -numerator / denominator
+      else numerator / denominator
     }
-
-    val numerator = at(-drawMargin - teamPerformanceDifferenceAbsoluteValue) -
-      at(drawMargin - teamPerformanceDifferenceAbsoluteValue)
-
-    if (teamPerformanceDifference < 0.0) {
-      return -numerator / denominator
-    }
-
-    return numerator / denominator
   }
 
   // the multiplicative correction of a double-sided truncated Gaussian with unit variance

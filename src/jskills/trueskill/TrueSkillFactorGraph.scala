@@ -30,20 +30,20 @@ import collection.JavaConversions._
 class TrueSkillFactorGraph(
   val gameInfo: GameInfo, teams: Collection[_ <: ITeam], teamRanks: Array[Int])
   extends FactorGraph[TrueSkillFactorGraph] {
-  val _Layers = new ArrayList[FactorGraphLayerBase[GaussianDistribution]]()
-  val _PriorLayer = new PlayerPriorValuesToSkillsLayer(this, teams)
+  val layers = new ArrayList[FactorGraphLayerBase[GaussianDistribution]]()
+  val priorLayer = new PlayerPriorValuesToSkillsLayer(this, teams)
 
-  _Layers.add(_PriorLayer)
-  _Layers.add(new PlayerSkillsToPerformancesLayer(this))
-  _Layers.add(new PlayerPerformancesToTeamPerformancesLayer(this))
-  _Layers.add(new IteratedTeamDifferencesInnerLayer(
+  layers.add(priorLayer)
+  layers.add(new PlayerSkillsToPerformancesLayer(this))
+  layers.add(new PlayerPerformancesToTeamPerformancesLayer(this))
+  layers.add(new IteratedTeamDifferencesInnerLayer(
     this,
     new TeamPerformancesToTeamPerformanceDifferencesLayer(this),
     new TeamDifferencesComparisonLayer(this, teamRanks)))
 
   def BuildGraph() {
     var lastOutput: Any = null
-    for (currentLayer <- _Layers) {
+    for (currentLayer <- layers) {
       if (lastOutput != null) {
         currentLayer.SetRawInputVariablesGroups(lastOutput)
       }
@@ -60,7 +60,7 @@ class TrueSkillFactorGraph(
   //  def GetProbabilityOfRanking(): Double = {
   //    val factorList = new FactorList[GaussianDistribution]()
   //
-  //    for (currentLayer <- _Layers) {
+  //    for (currentLayer <- layers) {
   //      for (currentFactor <- currentLayer.getUntypedFactors()) {
   //        factorList.addFactor(currentFactor)
   //      }
@@ -73,30 +73,15 @@ class TrueSkillFactorGraph(
   private def CreateFullSchedule(): Schedule[GaussianDistribution] = {
     val fullSchedule = new ArrayList[Schedule[GaussianDistribution]]()
 
-    for (currentLayer <- _Layers) {
-      val currentPriorSchedule = currentLayer.createPriorSchedule()
-      if (currentPriorSchedule != null) {
-        fullSchedule.add(currentPriorSchedule)
-      }
-    }
-
-    // Getting as a list to use reverse()
-    val allLayers = new ArrayList[FactorGraphLayerBase[GaussianDistribution]](_Layers)
-    Collections.reverse(allLayers)
-
-    for (currentLayer <- allLayers) {
-      val currentPosteriorSchedule = currentLayer.createPosteriorSchedule()
-      if (currentPosteriorSchedule != null) {
-        fullSchedule.add(currentPosteriorSchedule)
-      }
-    }
+    layers map (_.createPriorSchedule()) filter (_ != null) foreach (fullSchedule.add(_))
+    layers.reverse map (_.createPosteriorSchedule()) filter (_ != null) foreach (fullSchedule.add(_))
 
     return new ScheduleSequence[GaussianDistribution]("Full schedule", fullSchedule)
   }
 
   def GetUpdatedRatings(): Map[IPlayer, Rating] = {
     val result = new HashMap[IPlayer, Rating]()
-    for (currentTeam <- _PriorLayer.getOutputVariablesGroups()) {
+    for (currentTeam <- priorLayer.getOutputVariablesGroups()) {
       for (currentPlayer <- currentTeam) {
         result.put(currentPlayer.key, new Rating(currentPlayer.value.mean, currentPlayer.value.standardDeviation))
       }

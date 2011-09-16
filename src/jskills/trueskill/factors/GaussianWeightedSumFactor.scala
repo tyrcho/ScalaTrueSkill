@@ -15,36 +15,35 @@ import collection.JavaConversions._
 object GaussianWeightedSumFactor {
   def createName(sumVariable: Variable[GaussianDistribution],
     variablesToSum: List[_ <: Variable[GaussianDistribution]],
-    weights: Array[Double]): String =
-    {
-      var sb = new StringBuffer()
-      sb.append(sumVariable.toString())
-      sb.append(" = ")
-      for (i <- 0 until variablesToSum.size()) {
-        val isFirst = (i == 0)
+    weights: Array[Double]): String = {
+    var sb = new StringBuffer()
+    sb.append(sumVariable.toString())
+    sb.append(" = ")
+    for (i <- 0 until variablesToSum.size()) {
+      val isFirst = (i == 0)
 
-        if (isFirst && (weights(i) < 0)) {
-          sb.append("-")
-        }
-
-        sb.append(format("%.2f", Math.abs(weights(i))))
-        sb.append("*[")
-        sb.append(variablesToSum.get(i))
-        sb.append("]")
-
-        val isLast = (i == variablesToSum.size() - 1)
-
-        if (!isLast) {
-          if (weights(i + 1) >= 0) {
-            sb.append(" + ")
-          } else {
-            sb.append(" - ")
-          }
-        }
+      if (isFirst && (weights(i) < 0)) {
+        sb.append("-")
       }
 
-      return sb.toString()
+      sb.append(format("%.2f", Math.abs(weights(i))))
+      sb.append("*[")
+      sb.append(variablesToSum.get(i))
+      sb.append("]")
+
+      val isLast = (i == variablesToSum.size() - 1)
+
+      if (!isLast) {
+        if (weights(i + 1) >= 0) {
+          sb.append(" + ")
+        } else {
+          sb.append(" - ")
+        }
+      }
     }
+
+    return sb.toString()
+  }
 }
 
 /**
@@ -55,8 +54,8 @@ class GaussianWeightedSumFactor(
   sumVariable: Variable[GaussianDistribution],
   variablesToSum: List[_ <: Variable[GaussianDistribution]],
   var variableWeights: Array[Double] = null)
-  extends GaussianFactor(GaussianWeightedSumFactor.createName(sumVariable, variablesToSum, variableWeights)) // By default, set the weight to 1.0, which is what null indicates
-  {
+  extends GaussianFactor(GaussianWeightedSumFactor.createName(sumVariable, variablesToSum, variableWeights)) {
+  // By default, set the weight to 1.0, which is what null indicates
   val variableIndexOrdersForWeights = new ArrayList[Array[Int]]()
 
   if (variableWeights == null) {
@@ -149,81 +148,78 @@ class GaussianWeightedSumFactor(
   private def UpdateHelper(weights: Array[Double],
     weightsSquared: Array[Double],
     messages: List[Message[GaussianDistribution]],
-    variables: List[Variable[GaussianDistribution]]): Double =
-    {
-      // Potentially look at http://mathworld.wolfram.com/NormalSumDistribution.html for clues as 
-      // to what it's doing
+    variables: List[Variable[GaussianDistribution]]): Double = {
+    // Potentially look at http://mathworld.wolfram.com/NormalSumDistribution.html for clues as 
+    // to what it's doing
 
-      val message0 = new GaussianDistribution(messages.get(0).value)
-      val marginal0 = new GaussianDistribution(variables.get(0).value)
+    val message0 = new GaussianDistribution(messages.get(0).value)
+    val marginal0 = new GaussianDistribution(variables.get(0).value)
 
-      // The math works out so that 1/newPrecision = sum of a_i^2 /marginalsWithoutMessages(i)
-      var inverseOfNewPrecisionSum = 0.0
-      var anotherInverseOfNewPrecisionSum = 0.0
-      var weightedMeanSum = 0.0
-      var anotherWeightedMeanSum = 0.0
+    // The math works out so that 1/newPrecision = sum of a_i^2 /marginalsWithoutMessages(i)
+    var inverseOfNewPrecisionSum = 0.0
+    var anotherInverseOfNewPrecisionSum = 0.0
+    var weightedMeanSum = 0.0
+    var anotherWeightedMeanSum = 0.0
 
-      for (i <- 0 until weightsSquared.length) {
-        // These flow directly from the paper
+    for (i <- 0 until weightsSquared.length) {
+      // These flow directly from the paper
 
-        inverseOfNewPrecisionSum += weightsSquared(i) /
-          (variables.get(i + 1).value.precision - messages.get(i + 1).value.precision)
+      inverseOfNewPrecisionSum += weightsSquared(i) /
+        (variables.get(i + 1).value.precision - messages.get(i + 1).value.precision)
 
-        val diff = divide(variables.get(i + 1).value, messages.get(i + 1).value)
-        anotherInverseOfNewPrecisionSum += weightsSquared(i) / diff.precision
+      val diff = divide(variables.get(i + 1).value, messages.get(i + 1).value)
+      anotherInverseOfNewPrecisionSum += weightsSquared(i) / diff.precision
 
-        weightedMeanSum += weights(i) *
-          (variables.get(i + 1).value.precisionMean - messages.get(i + 1).value.precisionMean) /
-          (variables.get(i + 1).value.precision - messages.get(i + 1).value.precision)
+      weightedMeanSum += weights(i) *
+        (variables.get(i + 1).value.precisionMean - messages.get(i + 1).value.precisionMean) /
+        (variables.get(i + 1).value.precision - messages.get(i + 1).value.precision)
 
-        anotherWeightedMeanSum += weights(i) * diff.precisionMean / diff.precision
-      }
-
-      val newPrecision = 1.0 / inverseOfNewPrecisionSum
-      val anotherNewPrecision = 1.0 / anotherInverseOfNewPrecisionSum
-
-      val newPrecisionMean = newPrecision * weightedMeanSum
-      val anotherNewPrecisionMean = anotherNewPrecision * anotherWeightedMeanSum
-
-      val oldMarginalWithoutMessage = divide(marginal0, message0)
-
-      val newMessage = GaussianDistribution.fromPrecisionMean(newPrecisionMean, newPrecision)
-      val anotherNewMessage = GaussianDistribution.fromPrecisionMean(anotherNewPrecisionMean, anotherNewPrecision)
-      if (!newMessage.equals(anotherNewMessage))
-        throw new RuntimeException("newMessage and anotherNewMessage aren't the same")
-
-      val newMarginal = prod(oldMarginalWithoutMessage, newMessage)
-
-      // Update the message and marginal
-
-      messages.get(0).value = newMessage
-      variables.get(0).value = newMarginal
-
-      // Return the difference in the new marginal
-      return sub(newMarginal, marginal0)
+      anotherWeightedMeanSum += weights(i) * diff.precisionMean / diff.precision
     }
 
-  override def updateMessage(messageIndex: Int): Double =
-    {
-      val allMessages = messages
-      val allVariables = variables
+    val newPrecision = 1.0 / inverseOfNewPrecisionSum
+    val anotherNewPrecision = 1.0 / anotherInverseOfNewPrecisionSum
 
-      Guard.argumentIsValidIndex(messageIndex, allMessages.size(), "messageIndex")
+    val newPrecisionMean = newPrecision * weightedMeanSum
+    val anotherNewPrecisionMean = anotherNewPrecision * anotherWeightedMeanSum
 
-      val updatedMessages = new ArrayList[Message[GaussianDistribution]]()
-      val updatedVariables = new ArrayList[Variable[GaussianDistribution]]()
+    val oldMarginalWithoutMessage = divide(marginal0, message0)
 
-      val indicesToUse = variableIndexOrdersForWeights.get(messageIndex)
+    val newMessage = GaussianDistribution.fromPrecisionMean(newPrecisionMean, newPrecision)
+    val anotherNewMessage = GaussianDistribution.fromPrecisionMean(anotherNewPrecisionMean, anotherNewPrecision)
+    if (!newMessage.equals(anotherNewMessage))
+      throw new RuntimeException("newMessage and anotherNewMessage aren't the same")
 
-      // The tricky part here is that we have to put the messages and variables in the same
-      // order as the weights. Thankfully, the weights and messages share the same index numbers,
-      // so we just need to make sure they're consistent
-      for (i <- 0 until allMessages.size()) {
-        updatedMessages.add(allMessages.get(indicesToUse(i)))
-        updatedVariables.add(allVariables.get(indicesToUse(i)))
-      }
+    val newMarginal = prod(oldMarginalWithoutMessage, newMessage)
 
-      return UpdateHelper(weights(messageIndex), weightsSquared(messageIndex), updatedMessages, updatedVariables)
+    // Update the message and marginal
+
+    messages.get(0).value = newMessage
+    variables.get(0).value = newMarginal
+
+    // Return the difference in the new marginal
+    return sub(newMarginal, marginal0)
+  }
+
+  override def updateMessage(messageIndex: Int): Double = {
+    val allMessages = messages
+    val allVariables = variables
+
+    Guard.argumentIsValidIndex(messageIndex, allMessages.size(), "messageIndex")
+
+    val updatedMessages = new ArrayList[Message[GaussianDistribution]]()
+    val updatedVariables = new ArrayList[Variable[GaussianDistribution]]()
+
+    val indicesToUse = variableIndexOrdersForWeights.get(messageIndex)
+
+    // The tricky part here is that we have to put the messages and variables in the same
+    // order as the weights. Thankfully, the weights and messages share the same index numbers,
+    // so we just need to make sure they're consistent
+    for (i <- 0 until allMessages.size()) {
+      updatedMessages.add(allMessages.get(indicesToUse(i)))
+      updatedVariables.add(allVariables.get(indicesToUse(i)))
     }
 
+    return UpdateHelper(weights(messageIndex), weightsSquared(messageIndex), updatedMessages, updatedVariables)
+  }
 }
