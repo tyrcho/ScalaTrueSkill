@@ -21,11 +21,11 @@ import collection.JavaConversions._
 import java.util.Arrays
 
 class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
-  extends SkillCalculator(Seq(), Range.atLeast(2), Range
-    .atLeast(1)) {
+  extends SkillCalculator(Seq(), Range.atLeast(2), Range.atLeast(1)) {
 
   override def calculateNewRatings(gameInfo: GameInfo,
-    teams: Collection[_ <: ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating] = {
+    teams: Collection[_ <: ITeam],
+    teamRanks: Seq[Int]): Map[IPlayer, Rating] = {
     // On page 6 of the TrueSkill paper, the authors write:
     /*
 		 * "When we had to process a team game or a game with more than two
@@ -55,21 +55,9 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
           // other-current is what we want)
           val comparison = PairwiseComparison.fromMultiplier(Math.signum(tr(ixOtherTeam) - tr(ixCurrentTeam)))
 
-          for (
-            currentTeamPlayerRatingPair <- currentTeam
-              .entrySet()
-          ) {
-            for (
-              otherTeamPlayerRatingPair <- otherTeam.entrySet()
-            ) {
-              updateDuels(gameInfo, deltas,
-                currentTeamPlayerRatingPair.getKey(),
-                currentTeamPlayerRatingPair.getValue(),
-                otherTeamPlayerRatingPair.getKey(),
-                otherTeamPlayerRatingPair.getValue(),
-                comparison)
-            }
-          }
+          for ((ck, cv) <- currentTeam)
+            for ((ok, ov) <- otherTeam)
+              updateDuels(gameInfo, deltas, ck, cv, ok, ov, comparison)
         }
       }
     }
@@ -77,16 +65,10 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
     val result = new HashMap[IPlayer, Rating]()
 
     for (currentTeam <- teamsList) {
-      for (
-        currentTeamPlayerPair <- currentTeam
-          .entrySet()
-      ) {
-        val aa = deltas.get(
-          currentTeamPlayerPair.getKey()).values()
+      for ((ck, cv) <- currentTeam) {
+        val aa = deltas.get(ck).values()
         val currentPlayerAverageDuellingDelta = MathUtils.mean(aa)
-        result.put(currentTeamPlayerPair.getKey(), new EloRating(
-          currentTeamPlayerPair.getValue().mean
-            + currentPlayerAverageDuellingDelta))
+        result.put(ck, new EloRating(cv.mean + currentPlayerAverageDuellingDelta))
       }
     }
 
@@ -110,10 +92,8 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
       case PairwiseComparison.DRAW => twoPlayerEloCalculator.calculateNewRatings(gameInfo, t1, Seq(1, 1))
     }
 
-    updateDuelInfo(duels, player1, player1Rating,
-      duelOutcomes.get(player1), player2)
-    updateDuelInfo(duels, player2, player2Rating,
-      duelOutcomes.get(player2), player1)
+    updateDuelInfo(duels, player1, player1Rating, duelOutcomes.get(player1), player2)
+    updateDuelInfo(duels, player2, player2Rating, duelOutcomes.get(player2), player1)
   }
 
   override def calculateMatchQuality(gameInfo: GameInfo, teams: Collection[_ <: ITeam]): Double = {
@@ -124,16 +104,12 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
     val teamList = teams.toArray(new Array[ITeam](0))
 
     for (ixCurrentTeam <- 0 until teamList.length) {
-      val currentTeamAverageRating = new EloRating(
-        Rating.calcMeanMean(teamList(ixCurrentTeam).values()))
-      val currentTeam = new Team(new Player[Integer](ixCurrentTeam),
-        currentTeamAverageRating)
+      val currentTeamAverageRating = new EloRating(Rating.calcMeanMean(teamList(ixCurrentTeam).values()))
+      val currentTeam = new Team(new Player[Integer](ixCurrentTeam), currentTeamAverageRating)
 
       for (ixOtherTeam <- ixCurrentTeam + 1 until teamList.length) {
-        val otherTeamAverageRating = new EloRating(
-          Rating.calcMeanMean(teamList(ixOtherTeam).values()))
-        val otherTeam = new Team(new Player[Integer](ixOtherTeam),
-          otherTeamAverageRating)
+        val otherTeamAverageRating = new EloRating(Rating.calcMeanMean(teamList(ixOtherTeam).values()))
+        val otherTeam = new Team(new Player[Integer](ixOtherTeam), otherTeamAverageRating)
 
         minQuality = Math.min(
           minQuality, twoPlayerEloCalculator.calculateMatchQuality(gameInfo,
@@ -157,7 +133,6 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
       duels.put(self, selfToOpponentDuelDeltas)
     }
 
-    selfToOpponentDuelDeltas.put(opponent, selfAfterRating.mean
-      - selfBeforeRating.mean)
+    selfToOpponentDuelDeltas.put(opponent, selfAfterRating.mean - selfBeforeRating.mean)
   }
 }

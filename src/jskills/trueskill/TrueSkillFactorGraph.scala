@@ -57,18 +57,18 @@ class TrueSkillFactorGraph(
     fullSchedule.visit()
   }
 
-  def GetProbabilityOfRanking(): Double = {
-    val factorList = new FactorList[GaussianDistribution]()
-
-    for (currentLayer <- _Layers) {
-      for (currentFactor <- currentLayer.getUntypedFactors()) {
-        factorList.addFactor(currentFactor)
-      }
-    }
-
-    val logZ = factorList.getLogNormalization()
-    return Math.exp(logZ)
-  }
+  //  def GetProbabilityOfRanking(): Double = {
+  //    val factorList = new FactorList[GaussianDistribution]()
+  //
+  //    for (currentLayer <- _Layers) {
+  //      for (currentFactor <- currentLayer.getUntypedFactors()) {
+  //        factorList.addFactor(currentFactor)
+  //      }
+  //    }
+  //
+  //    val logZ = factorList.getLogNormalization()
+  //    return Math.exp(logZ)
+  //  }
 
   private def CreateFullSchedule(): Schedule[GaussianDistribution] = {
     val fullSchedule = new ArrayList[Schedule[GaussianDistribution]]()

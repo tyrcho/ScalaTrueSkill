@@ -23,7 +23,8 @@ abstract class TwoPlayerEloCalculator(kFactor: KFactor)
   extends SkillCalculator(Seq(), Range.exactly(2), Range.exactly(1)) {
 
   override def calculateNewRatings(gameInfo: GameInfo,
-    teams: Collection[_ <: ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating] = {
+    teams: Collection[_ <: ITeam],
+    teamRanks: Seq[Int]): Map[IPlayer, Rating] = {
     validateTeamCountAndPlayersCountPerTeam(teams)
     val teamsl = RankSorter.sort(teams, teamRanks)
 

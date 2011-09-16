@@ -9,21 +9,21 @@ import collection.JavaConversions._
 class FactorList[TValue] {
   val factors = new ArrayList[Factor[TValue]]()
 
-  def getLogNormalization(): Double = {
-    // TODO can these 3 loops be rolled into 1?
-    for (f <- factors) f.ResetMarginals()
-
-    var sumLogZ = 0.0
-    for (f <- factors) {
-      for (j <- 0 until f.getNumberOfMessages())
-        sumLogZ += f.SendMessage(j)
-    }
-
-    var sumLogS = 0.0
-    for (f <- factors) sumLogS += f.getLogNormalization()
-
-    return sumLogZ + sumLogS
-  }
+  //  def getLogNormalization(): Double = {
+  //    // TODO can these 3 loops be rolled into 1?
+  //    factors foreach (_.ResetMarginals)
+  //
+  //    var sumLogZ = 0.0
+  //    for (f <- factors) {
+  //      for (j <- 0 until f.getNumberOfMessages())
+  //        sumLogZ += f.SendMessage(j)
+  //    }
+  //
+  //    var sumLogS = 0.0
+  //    //    for (f <- factors) sumLogS += f.getLogNormalization()
+  //
+  //    return 0.0 //sumLogZ + sumLogS
+  //  }
 
   def size(): Int = factors.size()
 

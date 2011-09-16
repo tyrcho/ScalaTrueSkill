@@ -38,7 +38,7 @@ class FactorGraphTrueSkillCalculator
     factorGraph.BuildGraph()
     factorGraph.RunSchedule()
 
-    factorGraph.GetProbabilityOfRanking()
+    //    factorGraph.GetProbabilityOfRanking()
 
     factorGraph.GetUpdatedRatings()
   }
