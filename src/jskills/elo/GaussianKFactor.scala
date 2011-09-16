@@ -4,7 +4,7 @@ import jskills.GameInfo
 
 class GaussianKFactor(value: Double = GaussianKFactor.StableDynamicsKFactor) extends KFactor(value) {
   def this(gameInfo: GameInfo, latestGameWeightingFactor: Double) {
-    this(latestGameWeightingFactor * gameInfo.getBeta() * Math.sqrt(Math.Pi))
+    this(latestGameWeightingFactor * gameInfo.beta * Math.sqrt(Math.Pi))
   }
 }
 object GaussianKFactor {

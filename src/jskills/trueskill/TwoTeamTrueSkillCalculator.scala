@@ -58,9 +58,9 @@ class TwoTeamTrueSkillCalculator
     otherTeam: ITeam,
     selfToOtherTeamComparison: PairwiseComparison) {
     val drawMargin = DrawMargin.GetDrawMarginFromDrawProbability(
-      gameInfo.getDrawProbability(), gameInfo.getBeta())
-    val betaSquared = square(gameInfo.getBeta())
-    val tauSquared = square(gameInfo.getDynamicsFactor())
+      gameInfo.drawProbability, gameInfo.beta)
+    val betaSquared = square(gameInfo.beta)
+    val tauSquared = square(gameInfo.dynamicsFactor)
 
     val totalPlayers = selfTeam.size() + otherTeam.size()
 
@@ -141,7 +141,7 @@ class TwoTeamTrueSkillCalculator
 
     val totalPlayers = team1Count + team2Count
 
-    val betaSquared = square(gameInfo.getBeta())
+    val betaSquared = square(gameInfo.beta)
 
     var team1MeanSum = 0.0
     for (r <- team1) team1MeanSum += r.getMean()

@@ -52,7 +52,7 @@ class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: C
 
   private def CreatePriorFactor(player: IPlayer, priorRating: Rating, skillsVariable: Variable[GaussianDistribution]): GaussianPriorFactor =
     new GaussianPriorFactor(priorRating.getMean(),
-      MathUtils.square(priorRating.getStandardDeviation()) + MathUtils.square(parentGraph.getGameInfo().getDynamicsFactor()),
+      MathUtils.square(priorRating.getStandardDeviation()) + MathUtils.square(parentGraph.getGameInfo().dynamicsFactor),
       skillsVariable)
 
   private def CreateSkillOutputVariable(key: IPlayer): KeyedVariable[IPlayer, GaussianDistribution] =

@@ -55,7 +55,7 @@ class FactorGraphTrueSkillCalculator
       teamAssignmentsList, meanVector.numRows())
     val playerTeamAssignmentsMatrixTranspose = playerTeamAssignmentsMatrix.transpose()
 
-    val betaSquared = square(gameInfo.getBeta())
+    val betaSquared = square(gameInfo.beta)
 
     val start = meanVectorTranspose.mult(playerTeamAssignmentsMatrix)
     val aTa = playerTeamAssignmentsMatrixTranspose.mult(playerTeamAssignmentsMatrix).scale(betaSquared)

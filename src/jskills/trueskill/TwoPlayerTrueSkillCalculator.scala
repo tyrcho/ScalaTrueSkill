@@ -64,9 +64,9 @@ class TwoPlayerTrueSkillCalculator
   private def CalculateNewRating(gameInfo: GameInfo,
     selfRating: Rating, opponentRating: Rating,
     comparison: PairwiseComparison): Rating = {
-    val drawMargin = DrawMargin.GetDrawMarginFromDrawProbability(gameInfo.getDrawProbability(), gameInfo.getBeta())
+    val drawMargin = DrawMargin.GetDrawMarginFromDrawProbability(gameInfo.drawProbability, gameInfo.beta)
 
-    val c = Math.sqrt(square(selfRating.getStandardDeviation()) + square(opponentRating.getStandardDeviation()) + 2 * square(gameInfo.getBeta()))
+    val c = Math.sqrt(square(selfRating.getStandardDeviation()) + square(opponentRating.getStandardDeviation()) + 2 * square(gameInfo.beta))
 
     var winningMean = selfRating.getMean()
     var losingMean = opponentRating.getMean()
@@ -96,9 +96,9 @@ class TwoPlayerTrueSkillCalculator
       rankMultiplier = 1
     }
 
-    val meanMultiplier = (square(selfRating.getStandardDeviation()) + square(gameInfo.getDynamicsFactor())) / c
+    val meanMultiplier = (square(selfRating.getStandardDeviation()) + square(gameInfo.dynamicsFactor)) / c
 
-    val varianceWithDynamics = square(selfRating.getStandardDeviation()) + square(gameInfo.getDynamicsFactor())
+    val varianceWithDynamics = square(selfRating.getStandardDeviation()) + square(gameInfo.dynamicsFactor)
     val stdDevMultiplier = varianceWithDynamics / square(c)
 
     val newMean = selfRating.getMean() + (rankMultiplier * meanMultiplier * v)
@@ -118,7 +118,7 @@ class TwoPlayerTrueSkillCalculator
     val player2Rating = teamIt.next().values().iterator().next()
 
     // We just use equation 4.1 found on page 8 of the TrueSkill 2006 paper:
-    val betaSquared = square(gameInfo.getBeta())
+    val betaSquared = square(gameInfo.beta)
     val player1SigmaSquared = square(player1Rating
       .getStandardDeviation())
     val player2SigmaSquared = square(player2Rating
