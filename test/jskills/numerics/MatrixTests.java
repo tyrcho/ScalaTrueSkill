@@ -1,10 +1,10 @@
 package jskills.numerics;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.ejml.data.SimpleMatrix;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 public class MatrixTests
 {
@@ -32,12 +32,12 @@ public class MatrixTests
                                  {7, 8, 9}});
         assertEquals(a.determinant(), 0., ERROR_TOLERANCE);
 
-        SimpleMatrix π = new SimpleMatrix(new double[][] {{3, 1, 4},
+		SimpleMatrix π = new SimpleMatrix(new double[][] { { 3, 1, 4 },
                                  {1, 5, 9},
                                  {2, 6, 5}});
 
         // Verified against http://www.wolframalpha.com/input/?i=determinant+%7B%7B3%2C1%2C4%7D%2C%7B1%2C5%2C9%7D%2C%7B2%2C6%2C5%7D%7D
-        assertEquals(π.determinant(), -90, ERROR_TOLERANCE);
+		assertEquals(π.determinant(), -90, ERROR_TOLERANCE);
     }
 
     @Test
@@ -49,13 +49,13 @@ public class MatrixTests
 
         assertEquals(a.determinant(), 0, ERROR_TOLERANCE);
 
-        SimpleMatrix π = new SimpleMatrix(new double[][] {{3, 1, 4, 1},
+		SimpleMatrix π = new SimpleMatrix(new double[][] { { 3, 1, 4, 1 },
                                  {5, 9, 2, 6},
                                  {5, 3, 5, 8},
                                  {9, 7, 9, 3}});
 
         // Verified against http://www.wolframalpha.com/input/?i=determinant+%7B+%7B3%2C1%2C4%2C1%7D%2C+%7B5%2C9%2C2%2C6%7D%2C+%7B5%2C3%2C5%2C8%7D%2C+%7B9%2C7%2C9%2C3%7D%7D
-        assertEquals(π.determinant(), 98, ERROR_TOLERANCE);
+		assertEquals(π.determinant(), 98, ERROR_TOLERANCE);
     }
 
     @Test
@@ -71,7 +71,8 @@ public class MatrixTests
 
         assertEquals(a.determinant(), 0, ERROR_TOLERANCE);
 
-        SimpleMatrix π = new SimpleMatrix(new double[][] {{3, 1, 4, 1, 5, 9, 2, 6}, 
+		SimpleMatrix π = new SimpleMatrix(new double[][] {
+				{ 3, 1, 4, 1, 5, 9, 2, 6 },
                                  {5, 3, 5, 8, 9, 7, 9, 3},
                                  {2, 3, 8, 4, 6, 2, 6, 4},
                                  {3, 3, 8, 3, 2, 7, 9, 5},
@@ -82,7 +83,7 @@ public class MatrixTests
 
         // Verified against http://www.wolframalpha.com/input/?i=det+%7B%7B3%2C1%2C4%2C1%2C5%2C9%2C2%2C6%7D%2C%7B5%2C3%2C5%2C8%2C9%2C7%2C9%2C3%7D%2C%7B2%2C3%2C8%2C4%2C6%2C2%2C6%2C4%7D%2C%7B3%2C3%2C8%2C3%2C2%2C7%2C9%2C5%7D%2C%7B0%2C2%2C8%2C8%2C4%2C1%2C9%2C7%7D%2C%7B1%2C6%2C9%2C3%2C9%2C9%2C3%2C7%7D%2C%7B5%2C1%2C0%2C5%2C8%2C2%2C0%2C9%7D%2C%7B7%2C4%2C9%2C4%2C4%2C5%2C9%2C2%7D%7D
         // And Mathematica, but ejml introduces roundoff error by using LUDecomposition
-        assertEquals(π.determinant(), 1378143, 1e4*ERROR_TOLERANCE);
+		assertEquals(π.determinant(), 1378143, 1e4 * ERROR_TOLERANCE);
     }
 
     @Test

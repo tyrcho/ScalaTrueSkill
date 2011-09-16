@@ -1,7 +1,5 @@
 package jskills.elo;
 
-import org.testng.Assert._
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -15,6 +13,7 @@ import jskills.SkillCalculator;
 import jskills.Team;
 
 import org.junit.Test
+import org.junit.Assert._
 
 class DuellingEloTest {
   val ErrorTolerance = 0.1;

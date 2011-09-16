@@ -1,7 +1,8 @@
 package jskills.trueskill;
 
-import org.testng.annotations.Test;
-import static org.testng.Assert.*;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 public class DrawMarginTest {
 

@@ -1,6 +1,4 @@
-﻿These tests were written using TestNG 5.12, available from testng.org
-
-Realize that these tests test *all* of the calculators 
+﻿Realize that these tests test *all* of the calculators 
 implementations. For that reason, they create a new instance of
 a particular calculator. If you're using this code in your application,
 you can just use the convenience helper class of "TrueSkillCalculator"

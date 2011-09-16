@@ -1,6 +1,6 @@
 package jskills.elo;
 
-import org.testng.Assert._
+import org.junit.Assert._
 
 import java.util.Arrays;
 import java.util.Collection;
