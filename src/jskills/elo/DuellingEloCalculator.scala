@@ -17,16 +17,15 @@ import jskills.SkillCalculator
 import jskills.Team
 import jskills.numerics.MathUtils
 import jskills.numerics.Range
-import jskills.SkillCalculator.SupportedOptions
 import collection.JavaConversions._
 import java.util.Arrays
 
 class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
-  extends SkillCalculator(EnumSet.noneOf(classOf[SupportedOptions]), Range.atLeast(2), Range
+  extends SkillCalculator(Seq(), Range.atLeast(2), Range
     .atLeast(1)) {
 
   override def calculateNewRatings(gameInfo: GameInfo,
-    teams: Collection[ITeam], teamRanks: Int*): Map[IPlayer, Rating] = {
+    teams: Collection[_ <: ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating] = {
     // On page 6 of the TrueSkill paper, the authors write:
     /*
 		 * "When we had to process a team game or a game with more than two
@@ -38,8 +37,9 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
     // This implements that algorithm.
 
     validateTeamCountAndPlayersCountPerTeam(teams);
-    val tr = teamRanks.toList.toArray[Int]
-    val teamsl = RankSorter.sort(teams, tr);
+    val teamsl = RankSorter.sort(teams, teamRanks);
+    val tr = teamRanks.sortBy(i => i)
+
     val teamsList = teamsl.toArray(new Array[ITeam](0));
 
     val deltas = new HashMap[IPlayer, Map[IPlayer, Double]]();
@@ -53,18 +53,14 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
 
           // Remember that bigger numbers mean worse rank (e.g.
           // other-current is what we want)
-          val comparison = PairwiseComparison
-            .fromMultiplier(Math
-              .signum(tr(ixOtherTeam)
-                - tr(ixCurrentTeam)));
+          val comparison = PairwiseComparison.fromMultiplier(Math.signum(tr(ixOtherTeam) - tr(ixCurrentTeam)));
 
           for (
             currentTeamPlayerRatingPair <- currentTeam
               .entrySet()
           ) {
             for (
-              otherTeamPlayerRatingPair <- otherTeam
-                .entrySet()
+              otherTeamPlayerRatingPair <- otherTeam.entrySet()
             ) {
               updateDuels(gameInfo, deltas,
                 currentTeamPlayerRatingPair.getKey(),
@@ -108,11 +104,11 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
 
     val t1 = Arrays.asList(new Team(player2, player2Rating).asInstanceOf[ITeam], new Team(player1, player1Rating).asInstanceOf[ITeam])
 
-    val duelOutcomes = if (weakToStrongComparison == PairwiseComparison.WIN)
-      twoPlayerEloCalculator.calculateNewRatings(gameInfo, t1, 1, 2)
-    else if (weakToStrongComparison == PairwiseComparison.LOSE)
-      twoPlayerEloCalculator.calculateNewRatings(gameInfo, t1, 2, 1)
-    else twoPlayerEloCalculator.calculateNewRatings(gameInfo, t1, 1, 1)
+    val duelOutcomes = weakToStrongComparison match {
+      case PairwiseComparison.WIN => twoPlayerEloCalculator.calculateNewRatings(gameInfo, t1, Seq(1, 2))
+      case PairwiseComparison.LOSE => twoPlayerEloCalculator.calculateNewRatings(gameInfo, t1, Seq(2, 1))
+      case PairwiseComparison.DRAW => twoPlayerEloCalculator.calculateNewRatings(gameInfo, t1, Seq(1, 1))
+    }
 
     updateDuelInfo(duels, player1, player1Rating,
       duelOutcomes.get(player1), player2);
@@ -120,7 +116,7 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
       duelOutcomes.get(player2), player1);
   }
 
-  override def calculateMatchQuality(gameInfo: GameInfo, teams: Collection[ITeam]): Double = {
+  override def calculateMatchQuality(gameInfo: GameInfo, teams: Collection[_ <: ITeam]): Double = {
     // HACK! Need a better algorithm, this is just to have something there
     // and it isn't good
     var minQuality = 1.0;

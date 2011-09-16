@@ -24,17 +24,12 @@ object RankSorter {
    *            The ranks for each item where 1 is first place.
    * @return the items sorted according to their ranks
    */
-  def sort[T](items: Collection[T], itemRanks: Int*): List[T] = sort(items, itemRanks: _*)
-
-  def sort[T](items: Collection[T], i: Int, j: Int): List[T] = sort(items, Array[Int](i, j))
-
-  def sort[T](items: Collection[T], itemRanks: Array[Int]): List[T] = {
+  def sort[T](items: Collection[T], itemRanks: Seq[Int]): List[T] = {
     Guard.argumentNotNull(items, "items");
     Guard.argumentNotNull(itemRanks, "itemRanks");
 
     val map = items.toSeq.zipWithIndex
     val sorted = map.sortBy(i => itemRanks(i._2))
-    Arrays.sort(itemRanks)
     sorted.map(_._1)
   }
 }

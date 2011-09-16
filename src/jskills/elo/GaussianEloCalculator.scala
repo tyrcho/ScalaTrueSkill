@@ -7,6 +7,7 @@ class GaussianEloCalculator(factor: KFactor = GaussianEloCalculator.StableKFacto
   extends TwoPlayerEloCalculator(factor) {
   //for java
   def this() { this(GaussianEloCalculator.StableKFactor) }
+
   override def getPlayerWinProbability(gameInfo: GameInfo, playerRating: Double, opponentRating: Double): Double = {
     val ratingDifference = playerRating - opponentRating;
     // See equation 1.1 in the TrueSkill paper
