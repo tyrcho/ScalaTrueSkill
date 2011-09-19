@@ -1,6 +1,6 @@
 package jskills
 
-import collection.JavaConversions._
+
 import jskills.numerics.MathUtils.square
 
 import jskills.numerics.GaussianDistribution

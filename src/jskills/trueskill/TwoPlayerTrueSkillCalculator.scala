@@ -11,7 +11,7 @@ import jskills.RankSorter
 import jskills.Rating
 import jskills.SkillCalculator
 import jskills.numerics.Range
-import collection.JavaConversions._
+
 import collection.mutable.Map
 
 /**
@@ -106,10 +106,8 @@ class TwoPlayerTrueSkillCalculator
     Guard.argumentNotNull(gameInfo, "gameInfo")
     validateTeamCountAndPlayersCountPerTeam(teams)
 
-    val teamIt = teams.iterator
-
-    val player1Rating = teamIt.next().values().iterator().next()
-    val player2Rating = teamIt.next().values().iterator().next()
+    val player1Rating = teams(0).values.head
+    val player2Rating = teams(1).values.head
 
     // We just use equation 4.1 found on page 8 of the TrueSkill 2006 paper:
     val betaSquared = square(gameInfo.beta)

@@ -9,7 +9,7 @@ import jskills.PairwiseComparison
 import jskills.Player
 import jskills.Rating
 import jskills.Team
-import collection.JavaConversions._
+
 
 object EloAssert {
   val ErrorTolerance = 0.1

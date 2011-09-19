@@ -1,6 +1,6 @@
 package jskills.factorgraphs
 
-import collection.JavaConversions._
+
 import scala.collection.mutable.ListBuffer
 
 

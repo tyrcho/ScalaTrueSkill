@@ -9,7 +9,7 @@ import jskills.factorgraphs.Variable
 import jskills.numerics.GaussianDistribution
 import jskills.trueskill.TrueSkillFactorGraph
 import jskills.trueskill.factors.GaussianWeightedSumFactor
-import collection.JavaConversions._
+
 
 class PlayerPerformancesToTeamPerformancesLayer(parentGraph: TrueSkillFactorGraph)
   extends TrueSkillFactorGraphLayer[KeyedVariable[IPlayer, GaussianDistribution], GaussianWeightedSumFactor, Variable[GaussianDistribution]](parentGraph) {

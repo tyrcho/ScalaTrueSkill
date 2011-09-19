@@ -10,7 +10,7 @@ import jskills.Rating
 import jskills.SkillCalculator
 import jskills.numerics.Range
 import org.ejml.data.SimpleMatrix
-import collection.JavaConversions._
+
 import jskills.SupportedOptions
 import jskills.PartialPlay
 import collection.mutable.Map
@@ -95,14 +95,14 @@ class FactorGraphTrueSkillCalculator
    * player ratings
    */
   private def getPlayerMeanRatingValues(teamAssignmentsList: Seq[_ <: ITeam]): Seq[Double] =
-    teamAssignmentsList map (_.values() map (_.mean)) flatten
+    teamAssignmentsList map (_.values map (_.mean)) flatten
 
   /**
    * TODO Make array? Helper function that gets a list of values for all
    * player ratings
    */
   private def getPlayerVarianceRatingValues(teamAssignmentsList: Seq[_ <: ITeam]): Seq[Double] =
-    teamAssignmentsList map (_.values() map (_.getVariance())) flatten
+    teamAssignmentsList map (_.values map (_.getVariance())) flatten
 
   /**
    * The team assignment matrix is often referred to as the "A" matrix. It's a
@@ -137,8 +137,7 @@ class FactorGraphTrueSkillCalculator
       // Need to add in 0's for all the previous players, since they're
       // not
       // on this team
-      val currentRowValues = ListBuffer.empty[Double]
-      for (j <- 0 until totalPreviousPlayers) currentRowValues.add(0.)
+      val currentRowValues = ListBuffer.fill(totalPreviousPlayers)(0.)
       playerAssignments += currentRowValues
 
       for (player <- currentTeam.keySet) {

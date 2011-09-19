@@ -8,7 +8,7 @@ import jskills.numerics.GaussianDistribution
 import jskills.numerics.MathUtils
 import jskills.trueskill.TrueSkillFactorGraph
 import jskills.trueskill.factors.GaussianLikelihoodFactor
-import collection.JavaConversions._
+
 
 import scala.collection.mutable.ListBuffer
 

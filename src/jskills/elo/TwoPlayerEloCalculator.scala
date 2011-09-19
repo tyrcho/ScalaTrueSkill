@@ -10,7 +10,7 @@ import jskills.SkillCalculator
 import jskills.numerics.Range
 import jskills.SupportedOptions
 import jskills.PairwiseComparison._
-import collection.JavaConversions._
+
 import collection.mutable.Map
 
 abstract class TwoPlayerEloCalculator(kFactor: KFactor)

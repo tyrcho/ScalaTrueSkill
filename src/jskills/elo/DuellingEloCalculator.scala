@@ -12,7 +12,6 @@ import jskills.SkillCalculator
 import jskills.Team
 import jskills.numerics.MathUtils
 import jskills.numerics.Range
-import collection.JavaConversions._
 
 class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
   extends SkillCalculator(Seq(), Range.atLeast(2), Range.atLeast(1)) {
@@ -60,8 +59,8 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
 
     for (currentTeam <- teamsList) {
       for ((ck, cv) <- currentTeam) {
-        val aa = deltas(ck).values()
-        val currentPlayerAverageDuellingDelta = MathUtils.mean(aa.toSeq)
+        val aa = deltas(ck).values
+        val currentPlayerAverageDuellingDelta = MathUtils.mean(aa)
         result.put(ck, new EloRating(cv.mean + currentPlayerAverageDuellingDelta))
       }
     }
@@ -96,11 +95,11 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
     var minQuality = 1.0
 
     for (ixCurrentTeam <- 0 until teams.length) {
-      val currentTeamAverageRating = new EloRating(Rating.calcMeanMean(teams(ixCurrentTeam).values().toSeq))
+      val currentTeamAverageRating = new EloRating(Rating.calcMeanMean(teams(ixCurrentTeam).values.toSeq))
       val currentTeam = Team(new Player[Integer](ixCurrentTeam), currentTeamAverageRating)
 
       for (ixOtherTeam <- ixCurrentTeam + 1 until teams.length) {
-        val otherTeamAverageRating = new EloRating(Rating.calcMeanMean(teams(ixOtherTeam).values().toSeq))
+        val otherTeamAverageRating = new EloRating(Rating.calcMeanMean(teams(ixOtherTeam).values.toSeq))
         val otherTeam = Team(new Player[Integer](ixOtherTeam), otherTeamAverageRating)
 
         minQuality = Math.min(minQuality, twoPlayerEloCalculator.calculateMatchQuality(gameInfo, List(currentTeam, otherTeam)))

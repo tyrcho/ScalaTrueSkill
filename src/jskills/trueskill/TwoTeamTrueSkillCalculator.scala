@@ -11,7 +11,7 @@ import jskills.RankSorter
 import jskills.Rating
 import jskills.SkillCalculator
 import jskills.numerics.Range
-import collection.JavaConversions._
+
 import collection.mutable.Map
 /**
  *
@@ -54,10 +54,10 @@ class TwoTeamTrueSkillCalculator
 
     val totalPlayers = selfTeam.size + otherTeam.size
 
-    val selfMeanSum = selfTeam.values() map (_.mean) sum
-    val otherTeamMeanSum = otherTeam.values() map (_.mean) sum
+    val selfMeanSum = selfTeam.values map (_.mean) sum
+    val otherTeamMeanSum = otherTeam.values map (_.mean) sum
 
-    val sum = (selfTeam.values().toList ::: otherTeam.values().toList) map
+    val sum = (selfTeam.values.toList ::: otherTeam.values.toList) map
       (r => square(r.standardDeviation)) sum
 
     val c = Math.sqrt(sum + totalPlayers * betaSquared)
@@ -91,8 +91,8 @@ class TwoTeamTrueSkillCalculator
       rankMultiplier = 1
     }
 
-    for (teamPlayerRatingPair <- selfTeam.entrySet()) {
-      val previousPlayerRating = teamPlayerRatingPair.getValue()
+    for (teamPlayerRatingPair <- selfTeam) {
+      val previousPlayerRating = teamPlayerRatingPair._2
 
       val meanMultiplier = (square(previousPlayerRating.standardDeviation) + tauSquared) / c
       val stdDevMultiplier = (square(previousPlayerRating.standardDeviation) + tauSquared) / square(c)
@@ -102,7 +102,7 @@ class TwoTeamTrueSkillCalculator
 
       val newStdDev = Math.sqrt((square(previousPlayerRating.standardDeviation) + tauSquared) * (1 - w * stdDevMultiplier))
 
-      newPlayerRatings.put(teamPlayerRatingPair.getKey(), new Rating(newMean, newStdDev))
+      newPlayerRatings.put(teamPlayerRatingPair._1, new Rating(newMean, newStdDev))
     }
   }
 
@@ -110,13 +110,11 @@ class TwoTeamTrueSkillCalculator
     Guard.argumentNotNull(gameInfo, "gameInfo")
     validateTeamCountAndPlayersCountPerTeam(teams)
 
-    val teamsIt = teams.iterator
-
     // We've verified that there's just two teams
-    val team1 = teamsIt.next().values()
+    val team1 = teams(0).values
     val team1Count = team1.size
 
-    val team2 = teamsIt.next().values()
+    val team2 = teams(1).values
     val team2Count = team2.size
 
     val totalPlayers = team1Count + team2Count

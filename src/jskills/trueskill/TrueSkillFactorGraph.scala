@@ -19,7 +19,7 @@ import jskills.trueskill.layers.PlayerPriorValuesToSkillsLayer
 import jskills.trueskill.layers.PlayerSkillsToPerformancesLayer
 import jskills.trueskill.layers.TeamDifferencesComparisonLayer
 import jskills.trueskill.layers.TeamPerformancesToTeamPerformanceDifferencesLayer
-import collection.JavaConversions._
+
 import scala.collection.mutable.ListBuffer
 
 class TrueSkillFactorGraph(

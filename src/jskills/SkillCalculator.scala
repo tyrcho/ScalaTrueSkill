@@ -1,7 +1,7 @@
 package jskills
 
 import jskills.numerics.Range
-import collection.JavaConversions._
+
 import collection.mutable.Map
 
 /**

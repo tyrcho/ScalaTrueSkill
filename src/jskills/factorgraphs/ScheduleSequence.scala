@@ -1,7 +1,7 @@
 package jskills.factorgraphs
 
 import java.lang.Math._
-import collection.JavaConversions._
+
 
 
 

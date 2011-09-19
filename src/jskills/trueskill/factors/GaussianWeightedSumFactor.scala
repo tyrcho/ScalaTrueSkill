@@ -5,7 +5,6 @@ import jskills.Guard
 import jskills.factorgraphs.Message
 import jskills.factorgraphs.Variable
 import jskills.numerics.GaussianDistribution
-import collection.JavaConversions._
 
 import scala.collection.mutable.ListBuffer
 
@@ -121,7 +120,7 @@ class GaussianWeightedSumFactor(
     currentWeights(currentDestinationWeightIndex) = finalWeight
     currentWeightsSquared(currentDestinationWeightIndex) = finalWeight * finalWeight
     variableIndices(variableIndices.length - 1) = 0
-    variableIndexOrdersForWeights.add(variableIndices)
+    variableIndexOrdersForWeights += variableIndices
   }
 
   createVariableToMessageBinding(sumVariable)

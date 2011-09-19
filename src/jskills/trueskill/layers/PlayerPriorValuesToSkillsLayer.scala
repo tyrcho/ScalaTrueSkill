@@ -12,7 +12,7 @@ import jskills.numerics.GaussianDistribution
 import jskills.numerics.MathUtils
 import jskills.trueskill.TrueSkillFactorGraph
 import jskills.trueskill.factors.GaussianPriorFactor
-import collection.JavaConversions._
+
 import collection.mutable.LinkedList
 import scala.collection.mutable.ListBuffer
 
@@ -24,9 +24,9 @@ class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: S
     for (currentTeam <- teams) {
       val currentTeamSkills = ListBuffer.empty[KeyedVariable[IPlayer, GaussianDistribution]]
 
-      for (currentTeamPlayer <- currentTeam.entrySet()) {
-        val playerSkill = createSkillOutputVariable(currentTeamPlayer.getKey())
-        addLayerFactor(createPriorFactor(currentTeamPlayer.getKey(), currentTeamPlayer.getValue(), playerSkill))
+      for (currentTeamPlayer <- currentTeam) {
+        val playerSkill = createSkillOutputVariable(currentTeamPlayer._1)
+        addLayerFactor(createPriorFactor(currentTeamPlayer._1, currentTeamPlayer._2, playerSkill))
         currentTeamSkills += playerSkill
       }
 

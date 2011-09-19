@@ -9,7 +9,7 @@ import jskills.factorgraphs.Variable
 import jskills.numerics.GaussianDistribution
 import jskills.trueskill.TrueSkillFactorGraph
 import jskills.trueskill.factors.GaussianWeightedSumFactor
-import collection.JavaConversions._
+
 import scala.collection.mutable.ListBuffer
 
 // The whole purpose of this is to do a loop on the bottom
