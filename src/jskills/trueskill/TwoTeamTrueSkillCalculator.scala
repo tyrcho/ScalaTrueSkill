@@ -48,7 +48,7 @@ class TwoTeamTrueSkillCalculator
     selfTeam: ITeam,
     otherTeam: ITeam,
     selfToOtherTeamComparison: PairwiseComparison) {
-    val drawMargin = DrawMargin.GetDrawMarginFromDrawProbability(gameInfo.drawProbability, gameInfo.beta)
+    val drawMargin = DrawMargin.getDrawMarginFromDrawProbability(gameInfo.drawProbability, gameInfo.beta)
     val betaSquared = square(gameInfo.beta)
     val tauSquared = square(gameInfo.dynamicsFactor)
 

@@ -35,8 +35,6 @@ class FactorGraphTrueSkillCalculator
     factorGraph.BuildGraph()
     factorGraph.runSchedule()
 
-    //    factorGraph.GetProbabilityOfRanking()
-
     factorGraph.getUpdatedRatings()
   }
 
@@ -77,7 +75,7 @@ class FactorGraphTrueSkillCalculator
     // A simple list of all the player means.
     val temp = getPlayerMeanRatingValues(teamAssignmentsList)
     val tempa = temp.toArray
-     new SimpleMatrix(Array.fill(1)(tempa)).transpose()
+    new SimpleMatrix(Array(tempa)).transpose()
   }
 
   /**
@@ -86,7 +84,7 @@ class FactorGraphTrueSkillCalculator
    */
   private def getPlayerCovarianceMatrix(teamAssignmentsList: Seq[_ <: ITeam]): SimpleMatrix = {
     val temp = getPlayerVarianceRatingValues(teamAssignmentsList)
-     SimpleMatrix.diag(temp: _*).transpose()
+    SimpleMatrix.diag(temp: _*).transpose()
   }
 
   /**
@@ -139,11 +137,11 @@ class FactorGraphTrueSkillCalculator
       val currentRowValues = ListBuffer.fill(totalPreviousPlayers)(0.)
       playerAssignments += currentRowValues
 
-      for (player <- currentTeam.keySet) {
-        currentRowValues += PartialPlay.getPartialPlayPercentage(player)
-        // indicates the player is on the team
-        totalPreviousPlayers += 1
+      currentTeam.keys foreach {
+        currentRowValues += PartialPlay.getPartialPlayPercentage(_)
       }
+      // indicates the player is on the team
+      totalPreviousPlayers += currentTeam.size
 
       val nextTeam = teamAssignmentsList(i + 1)
       for (nextTeamPlayer <- nextTeam.keySet) {
@@ -157,6 +155,6 @@ class FactorGraphTrueSkillCalculator
       for (j <- 0 until playerAssignments(i).size)
         playerTeamAssignmentsMatrix.set(j, i, playerAssignments(i)(j))
 
-     playerTeamAssignmentsMatrix
+    playerTeamAssignmentsMatrix
   }
 }

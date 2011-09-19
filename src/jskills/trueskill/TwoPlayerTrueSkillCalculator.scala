@@ -59,7 +59,7 @@ class TwoPlayerTrueSkillCalculator
   private def calculateNewRating(gameInfo: GameInfo,
     selfRating: Rating, opponentRating: Rating,
     comparison: PairwiseComparison): Rating = {
-    val drawMargin = DrawMargin.GetDrawMarginFromDrawProbability(gameInfo.drawProbability, gameInfo.beta)
+    val drawMargin = DrawMargin.getDrawMarginFromDrawProbability(gameInfo.drawProbability, gameInfo.beta)
 
     val c = Math.sqrt(square(selfRating.standardDeviation) + square(opponentRating.standardDeviation) + 2 * square(gameInfo.beta))
 

@@ -18,7 +18,7 @@ class DuellingEloTest {
   def twoOnTwoDuellingTest() {
     val calculator = new DuellingEloCalculator(new GaussianEloCalculator())
 
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val player1 = new Player(1)
     val player2 = new Player(2)

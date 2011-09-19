@@ -26,23 +26,18 @@ abstract class TwoPlayerEloCalculator(kFactor: KFactor)
     val isDraw = (teamRanks(0) == teamRanks(1))
 
     val players = teamsl map (_.keySet.head)
-    //      List.empty[IPlayer]
-    //    for (team <- teamsl)
-    //      players.add(team.keySet.head)
 
     val player1Rating = teamsl(0)(players(0)).mean
     val player2Rating = teamsl(1)(players(1)).mean
 
-    result.put(
-      players(0),
+    result.put(players(0),
       calculateNewRating(gameInfo, player1Rating, player2Rating,
         if (isDraw) PairwiseComparison.DRAW else PairwiseComparison.WIN))
-    result.put(
-      players(1),
+    result.put(players(1),
       calculateNewRating(gameInfo, player2Rating, player1Rating,
         if (isDraw) PairwiseComparison.DRAW else PairwiseComparison.LOSE))
 
-     result
+    result
   }
 
   protected def calculateNewRating(gameInfo: GameInfo,
@@ -55,7 +50,7 @@ abstract class TwoPlayerEloCalculator(kFactor: KFactor)
     val ratingChange = k * (actualProbability - expectedProbability)
     val newRating = selfRating + ratingChange
 
-     new EloRating(newRating)
+    new EloRating(newRating)
   }
 
   protected def getPlayerWinProbability(gameInfo: GameInfo, playerRating: Double, opponentRating: Double): Double
@@ -77,16 +72,14 @@ abstract class TwoPlayerEloCalculator(kFactor: KFactor)
     // of the specific curve being used
     val deltaFrom50Percent = Math.abs(getPlayerWinProbability(gameInfo,
       player1Rating, player2Rating) - 0.5)
-     (0.5 - deltaFrom50Percent) / 0.5
+    (0.5 - deltaFrom50Percent) / 0.5
   }
 }
 
 object TwoPlayerEloCalculator {
-  private def getScoreFromComparison(comparison: PairwiseComparison): Double = {
-    comparison match {
-      case WIN => 1
-      case DRAW => 0.5
-      case LOSE => 0
-    }
+  private def getScoreFromComparison(comparison: PairwiseComparison): Double = comparison match {
+    case WIN => 1
+    case DRAW => 0.5
+    case LOSE => 0
   }
 }

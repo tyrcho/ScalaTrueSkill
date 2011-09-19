@@ -1,18 +1,17 @@
 package jskills
 
 object PartialPlay {
+  val smallestPercentage = 0.0001
 
-  def getPartialPlayPercentage(player: Object): Double = {
-    // If the player doesn't support the interface, assume 1.0 == 100%
-    if (player.isInstanceOf[ISupportPartialPlay]) {
-      var partialPlayPercentage = (player.asInstanceOf[ISupportPartialPlay]).getPartialPlayPercentage()
-      // HACK to get around bug near 0
-      val smallestPercentage = 0.0001
-      if (partialPlayPercentage < smallestPercentage) {
-        partialPlayPercentage = smallestPercentage
+  // If the player doesn't support the interface, assume 1.0 == 100%
+  def getPartialPlayPercentage(player: Any): Double = {
+    player match {
+      case partial: ISupportPartialPlay => {
+        var percentage = partial.getPartialPlayPercentage()
+        // HACK to get around bug near 0
+        if (percentage < smallestPercentage) smallestPercentage else percentage
       }
-       partialPlayPercentage
+      case _ => 1
     }
-     1.0
   }
 }

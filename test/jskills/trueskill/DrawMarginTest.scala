@@ -8,7 +8,7 @@ class DrawMarginTest {
 
   val ErrorTolerance = .000001
 
-  @Test def GetDrawMarginFromDrawProbabilityTest() {
+  @Test def getDrawMarginFromDrawProbabilityTest() {
     val beta = 25.0 / 6.0
     // The expected values were compared against Ralf Herbrich's implementation in F#
     AssertDrawMargin(0.10, beta, 0.74046637542690541)
@@ -17,7 +17,7 @@ class DrawMarginTest {
   }
 
   def AssertDrawMargin(drawProbability: Double, beta: Double, expected: Double) {
-    val actual = DrawMargin.GetDrawMarginFromDrawProbability(drawProbability, beta)
+    val actual = DrawMargin.getDrawMarginFromDrawProbability(drawProbability, beta)
     assertEquals(expected, actual, ErrorTolerance)
   }
 }

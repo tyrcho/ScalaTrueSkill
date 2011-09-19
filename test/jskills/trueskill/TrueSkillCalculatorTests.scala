@@ -78,7 +78,7 @@ object TrueSkillCalculatorTests {
   private def TwoPlayerTestNotDrawn(calculator: SkillCalculator) {
     val player1 = new Player(1)
     val player2 = new Player(2)
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = Team(player1, gameInfo.getDefaultRating())
     val team2 = Team(player2, gameInfo.getDefaultRating())
@@ -98,7 +98,7 @@ object TrueSkillCalculatorTests {
   private def TwoPlayerTestDrawn(calculator: SkillCalculator) {
     val player1 = new Player(1)
     val player2 = new Player(2)
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = Team(player1, gameInfo.getDefaultRating())
     val team2 = Team(player2, gameInfo.getDefaultRating())
@@ -136,7 +136,7 @@ object TrueSkillCalculatorTests {
   private def OneOnOneMassiveUpsetDrawTest(calculator: SkillCalculator) {
     val player1 = new Player(1)
 
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = new Team().addPlayer(player1, gameInfo.getDefaultRating())
 
@@ -165,7 +165,7 @@ object TrueSkillCalculatorTests {
     val player1 = new Player(1)
     val player2 = new Player(2)
 
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = new Team()
       .addPlayer(player1, gameInfo.getDefaultRating())
@@ -196,7 +196,7 @@ object TrueSkillCalculatorTests {
     val player1 = new Player(1)
     val player2 = new Player(2)
 
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = new Team()
       .addPlayer(player1, gameInfo.getDefaultRating())
@@ -227,7 +227,7 @@ object TrueSkillCalculatorTests {
     val player1 = new Player(1)
     val player2 = new Player(2)
 
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = new Team()
       .addPlayer(player1, new Rating(15, 8))
@@ -258,7 +258,7 @@ object TrueSkillCalculatorTests {
     val player1 = new Player(1)
     val player2 = new Player(2)
 
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = new Team()
       .addPlayer(player1, new Rating(20, 8))
@@ -291,7 +291,7 @@ object TrueSkillCalculatorTests {
     val player3 = new Player(3)
     val player4 = new Player(4)
 
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = new Team()
       .addPlayer(player1, gameInfo.getDefaultRating())
@@ -332,7 +332,7 @@ object TrueSkillCalculatorTests {
   private def OneOnTwoSimpleTest(calculator: SkillCalculator) {
     val player1 = new Player(1)
 
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = new Team()
       .addPlayer(player1, gameInfo.getDefaultRating())
@@ -360,7 +360,7 @@ object TrueSkillCalculatorTests {
   private def OneOnTwoSomewhatBalanced(calculator: SkillCalculator) {
     val player1 = new Player(1)
 
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = new Team()
       .addPlayer(player1, new Rating(40, 6))
@@ -388,7 +388,7 @@ object TrueSkillCalculatorTests {
   private def OneOnThreeSimpleTest(calculator: SkillCalculator) {
     val player1 = new Player(1)
 
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = new Team()
       .addPlayer(player1, gameInfo.getDefaultRating())
@@ -419,7 +419,7 @@ object TrueSkillCalculatorTests {
   private def OneOnTwoDrawTest(calculator: SkillCalculator) {
     val player1 = new Player(1)
 
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = new Team()
       .addPlayer(player1, gameInfo.getDefaultRating())
@@ -447,7 +447,7 @@ object TrueSkillCalculatorTests {
   private def OneOnThreeDrawTest(calculator: SkillCalculator) {
     val player1 = new Player(1)
 
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = new Team()
       .addPlayer(player1, gameInfo.getDefaultRating())
@@ -478,7 +478,7 @@ object TrueSkillCalculatorTests {
   private def OneOnSevenSimpleTest(calculator: SkillCalculator) {
     val player1 = new Player(1)
 
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = new Team()
       .addPlayer(player1, gameInfo.getDefaultRating())
@@ -535,7 +535,7 @@ object TrueSkillCalculatorTests {
       .addPlayer(player4, new Rating(30, 4))
       .addPlayer(player5, new Rating(31, 3))
 
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val teams = Seq(team1, team2)
     val newRatingsWinLoseExpected = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2))
@@ -572,7 +572,7 @@ object TrueSkillCalculatorTests {
     val player1 = new Player(1)
     val player2 = new Player(2)
 
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = new Team()
       .addPlayer(player1, new Rating(40, 4))
@@ -617,7 +617,7 @@ object TrueSkillCalculatorTests {
     val player1 = new Player(1)
     val player2 = new Player(2)
     val player3 = new Player(3)
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = Team(player1, gameInfo.getDefaultRating())
     val team2 = Team(player2, gameInfo.getDefaultRating())
@@ -643,7 +643,7 @@ object TrueSkillCalculatorTests {
     val player1 = new Player(1)
     val player2 = new Player(2)
     val player3 = new Player(3)
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = Team(player1, gameInfo.getDefaultRating())
     val team2 = Team(player2, gameInfo.getDefaultRating())
@@ -670,7 +670,7 @@ object TrueSkillCalculatorTests {
     val player2 = new Player(2)
     val player3 = new Player(3)
     val player4 = new Player(4)
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = Team(player1, gameInfo.getDefaultRating())
     val team2 = Team(player2, gameInfo.getDefaultRating())
@@ -701,7 +701,7 @@ object TrueSkillCalculatorTests {
     val player3 = new Player(3)
     val player4 = new Player(4)
     val player5 = new Player(5)
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = Team(player1, gameInfo.getDefaultRating())
     val team2 = Team(player2, gameInfo.getDefaultRating())
@@ -741,7 +741,7 @@ object TrueSkillCalculatorTests {
     val player6 = new Player(6)
     val player7 = new Player(7)
     val player8 = new Player(8)
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = Team(player1, gameInfo.getDefaultRating())
     val team2 = Team(player2, gameInfo.getDefaultRating())
@@ -793,7 +793,7 @@ object TrueSkillCalculatorTests {
     val player6 = new Player(6)
     val player7 = new Player(7)
     val player8 = new Player(8)
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = Team(player1, new Rating(10, 8))
     val team2 = Team(player2, new Rating(15, 7))
@@ -853,7 +853,7 @@ object TrueSkillCalculatorTests {
     val player14 = new Player(14)
     val player15 = new Player(15)
     val player16 = new Player(16)
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = Team(player1, gameInfo.getDefaultRating())
     val team2 = Team(player2, gameInfo.getDefaultRating())
@@ -935,7 +935,7 @@ object TrueSkillCalculatorTests {
   //------------------------------------------------------------------------------
 
   private def OneOnTwoBalancedPartialPlay(calculator: SkillCalculator) {
-    val gameInfo = GameInfo.getDefaultGameInfo()
+    val gameInfo = GameInfo.defaultGameInfo
 
     val p1 = new Player(1)
     val team1 = Team(p1, gameInfo.getDefaultRating())
