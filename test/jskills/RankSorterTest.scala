@@ -1,7 +1,5 @@
 package jskills
 
-import java.util.Arrays
-
 import org.junit.Test
 import collection.JavaConversions._
 import org.junit.Assert.assertEquals

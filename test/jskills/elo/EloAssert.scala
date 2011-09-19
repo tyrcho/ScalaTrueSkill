@@ -2,8 +2,6 @@ package jskills.elo
 
 import org.junit.Assert._
 
-import java.util.Arrays
-
 import jskills.GameInfo
 import jskills.IPlayer
 import jskills.ITeam

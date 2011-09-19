@@ -1,7 +1,5 @@
 package jskills.elo
 
-import java.util.Arrays
-
 import jskills.GameInfo
 import jskills.IPlayer
 import jskills.ITeam

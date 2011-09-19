@@ -1,7 +1,6 @@
 package jskills.trueskill.factors
 
 import jskills.numerics.GaussianDistribution._
-import java.util.Arrays
 import jskills.Guard
 import jskills.factorgraphs.Message
 import jskills.factorgraphs.Variable
@@ -56,10 +55,8 @@ class GaussianWeightedSumFactor(
   // By default, set the weight to 1.0, which is what null indicates
   val variableIndexOrdersForWeights = ListBuffer.empty[Array[Int]]
 
-  if (variableWeights == null) {
-    variableWeights = new Array[Double](variablesToSum.size)
-    Arrays.fill(variableWeights, 1.)
-  }
+  if (variableWeights == null) variableWeights = Array.fill(variablesToSum.size)(1.)
+
   // This following is used for convenience, for example, the first entry is [0, 1, 2] 
   // corresponding to v(0) = a1*v[1] + a2*v[2]
   val weights = new Array[Array[Double]](variableWeights.length + 1)

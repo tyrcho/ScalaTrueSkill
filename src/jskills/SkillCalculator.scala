@@ -1,7 +1,5 @@
 package jskills
 
-import java.util.EnumSet
-
 import jskills.numerics.Range
 import collection.JavaConversions._
 import collection.mutable.Map

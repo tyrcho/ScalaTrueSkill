@@ -1,9 +1,5 @@
 package jskills.elo
 
-import java.util.EnumSet
-
-import java.util.Iterator
-
 import jskills.GameInfo
 import jskills.IPlayer
 import jskills.ITeam

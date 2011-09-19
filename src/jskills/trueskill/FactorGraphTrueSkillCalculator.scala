@@ -1,7 +1,6 @@
 package jskills.trueskill
 
 import jskills.numerics.MathUtils._
-import java.util.EnumSet
 import jskills.GameInfo
 import jskills.Guard
 import jskills.IPlayer
