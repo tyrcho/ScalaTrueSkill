@@ -2,7 +2,7 @@ package jskills.trueskill
 
 import jskills.numerics.MathUtils._
 import java.util.ArrayList
-import java.util.Collection
+
 import java.util.EnumSet
 import java.util.List
 import java.util.Map
@@ -28,7 +28,7 @@ class FactorGraphTrueSkillCalculator
     Range.atLeast(1)) {
 
   override def calculateNewRatings(gameInfo: GameInfo,
-    teams: Collection[_ <: ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating] = {
+    teams: Seq[_ <: ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating] = {
     Guard.argumentNotNull(gameInfo, "gameInfo")
     validateTeamCountAndPlayersCountPerTeam(teams)
 
@@ -44,7 +44,7 @@ class FactorGraphTrueSkillCalculator
   }
 
   override def calculateMatchQuality(gameInfo: GameInfo,
-    teams: Collection[_ <: ITeam]): Double = {
+    teams: Seq[_ <: ITeam]): Double = {
     // We need to create the A matrix which is the player team assigments.
     val teamAssignmentsList = new ArrayList[ITeam](teams)
     val skillsMatrix = getPlayerCovarianceMatrix(teamAssignmentsList)
@@ -76,7 +76,7 @@ class FactorGraphTrueSkillCalculator
     Math.exp(expPart) * Math.sqrt(sqrtPart)
   }
 
-  def getPlayerMeansVector(teamAssignmentsList: Collection[_ <: ITeam]): SimpleMatrix = {
+  def getPlayerMeansVector(teamAssignmentsList: Seq[_ <: ITeam]): SimpleMatrix = {
     // A simple list of all the player means.
     val temp = getPlayerMeanRatingValues(teamAssignmentsList)
     val tempa = new Array[Double](temp.size())
@@ -88,7 +88,7 @@ class FactorGraphTrueSkillCalculator
    * This is a square matrix whose diagonal values represent the variance
    * (square of standard deviation) of all players.
    */
-  private def getPlayerCovarianceMatrix(teamAssignmentsList: Collection[_ <: ITeam]): SimpleMatrix = {
+  private def getPlayerCovarianceMatrix(teamAssignmentsList: Seq[_ <: ITeam]): SimpleMatrix = {
     val temp = getPlayerVarianceRatingValues(teamAssignmentsList).toSeq
     return SimpleMatrix.diag(temp: _*).transpose()
   }
@@ -97,7 +97,7 @@ class FactorGraphTrueSkillCalculator
    * TODO Make array? Helper function that gets a list of values for all
    * player ratings
    */
-  private def getPlayerMeanRatingValues(teamAssignmentsList: Collection[_ <: ITeam]): List[Double] = {
+  private def getPlayerMeanRatingValues(teamAssignmentsList: Seq[_ <: ITeam]): List[Double] = {
     val playerRatingValues = new ArrayList[Double]()
     for (currentTeam <- teamAssignmentsList)
       for (currentRating <- currentTeam.values())
@@ -110,7 +110,7 @@ class FactorGraphTrueSkillCalculator
    * TODO Make array? Helper function that gets a list of values for all
    * player ratings
    */
-  private def getPlayerVarianceRatingValues(teamAssignmentsList: Collection[_ <: ITeam]): List[Double] = {
+  private def getPlayerVarianceRatingValues(teamAssignmentsList: Seq[_ <: ITeam]): List[Double] = {
     val playerRatingValues = new ArrayList[Double]()
     for (currentTeam <- teamAssignmentsList)
       for (currentRating <- currentTeam.values())

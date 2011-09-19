@@ -1,8 +1,7 @@
 package jskills.trueskill
 
 import java.util.ArrayList
-import java.util.Collection
-import java.util.Collections
+
 import java.util.HashMap
 import java.util.List
 import java.util.Map
@@ -28,7 +27,7 @@ import jskills.trueskill.layers.TeamPerformancesToTeamPerformanceDifferencesLaye
 import collection.JavaConversions._
 
 class TrueSkillFactorGraph(
-  val gameInfo: GameInfo, teams: Collection[_ <: ITeam], teamRanks: Array[Int])
+  val gameInfo: GameInfo, teams: Seq[_ <: ITeam], teamRanks: Array[Int])
   extends FactorGraph[TrueSkillFactorGraph] {
   val layers = new ArrayList[FactorGraphLayerBase[GaussianDistribution]]()
   val priorLayer = new PlayerPriorValuesToSkillsLayer(this, teams)

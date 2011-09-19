@@ -1,6 +1,6 @@
 package jskills
 
-import java.util.Collection
+
 import java.util.EnumSet
 import java.util.Map
 
@@ -29,7 +29,7 @@ abstract class SkillCalculator(supportedOptions: Seq[SupportedOptions],
    * @returns All the players and their new ratings.
    */
   def calculateNewRatings(gameInfo: GameInfo,
-    teams: Collection[_ <: ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating]
+    teams: Seq[_ <: ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating]
 
   /**
    * Calculates the match quality as the likelihood of all teams drawing.
@@ -41,15 +41,15 @@ abstract class SkillCalculator(supportedOptions: Seq[SupportedOptions],
    * @returns The quality of the match between the teams as a percentage (0% =
    *          bad, 100% = well matched).
    */
-  def calculateMatchQuality(gameInfo: GameInfo, teams: Collection[_ <: ITeam]): Double
+  def calculateMatchQuality(gameInfo: GameInfo, teams: Seq[_ <: ITeam]): Double
 
   protected def validateTeamCountAndPlayersCountPerTeam(
-    teams: Collection[_ <: ITeam]) {
+    teams: Seq[_ <: ITeam]) {
     validateTeamCountAndPlayersCountPerTeam(teams, totalTeamsAllowed, playerPerTeamAllowed)
   }
 
   private def validateTeamCountAndPlayersCountPerTeam(
-    teams: Collection[_ <: ITeam], totalTeams: Range, playersPerTeam: Range) {
+    teams: Seq[_ <: ITeam], totalTeams: Range, playersPerTeam: Range) {
     Guard.argumentNotNull(teams, "teams")
     var countOfTeams = 0
     for (currentTeam <- teams) {

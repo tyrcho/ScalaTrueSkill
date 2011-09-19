@@ -2,7 +2,7 @@ package jskills
 
 import collection.JavaConversions._
 import jskills.numerics.MathUtils.square
-import java.util.Collection
+
 import jskills.numerics.GaussianDistribution
 import jskills.numerics.GaussianDistribution._
 
@@ -32,7 +32,7 @@ object Rating {
       prior.conservativeStandardDeviationMultiplier)
   }
 
-  def calcMeanMean(ratings: Collection[Rating]): Double = (ratings map (_.mean) sum) / ratings.size
+  def calcMeanMean(ratings: Seq[Rating]): Double = (ratings map (_.mean) sum) / ratings.size
 }
 
 /** Container for a player's rating. **/

@@ -1,6 +1,6 @@
 package jskills.numerics
 
-import java.util.Collection
+
 import collection.JavaConversions._
 
 /**
@@ -8,5 +8,5 @@ import collection.JavaConversions._
  */
 object MathUtils {
   def square(x: Double) = x * x
-  def mean(collection: Collection[Double]): Double = collection.sum / collection.size()
+  def mean(collection: Seq[Double]): Double = collection.sum / collection.size()
 }

@@ -1,7 +1,7 @@
 package jskills.trueskill
 
 import jskills.numerics.MathUtils._
-import java.util.Collection
+
 import java.util.EnumSet
 import java.util.HashMap
 import java.util.Iterator
@@ -28,7 +28,7 @@ class TwoPlayerTrueSkillCalculator
   extends SkillCalculator(Seq(), Range.exactly(2), Range.exactly(1)) {
 
   override def calculateNewRatings(gameInfo: GameInfo,
-    teams: Collection[_ <: ITeam], tr: Seq[Int]): Map[IPlayer, Rating] = {
+    teams: Seq[_ <: ITeam], tr: Seq[Int]): Map[IPlayer, Rating] = {
     // Basic argument checking
     Guard.argumentNotNull(gameInfo, "gameInfo")
     validateTeamCountAndPlayersCountPerTeam(teams)
@@ -106,11 +106,11 @@ class TwoPlayerTrueSkillCalculator
     return new Rating(newMean, newStdDev)
   }
 
-  override def calculateMatchQuality(gameInfo: GameInfo, teams: Collection[_ <: ITeam]): Double = {
+  override def calculateMatchQuality(gameInfo: GameInfo, teams: Seq[_ <: ITeam]): Double = {
     Guard.argumentNotNull(gameInfo, "gameInfo")
     validateTeamCountAndPlayersCountPerTeam(teams)
 
-    val teamIt = teams.iterator()
+    val teamIt = teams.iterator
 
     val player1Rating = teamIt.next().values().iterator().next()
     val player2Rating = teamIt.next().values().iterator().next()

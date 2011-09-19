@@ -3,7 +3,7 @@ package jskills.trueskill
 import org.junit.Assert.assertEquals
 
 import java.util.Arrays
-import java.util.Collection
+
 import java.util.Map
 
 import jskills.GameInfo
@@ -86,7 +86,7 @@ object TrueSkillCalculatorTests {
 
     val team1 = Team(player1, gameInfo.getDefaultRating())
     val team2 = Team(player2, gameInfo.getDefaultRating())
-    val teams = Arrays.asList(team1, team2)
+    val teams = Seq(team1, team2)
 
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2))
 
@@ -106,7 +106,7 @@ object TrueSkillCalculatorTests {
 
     val team1 = Team(player1, gameInfo.getDefaultRating())
     val team2 = Team(player2, gameInfo.getDefaultRating())
-    val teams = Arrays.asList(team1, team2)
+    val teams = Seq(team1, team2)
 
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 1))
 
@@ -128,7 +128,7 @@ object TrueSkillCalculatorTests {
     val team1 = Team(player1, new Rating(1301.0007, 42.9232))
     val team2 = Team(player2, new Rating(1188.7560, 42.5570))
 
-    val newRatings = calculator.calculateNewRatings(gameInfo, Arrays.asList(team1, team2), Seq(1, 2))
+    val newRatings = calculator.calculateNewRatings(gameInfo, Seq(team1, team2), Seq(1, 2))
 
     val player1NewRating = newRatings.get(player1)
     assertRating(1304.7820836053318, 42.843513887848658, player1NewRating)
@@ -148,7 +148,7 @@ object TrueSkillCalculatorTests {
 
     val team2 = new Team().addPlayer(player2, new Rating(50, 12.5))
 
-    val teams = Arrays.asList(team1, team2)
+    val teams = Seq(team1, team2)
 
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 1))
 
@@ -182,7 +182,7 @@ object TrueSkillCalculatorTests {
       .addPlayer(player3, gameInfo.getDefaultRating())
       .addPlayer(player4, gameInfo.getDefaultRating())
 
-    val teams = Arrays.asList(team1, team2)
+    val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2))
 
     // Winners
@@ -213,7 +213,7 @@ object TrueSkillCalculatorTests {
       .addPlayer(player3, gameInfo.getDefaultRating())
       .addPlayer(player4, gameInfo.getDefaultRating())
 
-    val teams = Arrays.asList(team1, team2)
+    val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 1))
 
     // Winners
@@ -244,7 +244,7 @@ object TrueSkillCalculatorTests {
       .addPlayer(player3, new Rating(25, 4))
       .addPlayer(player4, new Rating(30, 3))
 
-    val teams = Arrays.asList(team1, team2)
+    val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 1))
 
     // Winners
@@ -275,7 +275,7 @@ object TrueSkillCalculatorTests {
       .addPlayer(player3, new Rating(35, 7))
       .addPlayer(player4, new Rating(40, 5))
 
-    val teams = Arrays.asList(team1, team2)
+    val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2))
 
     // Winners
@@ -314,7 +314,7 @@ object TrueSkillCalculatorTests {
       .addPlayer(player7, gameInfo.getDefaultRating())
       .addPlayer(player8, gameInfo.getDefaultRating())
 
-    val teams = Arrays.asList(team1, team2)
+    val teams = Seq(team1, team2)
 
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2))
 
@@ -348,7 +348,7 @@ object TrueSkillCalculatorTests {
       .addPlayer(player2, gameInfo.getDefaultRating())
       .addPlayer(player3, gameInfo.getDefaultRating())
 
-    val teams = Arrays.asList(team1, team2)
+    val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2))
 
     // Winners
@@ -376,7 +376,7 @@ object TrueSkillCalculatorTests {
       .addPlayer(player2, new Rating(20, 7))
       .addPlayer(player3, new Rating(25, 8))
 
-    val teams = Arrays.asList(team1, team2)
+    val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2))
 
     // Winners
@@ -406,7 +406,7 @@ object TrueSkillCalculatorTests {
       .addPlayer(player3, gameInfo.getDefaultRating())
       .addPlayer(player4, gameInfo.getDefaultRating())
 
-    val teams = Arrays.asList(team1, team2)
+    val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2))
 
     // Winners
@@ -435,7 +435,7 @@ object TrueSkillCalculatorTests {
       .addPlayer(player2, gameInfo.getDefaultRating())
       .addPlayer(player3, gameInfo.getDefaultRating())
 
-    val teams = Arrays.asList(team1, team2)
+    val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 1))
 
     // Winners
@@ -465,7 +465,7 @@ object TrueSkillCalculatorTests {
       .addPlayer(player3, gameInfo.getDefaultRating())
       .addPlayer(player4, gameInfo.getDefaultRating())
 
-    val teams = Arrays.asList(team1, team2)
+    val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 1))
 
     // Winners
@@ -504,7 +504,7 @@ object TrueSkillCalculatorTests {
       .addPlayer(player7, gameInfo.getDefaultRating())
       .addPlayer(player8, gameInfo.getDefaultRating())
 
-    val teams = Arrays.asList(team1, team2)
+    val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2))
 
     // Winners
@@ -541,7 +541,7 @@ object TrueSkillCalculatorTests {
 
     val gameInfo = GameInfo.getDefaultGameInfo()
 
-    val teams = Arrays.asList(team1, team2)
+    val teams = Seq(team1, team2)
     val newRatingsWinLoseExpected = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2))
 
     // Winners
@@ -554,7 +554,7 @@ object TrueSkillCalculatorTests {
     assertRating(30.879, 2.983, newRatingsWinLoseExpected.get(player5))
 
     val newRatingsWinLoseUpset = calculator
-      .calculateNewRatings(gameInfo, Arrays.asList(team1, team2), Seq(2, 1))
+      .calculateNewRatings(gameInfo, Seq(team1, team2), Seq(2, 1))
 
     // Winners
     assertRating(32.012, 3.877, newRatingsWinLoseUpset.get(player4))
@@ -600,7 +600,7 @@ object TrueSkillCalculatorTests {
       .addPlayer(player7, new Rating(50, 5))
       .addPlayer(player8, new Rating(30, 2))
 
-    val teams = Arrays.asList(team1, team2, team3)
+    val teams = Seq(team1, team2, team3)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2, 2))
 
     // Winners
@@ -627,7 +627,7 @@ object TrueSkillCalculatorTests {
     val team2 = Team(player2, gameInfo.getDefaultRating())
     val team3 = Team(player3, gameInfo.getDefaultRating())
 
-    val teams = Arrays.asList(team1, team2, team3)
+    val teams = Seq(team1, team2, team3)
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2, 3))
 
     val player1NewRating = newRatings.get(player1)
@@ -653,7 +653,7 @@ object TrueSkillCalculatorTests {
     val team2 = Team(player2, gameInfo.getDefaultRating())
     val team3 = Team(player3, gameInfo.getDefaultRating())
 
-    val teams = Arrays.asList(team1, team2, team3)
+    val teams = Seq(team1, team2, team3)
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 1, 1))
 
     val player1NewRating = newRatings.get(player1)
@@ -681,7 +681,7 @@ object TrueSkillCalculatorTests {
     val team3 = Team(player3, gameInfo.getDefaultRating())
     val team4 = Team(player4, gameInfo.getDefaultRating())
 
-    val teams = Arrays.asList(team1, team2, team3, team4)
+    val teams = Seq(team1, team2, team3, team4)
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2, 3, 4))
 
     val player1NewRating = newRatings.get(player1)
@@ -713,7 +713,7 @@ object TrueSkillCalculatorTests {
     val team4 = Team(player4, gameInfo.getDefaultRating())
     val team5 = Team(player5, gameInfo.getDefaultRating())
 
-    val teams = Arrays.asList(team1, team2, team3, team4,
+    val teams = Seq(team1, team2, team3, team4,
       team5)
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2, 3, 4, 5))
 
@@ -756,7 +756,7 @@ object TrueSkillCalculatorTests {
     val team7 = Team(player7, gameInfo.getDefaultRating())
     val team8 = Team(player8, gameInfo.getDefaultRating())
 
-    val teams = Arrays.asList(team1, team2, team3, team4,
+    val teams = Seq(team1, team2, team3, team4,
       team5, team6, team7, team8)
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 1, 1, 1, 1, 1, 1, 1))
 
@@ -808,7 +808,7 @@ object TrueSkillCalculatorTests {
     val team7 = Team(player7, new Rating(40, 2))
     val team8 = Team(player8, new Rating(45, 1))
 
-    val teams = Arrays.asList(team1, team2, team3, team4,
+    val teams = Seq(team1, team2, team3, team4,
       team5, team6, team7, team8)
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2, 3, 4, 5, 6, 7, 8))
 
@@ -876,7 +876,7 @@ object TrueSkillCalculatorTests {
     val team15 = Team(player15, gameInfo.getDefaultRating())
     val team16 = Team(player16, gameInfo.getDefaultRating())
 
-    val teams = Arrays.asList(
+    val teams = Seq(
       team1, team2, team3, team4, team5,
       team6, team7, team8, team9, team10,
       team11, team12, team13, team14, team15,
@@ -951,7 +951,7 @@ object TrueSkillCalculatorTests {
       .addPlayer(p2, gameInfo.getDefaultRating())
       .addPlayer(p3, gameInfo.getDefaultRating())
 
-    val teams = Arrays.asList(team1, team2)
+    val teams = Seq(team1, team2)
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2))
     val matchQuality = calculator.calculateMatchQuality(gameInfo, teams)
     // TODO assert something

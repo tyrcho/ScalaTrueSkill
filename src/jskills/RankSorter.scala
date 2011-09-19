@@ -1,15 +1,5 @@
 package jskills
 
-import java.util.ArrayList
-import java.util.Arrays
-import java.util.Collection
-import java.util.Collections
-import java.util.Comparator
-import java.util.HashMap
-import java.util.List
-import java.util.Map
-import collection.JavaConversions._
-
 /**
  * Helper class to sort ranks in non-decreasing order.
  */
@@ -24,11 +14,10 @@ object RankSorter {
    *            The ranks for each item where 1 is first place.
    * @return the items sorted according to their ranks
    */
-  def sort[T](items: Collection[T], itemRanks: Seq[Int]): List[T] = {
+  def sort[T](items: Seq[T], itemRanks: Seq[Int]): Seq[T] = {
     Guard.argumentNotNull(items, "items")
     Guard.argumentNotNull(itemRanks, "itemRanks")
-
-    val map = items.toSeq.zipWithIndex
+    val map = items.zipWithIndex
     val sorted = map.sortBy(i => itemRanks(i._2))
     sorted.map(_._1)
   }

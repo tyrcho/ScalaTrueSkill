@@ -1,7 +1,7 @@
 package jskills
 
 import java.util.Map
-import java.util.Collection
+
 
 import jskills.trueskill.FactorGraphTrueSkillCalculator
 
@@ -20,7 +20,7 @@ object TrueSkillCalculator {
    * @returns All the players and their new ratings.
    */
   def calculateNewRatings(gameInfo: GameInfo,
-    teams: Collection[ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating] =
+    teams: Seq[ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating] =
     // Just punt the work to the full implementation
     calculator.calculateNewRatings(gameInfo, teams, teamRanks)
 
@@ -30,7 +30,7 @@ object TrueSkillCalculator {
    * @param teams A mapping of team players and their ratings.
    * @returns The match quality as a percentage (between 0.0 and 1.0).
    */
-  def calculateMatchQuality(gameInfo: GameInfo, teams: Collection[ITeam]): Double =
+  def calculateMatchQuality(gameInfo: GameInfo, teams: Seq[ITeam]): Double =
     // Just punt the work to the full implementation
     calculator.calculateMatchQuality(gameInfo, teams)
 }

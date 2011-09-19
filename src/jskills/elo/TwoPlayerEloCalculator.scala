@@ -1,7 +1,7 @@
 package jskills.elo
 
 import java.util.ArrayList
-import java.util.Collection
+
 import java.util.EnumSet
 import java.util.HashMap
 import java.util.Iterator
@@ -23,7 +23,7 @@ abstract class TwoPlayerEloCalculator(kFactor: KFactor)
   extends SkillCalculator(Seq(), Range.exactly(2), Range.exactly(1)) {
 
   override def calculateNewRatings(gameInfo: GameInfo,
-    teams: Collection[_ <: ITeam],
+    teams: Seq[_ <: ITeam],
     teamRanks: Seq[Int]): Map[IPlayer, Rating] = {
     validateTeamCountAndPlayersCountPerTeam(teams)
     val teamsl = RankSorter.sort(teams, teamRanks)
@@ -65,7 +65,7 @@ abstract class TwoPlayerEloCalculator(kFactor: KFactor)
 
   protected def getPlayerWinProbability(gameInfo: GameInfo, playerRating: Double, opponentRating: Double): Double
 
-  override def calculateMatchQuality(gameInfo: GameInfo, teams: Collection[_ <: ITeam]): Double = {
+  override def calculateMatchQuality(gameInfo: GameInfo, teams: Seq[_ <: ITeam]): Double = {
     validateTeamCountAndPlayersCountPerTeam(teams)
 
     // Extract both players from the teams
@@ -74,7 +74,7 @@ abstract class TwoPlayerEloCalculator(kFactor: KFactor)
       players.add(team.keySet().toArray(new Array[IPlayer](0))(0))
 
     // Extract each player's rating from their team
-    val teamit = teams.iterator()
+    val teamit = teams.iterator
     val player1Rating = teamit.next().get(players.get(0)).mean
     val player2Rating = teamit.next().get(players.get(1)).mean
 

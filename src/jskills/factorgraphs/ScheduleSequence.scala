@@ -3,9 +3,9 @@ package jskills.factorgraphs
 import java.lang.Math._
 import collection.JavaConversions._
 
-import java.util.Collection
 
-class ScheduleSequence[TValue](name: String, schedules: Collection[Schedule[TValue]])
+
+class ScheduleSequence[TValue](name: String, schedules: Seq[Schedule[TValue]])
   extends Schedule[TValue](name) {
 
   override def visit(depth: Int, maxDepth: Int): Double = 

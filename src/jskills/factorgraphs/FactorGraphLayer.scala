@@ -1,7 +1,7 @@
 package jskills.factorgraphs
 
 import java.util.ArrayList
-import java.util.Collection
+
 import java.util.List
 import collection.JavaConversions._
 
@@ -23,7 +23,7 @@ abstract class FactorGraphLayer[TParentFactorGraph <: FactorGraph[TParentFactorG
     }
   }
 
-  def getUntypedFactors() = localFactors.asInstanceOf[Collection[Factor[TValue]]]
+  def getUntypedFactors() = localFactors.asInstanceOf[Seq[Factor[TValue]]]
 
   def addOutputVariableGroup(group: List[TOutputVariable]) {
     outputVariablesGroups.add(group)
@@ -36,7 +36,7 @@ abstract class FactorGraphLayer[TParentFactorGraph <: FactorGraph[TParentFactorG
   }
 
   protected def scheduleSequence(
-    itemsToSequence: Collection[Schedule[TValue]],
+    itemsToSequence: Seq[Schedule[TValue]],
     nameFormat: String,
     args: Any*): Schedule[TValue] = {
     val formattedName = format(nameFormat, args)

@@ -1,11 +1,11 @@
 package jskills.factorgraphs
 
-import java.util.Collection
+
 import java.util.List
 
 abstract class FactorGraphLayerBase[TValue] {
 
-  def getUntypedFactors(): Collection[Factor[TValue]]
+  def getUntypedFactors(): Seq[Factor[TValue]]
 
   def buildLayer()
 

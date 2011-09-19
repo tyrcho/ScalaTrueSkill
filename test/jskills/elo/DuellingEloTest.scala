@@ -1,7 +1,7 @@
 package jskills.elo
 
 import java.util.Arrays
-import java.util.Collection
+
 import java.util.Map
 
 import jskills.GameInfo
@@ -38,7 +38,7 @@ class DuellingEloTest {
       .addPlayer(player3, gameInfo.getDefaultRating())
       .addPlayer(player4, gameInfo.getDefaultRating())
 
-    val teams = Arrays.asList(team1, team2)
+    val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(2, 1))
 
     // TODO: Verify?

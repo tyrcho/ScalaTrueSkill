@@ -3,7 +3,7 @@ package jskills.elo
 import org.junit.Assert._
 
 import java.util.Arrays
-import java.util.Collection
+
 import java.util.Map
 
 import jskills.GameInfo

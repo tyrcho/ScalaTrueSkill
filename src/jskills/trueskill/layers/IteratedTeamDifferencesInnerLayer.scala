@@ -1,7 +1,7 @@
 package jskills.trueskill.layers
 
 import java.util.ArrayList
-import java.util.Collection
+
 import java.util.List
 
 import jskills.factorgraphs.Factor
@@ -13,6 +13,7 @@ import jskills.factorgraphs.Variable
 import jskills.numerics.GaussianDistribution
 import jskills.trueskill.TrueSkillFactorGraph
 import jskills.trueskill.factors.GaussianWeightedSumFactor
+import collection.JavaConversions._
 
 // The whole purpose of this is to do a loop on the bottom
 class IteratedTeamDifferencesInnerLayer(parentGraph: TrueSkillFactorGraph,
@@ -20,15 +21,9 @@ class IteratedTeamDifferencesInnerLayer(parentGraph: TrueSkillFactorGraph,
   teamDifferencesComparisonLayer: TeamDifferencesComparisonLayer)
   extends TrueSkillFactorGraphLayer[Variable[GaussianDistribution], GaussianWeightedSumFactor, Variable[GaussianDistribution]](parentGraph) {
 
-  override def getUntypedFactors(): Collection[Factor[GaussianDistribution]] = {
-    val factors = new ArrayList[Factor[GaussianDistribution]]() {
-      val serialVersionUID = 6370771040490033445L
-      addAll(teamPerformancesToTeamPerformanceDifferencesLayer.getUntypedFactors())
-      addAll(teamDifferencesComparisonLayer.getUntypedFactors())
-    }
-
-    return factors
-  }
+  override def getUntypedFactors(): Seq[Factor[GaussianDistribution]] =
+    (teamPerformancesToTeamPerformanceDifferencesLayer.getUntypedFactors() ++
+      teamDifferencesComparisonLayer.getUntypedFactors()).toSeq
 
   override def buildLayer() {
     teamPerformancesToTeamPerformanceDifferencesLayer.setRawInputVariablesGroups(inputVariablesGroups)
