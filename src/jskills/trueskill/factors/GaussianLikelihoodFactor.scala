@@ -23,11 +23,11 @@ class GaussianLikelihoodFactor(betaSquared: Double, variable1: Variable[Gaussian
     message2: Message[GaussianDistribution],
     variable1: Variable[GaussianDistribution],
     variable2: Variable[GaussianDistribution]): Double = {
-    val message1Value = new GaussianDistribution(message1.value)
-    val message2Value = new GaussianDistribution(message2.value)
+    val message1Value = GaussianDistribution(message1.value)
+    val message2Value = GaussianDistribution(message2.value)
 
-    val marginal1 = new GaussianDistribution(variable1.value)
-    val marginal2 = new GaussianDistribution(variable2.value)
+    val marginal1 = GaussianDistribution(variable1.value)
+    val marginal2 = GaussianDistribution(variable2.value)
 
     val a = precision / (precision + marginal2.precision - message2Value.precision)
 

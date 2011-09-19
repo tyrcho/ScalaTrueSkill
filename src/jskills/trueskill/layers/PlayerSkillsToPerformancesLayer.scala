@@ -36,7 +36,7 @@ class PlayerSkillsToPerformancesLayer(parentGraph: TrueSkillFactorGraph)
     new GaussianLikelihoodFactor(MathUtils.square(parentGraph.gameInfo.beta), playerPerformance, playerSkill)
 
   private def CreateOutputVariable(key: IPlayer): KeyedVariable[IPlayer, GaussianDistribution] =
-    new KeyedVariable[IPlayer, GaussianDistribution](key, GaussianDistribution.UNIFORM, "%s's performance", key)
+    KeyedVariable[IPlayer, GaussianDistribution](key, GaussianDistribution.UNIFORM, "%s's performance", key)
 
   override def createPriorSchedule(): Schedule[GaussianDistribution] = {
     val schedules = new ArrayList[Schedule[GaussianDistribution]]()

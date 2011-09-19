@@ -22,12 +22,6 @@ class Player[T](
   val partialUpdatePercentage: Double = Player.DefaultPartialUpdatePercentage)
   extends IPlayer with ISupportPartialPlay with ISupportPartialUpdate {
 
-  //for java calls
-  def this(id: T) { this(id, Player.DefaultPartialPlayPercentage, Player.DefaultPartialUpdatePercentage) }
-
-  //for java calls
-  def this(id: T, partialPlayPercentage: Double) { this(id, partialPlayPercentage, Player.DefaultPartialUpdatePercentage) }
-
   def getPartialUpdatePercentage() = partialUpdatePercentage
 
   def getPartialPlayPercentage() = partialPlayPercentage

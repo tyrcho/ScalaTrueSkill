@@ -26,8 +26,8 @@ class GaussianWithinFactor(epsilon: Double, variable: Variable[GaussianDistribut
   }
 
   override protected def updateMessage(message: Message[GaussianDistribution], variable: Variable[GaussianDistribution]): Double = {
-    val oldMarginal = new GaussianDistribution(variable.value)
-    val oldMessage = new GaussianDistribution(message.value)
+    val oldMarginal = GaussianDistribution(variable.value)
+    val oldMessage = GaussianDistribution(message.value)
     val messageFromVariable = divide(oldMarginal, oldMessage)
 
     val c = messageFromVariable.precision

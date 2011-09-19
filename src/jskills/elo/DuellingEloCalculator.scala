@@ -84,7 +84,7 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
     player2Rating: Rating,
     weakToStrongComparison: PairwiseComparison) {
 
-    val t1 = Arrays.asList(new Team(player2, player2Rating).asInstanceOf[ITeam], new Team(player1, player1Rating).asInstanceOf[ITeam])
+    val t1 = Arrays.asList(Team(player2, player2Rating), Team(player1, player1Rating))
 
     val duelOutcomes = weakToStrongComparison match {
       case PairwiseComparison.WIN => twoPlayerEloCalculator.calculateNewRatings(gameInfo, t1, Seq(1, 2))
@@ -105,11 +105,11 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
 
     for (ixCurrentTeam <- 0 until teamList.length) {
       val currentTeamAverageRating = new EloRating(Rating.calcMeanMean(teamList(ixCurrentTeam).values()))
-      val currentTeam = new Team(new Player[Integer](ixCurrentTeam), currentTeamAverageRating)
+      val currentTeam = Team(new Player[Integer](ixCurrentTeam), currentTeamAverageRating)
 
       for (ixOtherTeam <- ixCurrentTeam + 1 until teamList.length) {
         val otherTeamAverageRating = new EloRating(Rating.calcMeanMean(teamList(ixOtherTeam).values()))
-        val otherTeam = new Team(new Player[Integer](ixOtherTeam), otherTeamAverageRating)
+        val otherTeam = Team(new Player[Integer](ixOtherTeam), otherTeamAverageRating)
 
         minQuality = Math.min(
           minQuality, twoPlayerEloCalculator.calculateMatchQuality(gameInfo,

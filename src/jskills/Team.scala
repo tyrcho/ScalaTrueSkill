@@ -10,19 +10,6 @@ import java.util.List
  */
 class Team extends HashMap[IPlayer, Rating] with ITeam {
   /**
-   * Constructs a Team and populates it with the specified player.
-   *
-   * @param player
-   *            The player to add.
-   * @param rating
-   *            The rating of the player.
-   */
-  def this(player: IPlayer, rating: Rating) {
-    this()
-    addPlayer(player, rating)
-  }
-
-  /**
    * Adds the player to the team.
    *
    * @param player
@@ -34,5 +21,19 @@ class Team extends HashMap[IPlayer, Rating] with ITeam {
   def addPlayer(player: IPlayer, rating: Rating): Team = {
     put(player, rating)
     return this
+  }
+}
+
+object Team {
+  /**
+   * Constructs a Team and populates it with the specified player.
+   *
+   * @param player
+   *            The player to add.
+   * @param rating
+   *            The rating of the player.
+   */
+  def apply(player: IPlayer, rating: Rating) = {
+    new Team().addPlayer(player, rating)
   }
 }

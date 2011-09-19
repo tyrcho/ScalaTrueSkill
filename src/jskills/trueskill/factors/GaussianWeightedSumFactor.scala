@@ -152,8 +152,8 @@ class GaussianWeightedSumFactor(
     // Potentially look at http://mathworld.wolfram.com/NormalSumDistribution.html for clues as 
     // to what it's doing
 
-    val message0 = new GaussianDistribution(messages.get(0).value)
-    val marginal0 = new GaussianDistribution(variables.get(0).value)
+    val message0 = GaussianDistribution(messages.get(0).value)
+    val marginal0 = GaussianDistribution(variables.get(0).value)
 
     // The math works out so that 1/newPrecision = sum of a_i^2 /marginalsWithoutMessages(i)
     var inverseOfNewPrecisionSum = 0.0

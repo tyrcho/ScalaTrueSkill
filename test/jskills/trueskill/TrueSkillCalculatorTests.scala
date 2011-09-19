@@ -84,8 +84,8 @@ object TrueSkillCalculatorTests {
     val player2 = new Player(2)
     val gameInfo = GameInfo.getDefaultGameInfo()
 
-    val team1 = new Team(player1, gameInfo.getDefaultRating())
-    val team2 = new Team(player2, gameInfo.getDefaultRating())
+    val team1 = Team(player1, gameInfo.getDefaultRating())
+    val team2 = Team(player2, gameInfo.getDefaultRating())
     val teams = Arrays.asList(team1, team2)
 
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2))
@@ -104,8 +104,8 @@ object TrueSkillCalculatorTests {
     val player2 = new Player(2)
     val gameInfo = GameInfo.getDefaultGameInfo()
 
-    val team1 = new Team(player1, gameInfo.getDefaultRating())
-    val team2 = new Team(player2, gameInfo.getDefaultRating())
+    val team1 = Team(player1, gameInfo.getDefaultRating())
+    val team2 = Team(player2, gameInfo.getDefaultRating())
     val teams = Arrays.asList(team1, team2)
 
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 1))
@@ -125,8 +125,8 @@ object TrueSkillCalculatorTests {
     val player2 = new Player(2)
     val gameInfo = new GameInfo(1200.0, 1200.0 / 3.0, 200.0, 1200.0 / 300.0, 0.03)
 
-    val team1 = new Team(player1, new Rating(1301.0007, 42.9232))
-    val team2 = new Team(player2, new Rating(1188.7560, 42.5570))
+    val team1 = Team(player1, new Rating(1301.0007, 42.9232))
+    val team2 = Team(player2, new Rating(1188.7560, 42.5570))
 
     val newRatings = calculator.calculateNewRatings(gameInfo, Arrays.asList(team1, team2), Seq(1, 2))
 
@@ -623,9 +623,9 @@ object TrueSkillCalculatorTests {
     val player3 = new Player(3)
     val gameInfo = GameInfo.getDefaultGameInfo()
 
-    val team1 = new Team(player1, gameInfo.getDefaultRating())
-    val team2 = new Team(player2, gameInfo.getDefaultRating())
-    val team3 = new Team(player3, gameInfo.getDefaultRating())
+    val team1 = Team(player1, gameInfo.getDefaultRating())
+    val team2 = Team(player2, gameInfo.getDefaultRating())
+    val team3 = Team(player3, gameInfo.getDefaultRating())
 
     val teams = Arrays.asList(team1, team2, team3)
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2, 3))
@@ -649,9 +649,9 @@ object TrueSkillCalculatorTests {
     val player3 = new Player(3)
     val gameInfo = GameInfo.getDefaultGameInfo()
 
-    val team1 = new Team(player1, gameInfo.getDefaultRating())
-    val team2 = new Team(player2, gameInfo.getDefaultRating())
-    val team3 = new Team(player3, gameInfo.getDefaultRating())
+    val team1 = Team(player1, gameInfo.getDefaultRating())
+    val team2 = Team(player2, gameInfo.getDefaultRating())
+    val team3 = Team(player3, gameInfo.getDefaultRating())
 
     val teams = Arrays.asList(team1, team2, team3)
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 1, 1))
@@ -676,10 +676,10 @@ object TrueSkillCalculatorTests {
     val player4 = new Player(4)
     val gameInfo = GameInfo.getDefaultGameInfo()
 
-    val team1 = new Team(player1, gameInfo.getDefaultRating())
-    val team2 = new Team(player2, gameInfo.getDefaultRating())
-    val team3 = new Team(player3, gameInfo.getDefaultRating())
-    val team4 = new Team(player4, gameInfo.getDefaultRating())
+    val team1 = Team(player1, gameInfo.getDefaultRating())
+    val team2 = Team(player2, gameInfo.getDefaultRating())
+    val team3 = Team(player3, gameInfo.getDefaultRating())
+    val team4 = Team(player4, gameInfo.getDefaultRating())
 
     val teams = Arrays.asList(team1, team2, team3, team4)
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2, 3, 4))
@@ -707,11 +707,11 @@ object TrueSkillCalculatorTests {
     val player5 = new Player(5)
     val gameInfo = GameInfo.getDefaultGameInfo()
 
-    val team1 = new Team(player1, gameInfo.getDefaultRating())
-    val team2 = new Team(player2, gameInfo.getDefaultRating())
-    val team3 = new Team(player3, gameInfo.getDefaultRating())
-    val team4 = new Team(player4, gameInfo.getDefaultRating())
-    val team5 = new Team(player5, gameInfo.getDefaultRating())
+    val team1 = Team(player1, gameInfo.getDefaultRating())
+    val team2 = Team(player2, gameInfo.getDefaultRating())
+    val team3 = Team(player3, gameInfo.getDefaultRating())
+    val team4 = Team(player4, gameInfo.getDefaultRating())
+    val team5 = Team(player5, gameInfo.getDefaultRating())
 
     val teams = Arrays.asList(team1, team2, team3, team4,
       team5)
@@ -747,14 +747,14 @@ object TrueSkillCalculatorTests {
     val player8 = new Player(8)
     val gameInfo = GameInfo.getDefaultGameInfo()
 
-    val team1 = new Team(player1, gameInfo.getDefaultRating())
-    val team2 = new Team(player2, gameInfo.getDefaultRating())
-    val team3 = new Team(player3, gameInfo.getDefaultRating())
-    val team4 = new Team(player4, gameInfo.getDefaultRating())
-    val team5 = new Team(player5, gameInfo.getDefaultRating())
-    val team6 = new Team(player6, gameInfo.getDefaultRating())
-    val team7 = new Team(player7, gameInfo.getDefaultRating())
-    val team8 = new Team(player8, gameInfo.getDefaultRating())
+    val team1 = Team(player1, gameInfo.getDefaultRating())
+    val team2 = Team(player2, gameInfo.getDefaultRating())
+    val team3 = Team(player3, gameInfo.getDefaultRating())
+    val team4 = Team(player4, gameInfo.getDefaultRating())
+    val team5 = Team(player5, gameInfo.getDefaultRating())
+    val team6 = Team(player6, gameInfo.getDefaultRating())
+    val team7 = Team(player7, gameInfo.getDefaultRating())
+    val team8 = Team(player8, gameInfo.getDefaultRating())
 
     val teams = Arrays.asList(team1, team2, team3, team4,
       team5, team6, team7, team8)
@@ -799,14 +799,14 @@ object TrueSkillCalculatorTests {
     val player8 = new Player(8)
     val gameInfo = GameInfo.getDefaultGameInfo()
 
-    val team1 = new Team(player1, new Rating(10, 8))
-    val team2 = new Team(player2, new Rating(15, 7))
-    val team3 = new Team(player3, new Rating(20, 6))
-    val team4 = new Team(player4, new Rating(25, 5))
-    val team5 = new Team(player5, new Rating(30, 4))
-    val team6 = new Team(player6, new Rating(35, 3))
-    val team7 = new Team(player7, new Rating(40, 2))
-    val team8 = new Team(player8, new Rating(45, 1))
+    val team1 = Team(player1, new Rating(10, 8))
+    val team2 = Team(player2, new Rating(15, 7))
+    val team3 = Team(player3, new Rating(20, 6))
+    val team4 = Team(player4, new Rating(25, 5))
+    val team5 = Team(player5, new Rating(30, 4))
+    val team6 = Team(player6, new Rating(35, 3))
+    val team7 = Team(player7, new Rating(40, 2))
+    val team8 = Team(player8, new Rating(45, 1))
 
     val teams = Arrays.asList(team1, team2, team3, team4,
       team5, team6, team7, team8)
@@ -859,22 +859,22 @@ object TrueSkillCalculatorTests {
     val player16 = new Player(16)
     val gameInfo = GameInfo.getDefaultGameInfo()
 
-    val team1 = new Team(player1, gameInfo.getDefaultRating())
-    val team2 = new Team(player2, gameInfo.getDefaultRating())
-    val team3 = new Team(player3, gameInfo.getDefaultRating())
-    val team4 = new Team(player4, gameInfo.getDefaultRating())
-    val team5 = new Team(player5, gameInfo.getDefaultRating())
-    val team6 = new Team(player6, gameInfo.getDefaultRating())
-    val team7 = new Team(player7, gameInfo.getDefaultRating())
-    val team8 = new Team(player8, gameInfo.getDefaultRating())
-    val team9 = new Team(player9, gameInfo.getDefaultRating())
-    val team10 = new Team(player10, gameInfo.getDefaultRating())
-    val team11 = new Team(player11, gameInfo.getDefaultRating())
-    val team12 = new Team(player12, gameInfo.getDefaultRating())
-    val team13 = new Team(player13, gameInfo.getDefaultRating())
-    val team14 = new Team(player14, gameInfo.getDefaultRating())
-    val team15 = new Team(player15, gameInfo.getDefaultRating())
-    val team16 = new Team(player16, gameInfo.getDefaultRating())
+    val team1 = Team(player1, gameInfo.getDefaultRating())
+    val team2 = Team(player2, gameInfo.getDefaultRating())
+    val team3 = Team(player3, gameInfo.getDefaultRating())
+    val team4 = Team(player4, gameInfo.getDefaultRating())
+    val team5 = Team(player5, gameInfo.getDefaultRating())
+    val team6 = Team(player6, gameInfo.getDefaultRating())
+    val team7 = Team(player7, gameInfo.getDefaultRating())
+    val team8 = Team(player8, gameInfo.getDefaultRating())
+    val team9 = Team(player9, gameInfo.getDefaultRating())
+    val team10 = Team(player10, gameInfo.getDefaultRating())
+    val team11 = Team(player11, gameInfo.getDefaultRating())
+    val team12 = Team(player12, gameInfo.getDefaultRating())
+    val team13 = Team(player13, gameInfo.getDefaultRating())
+    val team14 = Team(player14, gameInfo.getDefaultRating())
+    val team15 = Team(player15, gameInfo.getDefaultRating())
+    val team16 = Team(player16, gameInfo.getDefaultRating())
 
     val teams = Arrays.asList(
       team1, team2, team3, team4, team5,
@@ -942,7 +942,7 @@ object TrueSkillCalculatorTests {
     val gameInfo = GameInfo.getDefaultGameInfo()
 
     val p1 = new Player(1)
-    val team1 = new Team(p1, gameInfo.getDefaultRating())
+    val team1 = Team(p1, gameInfo.getDefaultRating())
 
     val p2 = new Player(2, 0.0)
     val p3 = new Player(3, 1.00)

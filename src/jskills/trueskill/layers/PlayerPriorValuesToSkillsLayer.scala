@@ -55,5 +55,5 @@ class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: C
       skillsVariable)
 
   private def CreateSkillOutputVariable(key: IPlayer): KeyedVariable[IPlayer, GaussianDistribution] =
-    new KeyedVariable[IPlayer, GaussianDistribution](key, GaussianDistribution.UNIFORM, "%s's skill", key.toString())
+    KeyedVariable[IPlayer, GaussianDistribution](key, GaussianDistribution.UNIFORM, "%s's skill", key.toString())
 }

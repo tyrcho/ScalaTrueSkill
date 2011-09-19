@@ -47,13 +47,6 @@ class GaussianDistribution(
   // http://www.astro.psu.edu/~mce/A451_2/A451/downloads/notes0.pdf
   def getNormalizationConstant() = 1.0 / (sqrt(2 * PI) * standardDeviation)
 
-  def this(mean: Double, standardDeviation: Double) = this(mean, standardDeviation, square(standardDeviation), 1.0 / square(standardDeviation), mean / square(standardDeviation))
-
-  def this(rating: Rating) = this(rating.mean, rating.standardDeviation)
-
-  def this(distribution: GaussianDistribution) =
-    this(distribution.mean, distribution.standardDeviation, distribution.variance, distribution.precision, distribution.precisionMean)
-
   def mult(other: GaussianDistribution): GaussianDistribution = GaussianDistribution.prod(this, other)
 
   override def toString = format("Mean(\u03bc)=%f, Std-Dev(\u03c3)=%f", mean, standardDeviation)
@@ -77,6 +70,15 @@ object GaussianDistribution {
    * The Gaussian representation of a flat line.
    */
   def UNIFORM: GaussianDistribution = fromPrecisionMean(0, 0)
+
+  def apply(mean: Double, standardDeviation: Double) =
+    new GaussianDistribution(mean, standardDeviation, square(standardDeviation), 1.0 / square(standardDeviation), mean / square(standardDeviation))
+
+  def apply(rating: Rating): GaussianDistribution =
+    GaussianDistribution(rating.mean, rating.standardDeviation)
+
+  def apply(distribution: GaussianDistribution) =
+    new GaussianDistribution(distribution.mean, distribution.standardDeviation, distribution.variance, distribution.precision, distribution.precisionMean)
 
   private def InverseErrorFunctionCumulativeTo(p: Double): Double = {
     // From page 265 of numerical recipes                       

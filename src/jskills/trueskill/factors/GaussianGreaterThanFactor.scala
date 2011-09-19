@@ -20,8 +20,8 @@ class GaussianGreaterThanFactor(epsilon: Double, variable: Variable[GaussianDist
   }
 
   override protected def updateMessage(message: Message[GaussianDistribution], variable: Variable[GaussianDistribution]): Double = {
-    val oldMarginal = new GaussianDistribution(variable.value)
-    val oldMessage = new GaussianDistribution(message.value)
+    val oldMarginal = GaussianDistribution(variable.value)
+    val oldMessage = GaussianDistribution(message.value)
     val messageFromVar = divide(oldMarginal, oldMessage)
 
     val c = messageFromVar.precision

@@ -4,14 +4,14 @@ import collection.JavaConversions._
 import jskills.numerics.MathUtils.square
 import java.util.Collection
 import jskills.numerics.GaussianDistribution
-
+import jskills.numerics.GaussianDistribution._
 
 object Rating {
   private val defaultConservativeStandardDeviationMultiplier: Double = 3
 
   def partialUpdate(prior: Rating, fullPosterior: Rating, updatePercentage: Double): Rating = {
-    val priorGaussian = new GaussianDistribution(prior)
-    val posteriorGaussian = new GaussianDistribution(fullPosterior)
+    val priorGaussian = GaussianDistribution(prior)
+    val posteriorGaussian = GaussianDistribution(fullPosterior)
 
     // From a clarification email from Ralf Herbrich:
     // "the idea is to compute a linear interpolation between the prior and
@@ -42,10 +42,7 @@ class Rating(
   /** The number of standardDeviation to subtract from the mean to achieve a conservative rating.*/
   val standardDeviation: Double,
   /** The number of standardDeviations to subtract from the mean to achieve a conservative rating.*/
-  val conservativeStandardDeviationMultiplier: Double) {
-
-  //needed for java compatibility
-  def this(mean: Double, standardDeviation: Double) = this(mean, standardDeviation, Rating.defaultConservativeStandardDeviationMultiplier)
+  val conservativeStandardDeviationMultiplier: Double = Rating.defaultConservativeStandardDeviationMultiplier) {
 
   /** A conservative estimate of skill based on the mean and standard deviation. **/
   val conservativeRating: Double = mean - conservativeStandardDeviationMultiplier * standardDeviation

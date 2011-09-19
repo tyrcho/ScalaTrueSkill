@@ -68,6 +68,6 @@ class PlayerPerformancesToTeamPerformancesLayer(parentGraph: TrueSkillFactorGrap
     }
     sb.delete(sb.length() - 2, sb.length())
 
-    return new Variable[GaussianDistribution](GaussianDistribution.UNIFORM, "Team[%s]'s performance", sb.toString())
+    return Variable[GaussianDistribution](GaussianDistribution.UNIFORM, "Team[%s]'s performance", sb.toString())
   }
 }
