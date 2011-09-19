@@ -10,7 +10,6 @@ import jskills.numerics.GaussianDistribution
 import jskills.trueskill.TrueSkillFactorGraph
 import jskills.trueskill.factors.GaussianWeightedSumFactor
 
-
 class PlayerPerformancesToTeamPerformancesLayer(parentGraph: TrueSkillFactorGraph)
   extends TrueSkillFactorGraphLayer[KeyedVariable[IPlayer, GaussianDistribution], GaussianWeightedSumFactor, Variable[GaussianDistribution]](parentGraph) {
 
@@ -31,11 +30,8 @@ class PlayerPerformancesToTeamPerformancesLayer(parentGraph: TrueSkillFactorGrap
   }
 
   def createPlayerToTeamSumFactor(teamMembers: Seq[KeyedVariable[IPlayer, GaussianDistribution]], sumVariable: Variable[GaussianDistribution]): GaussianWeightedSumFactor = {
-    val weights = new Array[Double](teamMembers.size)
-    for (i <- 0 until weights.length) {
-      weights(i) = PartialPlay.getPartialPlayPercentage(teamMembers(i).key)
-    }
-    return new GaussianWeightedSumFactor(sumVariable, teamMembers, weights)
+    val weights = teamMembers map (m => PartialPlay.getPartialPlayPercentage(m.key))
+    new GaussianWeightedSumFactor(sumVariable, teamMembers, weights.toArray)
   }
 
   override def createPosteriorSchedule(): Schedule[GaussianDistribution] = {

@@ -30,10 +30,8 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
     // This implements that algorithm.
 
     validateTeamCountAndPlayersCountPerTeam(teams)
-    val teamsl = RankSorter.sort(teams, teamRanks)
+    val teamsList = RankSorter.sort(teams, teamRanks)
     val tr = teamRanks.sortBy(i => i)
-
-    val teamsList = teamsl.toArray[ITeam]
 
     val deltas = Map.empty[IPlayer, Map[IPlayer, Double]]
 

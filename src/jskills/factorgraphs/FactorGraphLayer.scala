@@ -1,8 +1,6 @@
 package jskills.factorgraphs
 
-
 import scala.collection.mutable.ListBuffer
-
 
 abstract class FactorGraphLayer[TParentFactorGraph <: FactorGraph[TParentFactorGraph], TValue, TBaseVariable <: Variable[TValue], TInputVariable <: Variable[TValue], TFactor <: Factor[TValue], TOutputVariable <: Variable[TValue]](parentGraph: TParentFactorGraph)
   extends FactorGraphLayerBase[TValue] {

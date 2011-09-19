@@ -10,7 +10,7 @@ import jskills.trueskill.factors.GaussianFactor
 import jskills.trueskill.factors.GaussianGreaterThanFactor
 import jskills.trueskill.factors.GaussianWithinFactor
 
-class TeamDifferencesComparisonLayer(parentGraph: TrueSkillFactorGraph, teamRanks: Array[Int])
+class TeamDifferencesComparisonLayer(parentGraph: TrueSkillFactorGraph, teamRanks: Seq[Int])
   extends TrueSkillFactorGraphLayer[Variable[GaussianDistribution], GaussianFactor, DefaultVariable[GaussianDistribution]](parentGraph) {
   val gameInfo = parentGraph.gameInfo
   val epsilon = DrawMargin.GetDrawMarginFromDrawProbability(gameInfo.drawProbability, gameInfo.beta)

@@ -31,7 +31,7 @@ class FactorGraphTrueSkillCalculator
 
     val teamsl = RankSorter.sort(teams, teamRanks)
 
-    val factorGraph = new TrueSkillFactorGraph(gameInfo, teamsl, teamRanks.toArray[Int])
+    val factorGraph = new TrueSkillFactorGraph(gameInfo, teamsl, teamRanks)
     factorGraph.BuildGraph()
     factorGraph.runSchedule()
 
@@ -76,8 +76,7 @@ class FactorGraphTrueSkillCalculator
   def getPlayerMeansVector(teamAssignmentsList: Seq[_ <: ITeam]): SimpleMatrix = {
     // A simple list of all the player means.
     val temp = getPlayerMeanRatingValues(teamAssignmentsList)
-    val tempa = new Array[Double](temp.size)
-    for (i <- 0 until tempa.length) tempa(i) = temp(i)
+    val tempa = temp.toArray
     return new SimpleMatrix(Array.fill(1)(tempa)).transpose()
   }
 
@@ -86,7 +85,7 @@ class FactorGraphTrueSkillCalculator
    * (square of standard deviation) of all players.
    */
   private def getPlayerCovarianceMatrix(teamAssignmentsList: Seq[_ <: ITeam]): SimpleMatrix = {
-    val temp = getPlayerVarianceRatingValues(teamAssignmentsList).toSeq
+    val temp = getPlayerVarianceRatingValues(teamAssignmentsList)
     return SimpleMatrix.diag(temp: _*).transpose()
   }
 

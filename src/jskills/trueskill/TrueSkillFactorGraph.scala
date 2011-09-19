@@ -23,7 +23,7 @@ import jskills.trueskill.layers.TeamPerformancesToTeamPerformanceDifferencesLaye
 import scala.collection.mutable.ListBuffer
 
 class TrueSkillFactorGraph(
-  val gameInfo: GameInfo, teams: Seq[_ <: ITeam], teamRanks: Array[Int])
+  val gameInfo: GameInfo, teams: Seq[_ <: ITeam], teamRanks: Seq[Int])
   extends FactorGraph[TrueSkillFactorGraph] {
   val priorLayer = new PlayerPriorValuesToSkillsLayer(this, teams)
   val layers = List(priorLayer,
