@@ -1,8 +1,5 @@
 package jskills.trueskill.layers
 
-import java.util.ArrayList
-import java.util.List
-
 import jskills.factorgraphs.Variable
 import jskills.numerics.GaussianDistribution
 import jskills.trueskill.TrueSkillFactorGraph
@@ -12,9 +9,9 @@ class TeamPerformancesToTeamPerformanceDifferencesLayer(parentGraph: TrueSkillFa
   extends TrueSkillFactorGraphLayer[Variable[GaussianDistribution], GaussianWeightedSumFactor, Variable[GaussianDistribution]](parentGraph) {
 
   override def buildLayer() {
-    for (i <- 0 until inputVariablesGroups.size() - 1) {
-      val strongerTeam = inputVariablesGroups.get(i).get(0)
-      val weakerTeam = inputVariablesGroups.get(i + 1).get(0)
+    for (i <- 0 until inputVariablesGroups.size - 1) {
+      val strongerTeam = inputVariablesGroups(i)(0)
+      val weakerTeam = inputVariablesGroups(i + 1)(0)
 
       val currentDifference = createOutputVariable()
       addLayerFactor(createTeamPerformanceToDifferenceFactor(
@@ -29,13 +26,8 @@ class TeamPerformancesToTeamPerformanceDifferencesLayer(parentGraph: TrueSkillFa
     strongerTeam: Variable[GaussianDistribution],
     weakerTeam: Variable[GaussianDistribution],
     output: Variable[GaussianDistribution]): GaussianWeightedSumFactor = {
-    val teams = new ArrayList[Variable[GaussianDistribution]]() {
-      {
-        add(strongerTeam)
-        add(weakerTeam)
-      }
-    }
-    return new GaussianWeightedSumFactor(output, teams, Array[Double](1.0, -1.0))
+    val teams = List(strongerTeam, weakerTeam)
+    return new GaussianWeightedSumFactor(output, teams, Array(1.0, -1.0))
   }
 
   private def createOutputVariable(): Variable[GaussianDistribution] = {

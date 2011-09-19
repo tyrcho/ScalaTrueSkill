@@ -1,9 +1,5 @@
 package jskills.trueskill.layers
 
-import java.util.ArrayList
-
-import java.util.List
-
 import jskills.factorgraphs.Factor
 import jskills.factorgraphs.Schedule
 import jskills.factorgraphs.ScheduleLoop
@@ -14,6 +10,7 @@ import jskills.numerics.GaussianDistribution
 import jskills.trueskill.TrueSkillFactorGraph
 import jskills.trueskill.factors.GaussianWeightedSumFactor
 import collection.JavaConversions._
+import scala.collection.mutable.ListBuffer
 
 // The whole purpose of this is to do a loop on the bottom
 class IteratedTeamDifferencesInnerLayer(parentGraph: TrueSkillFactorGraph,
@@ -35,7 +32,7 @@ class IteratedTeamDifferencesInnerLayer(parentGraph: TrueSkillFactorGraph,
   }
 
   override def createPriorSchedule(): Schedule[GaussianDistribution] = {
-    var loop = (inputVariablesGroups.size()) match {
+    var loop = (inputVariablesGroups.size) match {
       case 0 =>
         throw new IllegalArgumentException()
       case 1 =>
@@ -47,93 +44,85 @@ class IteratedTeamDifferencesInnerLayer(parentGraph: TrueSkillFactorGraph,
     }
 
     // When dealing with differences, there are always (n-1) differences, so add in the 1
-    val totalTeamDifferences = teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().size()
+    val totalTeamDifferences = teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().size
 
-    val schedules = new ArrayList[Schedule[GaussianDistribution]]()
-    schedules.add(loop)
-    schedules.add(new ScheduleStep[GaussianDistribution](
-      "teamPerformanceToPerformanceDifferenceFactors[0] @ 1",
-      teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(0), 1))
-    schedules.add(new ScheduleStep[GaussianDistribution](
-      format("teamPerformanceToPerformanceDifferenceFactors[teamTeamDifferences = %d - 1] @ 2",
-        totalTeamDifferences),
-      teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(totalTeamDifferences - 1), 2))
+    val schedules = List(loop,
+      new ScheduleStep[GaussianDistribution](
+        "teamPerformanceToPerformanceDifferenceFactors[0] @ 1",
+        teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors()(0), 1),
+      new ScheduleStep[GaussianDistribution](
+        format("teamPerformanceToPerformanceDifferenceFactors[teamTeamDifferences = %d - 1] @ 2",
+          totalTeamDifferences),
+        teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors()(totalTeamDifferences - 1), 2))
 
-    return new ScheduleSequence[GaussianDistribution](
-      "inner schedule", schedules)
+    return new ScheduleSequence[GaussianDistribution]("inner schedule", schedules)
   }
 
   private def createTwoTeamInnerPriorLoopSchedule(): Schedule[GaussianDistribution] = {
-    var schedules = new ArrayList[Schedule[GaussianDistribution]]()
-    schedules.add(new ScheduleStep[GaussianDistribution](
+    var schedules = List(new ScheduleStep[GaussianDistribution](
       "send team perf to perf differences",
-      teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(0),
-      0))
-    schedules.add(new ScheduleStep[GaussianDistribution](
-      "send to greater than or within factor",
-      teamDifferencesComparisonLayer.getLocalFactors().get(0),
-      0))
+      teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors()(0),
+      0),
+      new ScheduleStep[GaussianDistribution](
+        "send to greater than or within factor",
+        teamDifferencesComparisonLayer.getLocalFactors()(0),
+        0))
     return scheduleSequence(schedules, "loop of just two teams inner sequence")
   }
 
   private def createMultipleTeamInnerPriorLoopSchedule(): Schedule[GaussianDistribution] = {
-    val totalTeamDifferences = teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().size()
+    val totalTeamDifferences = teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().size
 
-    val forwardScheduleList = new ArrayList[Schedule[GaussianDistribution]]()
+    val forwardScheduleList = ListBuffer.empty[Schedule[GaussianDistribution]]
 
     for (i <- 0 until totalTeamDifferences - 1) {
-      val schedules = new ArrayList[Schedule[GaussianDistribution]]()
-      schedules.add(new ScheduleStep[GaussianDistribution](
-        format("team perf to perf diff %d", i),
-        teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(i), 0))
-      schedules.add(new ScheduleStep[GaussianDistribution](
-        format("greater than or within result factor %d", i),
-        teamDifferencesComparisonLayer.getLocalFactors().get(i), 0))
-      schedules.add(new ScheduleStep[GaussianDistribution](
-        format("team perf to perf diff factors [%d], 2",
-          i),
-        teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(i), 2))
+      val schedules = List(
+        new ScheduleStep[GaussianDistribution](
+          format("team perf to perf diff %d", i),
+          teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors()(i), 0),
+        new ScheduleStep[GaussianDistribution](
+          format("greater than or within result factor %d", i),
+          teamDifferencesComparisonLayer.getLocalFactors()(i), 0),
+        new ScheduleStep[GaussianDistribution](
+          format("team perf to perf diff factors [%d], 2", i),
+          teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors()(i), 2))
       val currentForwardSchedulePiece =
         scheduleSequence(schedules, "current forward schedule piece %s", i)
 
-      forwardScheduleList.add(currentForwardSchedulePiece)
+      forwardScheduleList += currentForwardSchedulePiece
     }
 
     val forwardSchedule = new ScheduleSequence[GaussianDistribution](
       "forward schedule",
       forwardScheduleList)
 
-    val backwardScheduleList = new ArrayList[Schedule[GaussianDistribution]]()
+    val backwardScheduleList = ListBuffer.empty[Schedule[GaussianDistribution]]
 
     for (i <- 0 until totalTeamDifferences - 1) {
-      val schedules = new ArrayList[Schedule[GaussianDistribution]]()
-      schedules.add(new ScheduleStep[GaussianDistribution](
-        format("teamPerformanceToPerformanceDifferenceFactors[totalTeamDifferences - 1 - %d] @ 0",
-          i),
-        teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(
-          totalTeamDifferences - 1 - i), 0))
-      schedules.add(new ScheduleStep[GaussianDistribution](
-        format("greaterThanOrWithinResultFactors[totalTeamDifferences - 1 - %d] @ 0",
-          i),
-        teamDifferencesComparisonLayer.getLocalFactors().get(totalTeamDifferences - 1 - i), 0))
-      schedules.add(new ScheduleStep[GaussianDistribution](
-        format("teamPerformanceToPerformanceDifferenceFactors[totalTeamDifferences - 1 - %d] @ 1",
-          i),
-        teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(
-          totalTeamDifferences - 1 - i), 1))
+      val schedules = List(
+        new ScheduleStep[GaussianDistribution](
+          format("teamPerformanceToPerformanceDifferenceFactors[totalTeamDifferences - 1 - %d] @ 0", i),
+          teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors()(
+            totalTeamDifferences - 1 - i), 0),
+        new ScheduleStep[GaussianDistribution](
+          format("greaterThanOrWithinResultFactors[totalTeamDifferences - 1 - %d] @ 0", i),
+          teamDifferencesComparisonLayer.getLocalFactors()(totalTeamDifferences - 1 - i), 0),
+        new ScheduleStep[GaussianDistribution](
+          format("teamPerformanceToPerformanceDifferenceFactors[totalTeamDifferences - 1 - %d] @ 1",
+            i),
+          teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors()(
+            totalTeamDifferences - 1 - i), 1))
 
       val currentBackwardSchedulePiece = new ScheduleSequence[GaussianDistribution](
         "current backward schedule piece", schedules)
-      backwardScheduleList.add(currentBackwardSchedulePiece)
+      backwardScheduleList += currentBackwardSchedulePiece
     }
 
     val backwardSchedule = new ScheduleSequence[GaussianDistribution](
       "backward schedule",
       backwardScheduleList)
 
-    val schedules = new ArrayList[Schedule[GaussianDistribution]]()
-    schedules.add(forwardSchedule)
-    schedules.add(backwardSchedule)
+    val schedules = List(forwardSchedule, backwardSchedule)
     val forwardBackwardScheduleToLoop = new ScheduleSequence[GaussianDistribution](
       "forward Backward Schedule To Loop", schedules)
 

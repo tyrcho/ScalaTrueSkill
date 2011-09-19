@@ -16,7 +16,7 @@ class GaussianLikelihoodFactor(betaSquared: Double, variable1: Variable[Gaussian
   createVariableToMessageBinding(variable1)
   createVariableToMessageBinding(variable2)
 
-  override def getLogNormalization(): Double = logRatioNormalization(variables.get(0).value, messages.get(0).value)
+  override def getLogNormalization(): Double = logRatioNormalization(variables(0).value, messages(0).value)
 
   private def updateHelper(
     message1: Message[GaussianDistribution],
@@ -49,8 +49,8 @@ class GaussianLikelihoodFactor(betaSquared: Double, variable1: Variable[Gaussian
 
   override def updateMessage(messageIndex: Int): Double = {
     messageIndex match {
-      case 0 => updateHelper(messages.get(0), messages.get(1), variables.get(0), variables.get(1))
-      case 1 => updateHelper(messages.get(1), messages.get(0), variables.get(1), variables.get(0))
+      case 0 => updateHelper(messages(0), messages(1), variables(0), variables(1))
+      case 1 => updateHelper(messages(1), messages(0), variables(1), variables(0))
       case _ => throw new IllegalArgumentException()
     }
   }

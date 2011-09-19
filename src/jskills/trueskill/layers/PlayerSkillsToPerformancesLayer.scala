@@ -1,9 +1,5 @@
 package jskills.trueskill.layers
 
-import java.util.ArrayList
-
-import java.util.List
-
 import jskills.IPlayer
 import jskills.factorgraphs.KeyedVariable
 import jskills.factorgraphs.Schedule
@@ -14,17 +10,19 @@ import jskills.trueskill.TrueSkillFactorGraph
 import jskills.trueskill.factors.GaussianLikelihoodFactor
 import collection.JavaConversions._
 
+import scala.collection.mutable.ListBuffer
+
 class PlayerSkillsToPerformancesLayer(parentGraph: TrueSkillFactorGraph)
   extends TrueSkillFactorGraphLayer[KeyedVariable[IPlayer, GaussianDistribution], GaussianLikelihoodFactor, KeyedVariable[IPlayer, GaussianDistribution]](parentGraph) {
 
   override def buildLayer() {
     for (currentTeam <- inputVariablesGroups) {
-      val currentTeamPlayerPerformances = new ArrayList[KeyedVariable[IPlayer, GaussianDistribution]]()
+      val currentTeamPlayerPerformances = ListBuffer.empty[KeyedVariable[IPlayer, GaussianDistribution]]
 
       for (playerSkillVariable <- currentTeam) {
         val playerPerformance = createOutputVariable(playerSkillVariable.key)
         addLayerFactor(createLikelihood(playerSkillVariable, playerPerformance))
-        currentTeamPlayerPerformances.add(playerPerformance)
+        currentTeamPlayerPerformances += playerPerformance
       }
       addOutputVariableGroup(currentTeamPlayerPerformances)
     }
@@ -39,19 +37,12 @@ class PlayerSkillsToPerformancesLayer(parentGraph: TrueSkillFactorGraph)
     KeyedVariable[IPlayer, GaussianDistribution](key, GaussianDistribution.UNIFORM, "%s's performance", key)
 
   override def createPriorSchedule(): Schedule[GaussianDistribution] = {
-    val schedules = new ArrayList[Schedule[GaussianDistribution]]()
-    for (likelihood <- localFactors) {
-      schedules.add(new ScheduleStep[GaussianDistribution](
-        "Skill to Perf step", likelihood, 0))
-    }
+    val schedules = localFactors map (new ScheduleStep[GaussianDistribution]("Skill to Perf step", _, 0))
     return scheduleSequence(schedules, "All skill to performance sending")
   }
 
   override def createPosteriorSchedule(): Schedule[GaussianDistribution] = {
-    val schedules = new ArrayList[Schedule[GaussianDistribution]]()
-    for (likelihood <- localFactors) {
-      schedules.add(new ScheduleStep[GaussianDistribution]("Skill to Perf step", likelihood, 1))
-    }
+    val schedules = localFactors map (new ScheduleStep[GaussianDistribution]("Skill to Perf step", _, 1))
     return scheduleSequence(schedules, "All skill to performance sending")
   }
 }

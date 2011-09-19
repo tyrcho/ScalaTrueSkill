@@ -12,6 +12,7 @@ import jskills.numerics.GaussianDistribution._
 class GaussianPriorFactor(mean: Double, variance: Double, variable: Variable[GaussianDistribution])
   extends GaussianFactor(format("Prior value going to %s", variable)) {
   val newMessage = GaussianDistribution(mean, Math.sqrt(variance))
+
   createVariableToMessageBinding(variable,
     new Message[GaussianDistribution](
       GaussianDistribution.fromPrecisionMean(0, 0), "message from %s to %s",

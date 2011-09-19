@@ -1,11 +1,8 @@
 package jskills.elo
 
-import java.util.ArrayList
-
 import java.util.EnumSet
 
 import java.util.Iterator
-import java.util.List
 
 import jskills.GameInfo
 import jskills.IPlayer
@@ -32,19 +29,20 @@ abstract class TwoPlayerEloCalculator(kFactor: KFactor)
     val result = Map.empty[IPlayer, Rating]
     val isDraw = (teamRanks(0) == teamRanks(1))
 
-    val players = new ArrayList[IPlayer](2)
-    for (team <- teamsl)
-      players.add(team.keySet.head)
+    val players = teamsl map (_.keySet.head)
+    //      List.empty[IPlayer]
+    //    for (team <- teamsl)
+    //      players.add(team.keySet.head)
 
-    val player1Rating = teamsl.get(0).get(players.get(0)).get.mean
-    val player2Rating = teamsl.get(1).get(players.get(1)).get.mean
+    val player1Rating = teamsl(0)(players(0)).mean
+    val player2Rating = teamsl(1)(players(1)).mean
 
     result.put(
-      players.get(0),
+      players(0),
       calculateNewRating(gameInfo, player1Rating, player2Rating,
         if (isDraw) PairwiseComparison.DRAW else PairwiseComparison.WIN))
     result.put(
-      players.get(1),
+      players(1),
       calculateNewRating(gameInfo, player2Rating, player1Rating,
         if (isDraw) PairwiseComparison.DRAW else PairwiseComparison.LOSE))
 
@@ -70,14 +68,12 @@ abstract class TwoPlayerEloCalculator(kFactor: KFactor)
     validateTeamCountAndPlayersCountPerTeam(teams)
 
     // Extract both players from the teams
-    val players = new ArrayList[IPlayer](2)
-    for (team <- teams)
-      players.add(team.keySet.head)
+    val players = teams map (_.keySet.head)
 
     // Extract each player's rating from their team
     val teamit = teams.iterator
-    val player1Rating = teamit.next().get(players.get(0)).get.mean
-    val player2Rating = teamit.next().get(players.get(1)).get.mean
+    val player1Rating = teamit.next()(players(0)).mean
+    val player2Rating = teamit.next()(players(1)).mean
 
     // The TrueSkill paper mentions that they used s1 - s2 (rating
     // difference) to determine match quality. I convert that to a

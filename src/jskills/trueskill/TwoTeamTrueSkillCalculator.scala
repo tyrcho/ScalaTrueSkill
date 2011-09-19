@@ -5,7 +5,7 @@ import jskills.numerics.MathUtils._
 import java.util.EnumSet
 
 import java.util.Iterator
-import java.util.List
+
 
 import jskills.GameInfo
 import jskills.Guard
@@ -34,8 +34,8 @@ class TwoTeamTrueSkillCalculator
 
     val teamsl = RankSorter.sort(teams, teamRanks)
 
-    val team1 = teamsl.get(0)
-    val team2 = teamsl.get(1)
+    val team1 = teamsl(0)
+    val team2 = teamsl(1)
 
     val wasDraw = (teamRanks(0) == teamRanks(1))
 
@@ -119,10 +119,10 @@ class TwoTeamTrueSkillCalculator
 
     // We've verified that there's just two teams
     val team1 = teamsIt.next().values()
-    val team1Count = team1.size()
+    val team1Count = team1.size
 
     val team2 = teamsIt.next().values()
-    val team2Count = team2.size()
+    val team2Count = team2.size
 
     val totalPlayers = team1Count + team2Count
 

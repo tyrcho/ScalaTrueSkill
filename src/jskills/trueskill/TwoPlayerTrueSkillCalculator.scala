@@ -5,7 +5,7 @@ import jskills.numerics.MathUtils._
 import java.util.EnumSet
 
 import java.util.Iterator
-import java.util.List
+
 
 import jskills.GameInfo
 import jskills.Guard
@@ -40,11 +40,11 @@ class TwoPlayerTrueSkillCalculator
 
     // Since we verified that each team has one player, we know the player
     // is the first one
-    val winningTeam = teamsl.get(0)
+    val winningTeam = teamsl(0)
     val winner = winningTeam.head._1
     val winnerPreviousRating = winningTeam(winner)
 
-    val losingTeam = teamsl.get(1)
+    val losingTeam = teamsl(1)
     val loser = losingTeam.head._1
     val loserPreviousRating = losingTeam(loser)
 

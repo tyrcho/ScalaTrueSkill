@@ -1,9 +1,9 @@
 package jskills
 
-import java.util.ArrayList
+
 
 import collection.mutable.HashMap
-import java.util.List
+
 
 /**
  * Helper class for working with a single team.

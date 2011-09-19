@@ -1,11 +1,7 @@
 package jskills.trueskill
 
 import jskills.numerics.MathUtils._
-import java.util.ArrayList
-
 import java.util.EnumSet
-import java.util.List
-
 import jskills.GameInfo
 import jskills.Guard
 import jskills.IPlayer
@@ -18,8 +14,8 @@ import org.ejml.data.SimpleMatrix
 import collection.JavaConversions._
 import jskills.SupportedOptions
 import jskills.PartialPlay
-
 import collection.mutable.Map
+import scala.collection.mutable.ListBuffer
 
 /**
  * Calculates TrueSkill using a full factor graph.
@@ -48,7 +44,7 @@ class FactorGraphTrueSkillCalculator
   override def calculateMatchQuality(gameInfo: GameInfo,
     teams: Seq[_ <: ITeam]): Double = {
     // We need to create the A matrix which is the player team assigments.
-    val teamAssignmentsList = new ArrayList[ITeam](teams)
+    val teamAssignmentsList = teams
     val skillsMatrix = getPlayerCovarianceMatrix(teamAssignmentsList)
     val meanVector = getPlayerMeansVector(teamAssignmentsList)
     val meanVectorTranspose = meanVector.transpose()
@@ -81,8 +77,8 @@ class FactorGraphTrueSkillCalculator
   def getPlayerMeansVector(teamAssignmentsList: Seq[_ <: ITeam]): SimpleMatrix = {
     // A simple list of all the player means.
     val temp = getPlayerMeanRatingValues(teamAssignmentsList)
-    val tempa = new Array[Double](temp.size())
-    for (i <- 0 until tempa.length) tempa(i) = temp.get(i)
+    val tempa = new Array[Double](temp.size)
+    for (i <- 0 until tempa.length) tempa(i) = temp(i)
     return new SimpleMatrix(Array.fill(1)(tempa)).transpose()
   }
 
@@ -99,27 +95,15 @@ class FactorGraphTrueSkillCalculator
    * TODO Make array? Helper function that gets a list of values for all
    * player ratings
    */
-  private def getPlayerMeanRatingValues(teamAssignmentsList: Seq[_ <: ITeam]): List[Double] = {
-    val playerRatingValues = new ArrayList[Double]()
-    for (currentTeam <- teamAssignmentsList)
-      for (currentRating <- currentTeam.values())
-        playerRatingValues.add(currentRating.mean)
-
-    return playerRatingValues
-  }
+  private def getPlayerMeanRatingValues(teamAssignmentsList: Seq[_ <: ITeam]): Seq[Double] =
+    teamAssignmentsList map (_.values() map (_.mean)) flatten
 
   /**
    * TODO Make array? Helper function that gets a list of values for all
    * player ratings
    */
-  private def getPlayerVarianceRatingValues(teamAssignmentsList: Seq[_ <: ITeam]): List[Double] = {
-    val playerRatingValues = new ArrayList[Double]()
-    for (currentTeam <- teamAssignmentsList)
-      for (currentRating <- currentTeam.values())
-        playerRatingValues.add(currentRating.getVariance())
-
-    return playerRatingValues
-  }
+  private def getPlayerVarianceRatingValues(teamAssignmentsList: Seq[_ <: ITeam]): Seq[Double] =
+    teamAssignmentsList map (_.values() map (_.getVariance())) flatten
 
   /**
    * The team assignment matrix is often referred to as the "A" matrix. It's a
@@ -144,37 +128,37 @@ class FactorGraphTrueSkillCalculator
    * |  0.00 -1.00 |
    * [/pre]
    */
-  private def createTeamPerformanceToDifferenceFactor(teamAssignmentsList: List[ITeam], totalPlayers: Int): SimpleMatrix = {
-    val playerAssignments = new ArrayList[List[Double]]()
+  private def createTeamPerformanceToDifferenceFactor(teamAssignmentsList: Seq[ITeam], totalPlayers: Int): SimpleMatrix = {
+    val playerAssignments = ListBuffer.empty[ListBuffer[Double]]
     var totalPreviousPlayers = 0
 
-    for (i <- 0 until teamAssignmentsList.size() - 1) {
-      val currentTeam = teamAssignmentsList.get(i)
+    for (i <- 0 until teamAssignmentsList.size - 1) {
+      val currentTeam = teamAssignmentsList(i)
 
       // Need to add in 0's for all the previous players, since they're
       // not
       // on this team
-      val currentRowValues = new ArrayList[Double]()
+      val currentRowValues = ListBuffer.empty[Double]
       for (j <- 0 until totalPreviousPlayers) currentRowValues.add(0.)
-      playerAssignments.add(currentRowValues)
+      playerAssignments += currentRowValues
 
       for (player <- currentTeam.keySet) {
-        currentRowValues.add(PartialPlay.getPartialPlayPercentage(player))
+        currentRowValues += PartialPlay.getPartialPlayPercentage(player)
         // indicates the player is on the team
         totalPreviousPlayers += 1
       }
 
-      val nextTeam = teamAssignmentsList.get(i + 1)
+      val nextTeam = teamAssignmentsList(i + 1)
       for (nextTeamPlayer <- nextTeam.keySet) {
         // Add a -1 * playing time to represent the difference
-        currentRowValues.add(-1 * PartialPlay.getPartialPlayPercentage(nextTeamPlayer))
+        currentRowValues += -1 * PartialPlay.getPartialPlayPercentage(nextTeamPlayer)
       }
     }
 
-    val playerTeamAssignmentsMatrix = new SimpleMatrix(totalPlayers, teamAssignmentsList.size() - 1)
-    for (i <- 0 until playerAssignments.size())
-      for (j <- 0 until playerAssignments.get(i).size())
-        playerTeamAssignmentsMatrix.set(j, i, playerAssignments.get(i).get(j))
+    val playerTeamAssignmentsMatrix = new SimpleMatrix(totalPlayers, teamAssignmentsList.size - 1)
+    for (i <- 0 until playerAssignments.size)
+      for (j <- 0 until playerAssignments(i).size)
+        playerTeamAssignmentsMatrix.set(j, i, playerAssignments(i)(j))
 
     return playerTeamAssignmentsMatrix
   }

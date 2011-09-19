@@ -15,8 +15,8 @@ class GaussianWithinFactor(epsilon: Double, variable: Variable[GaussianDistribut
   createVariableToMessageBinding(variable)
 
   override def getLogNormalization(): Double = {
-    val marginal = variables.get(0).value
-    val message = messages.get(0).value
+    val marginal = variables(0).value
+    val message = messages(0).value
     val messageFromVariable = divide(marginal, message)
     val mean = messageFromVariable.mean
     val std = messageFromVariable.standardDeviation

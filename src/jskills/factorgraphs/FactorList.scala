@@ -1,13 +1,11 @@
 package jskills.factorgraphs
 
-import java.util.ArrayList
-import java.util.List
 import collection.JavaConversions._
 /**
  * Helper class for computing the factor graph's normalization constant.
  */
 class FactorList[TValue] {
-  val factors = new ArrayList[Factor[TValue]]()
+  val factors = List.empty[Factor[TValue]]
 
   //  def getLogNormalization(): Double = {
   //    // TODO can these 3 loops be rolled into 1?
@@ -25,7 +23,7 @@ class FactorList[TValue] {
   //    return 0.0 //sumLogZ + sumLogS
   //  }
 
-  def size(): Int = factors.size()
+  def size(): Int = factors.size
 
   def addFactor(factor: Factor[TValue]): Factor[TValue] = {
     factors.add(factor)

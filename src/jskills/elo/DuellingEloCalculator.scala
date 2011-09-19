@@ -2,7 +2,7 @@ package jskills.elo
 
 import java.util.EnumSet
 
-import java.util.List
+
 import collection.mutable.Map
 import jskills.GameInfo
 import jskills.IPlayer

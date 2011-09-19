@@ -1,7 +1,5 @@
 package jskills.trueskill.layers
 
-import java.util.ArrayList
-
 import jskills.IPlayer
 import jskills.ITeam
 import jskills.Rating
@@ -15,6 +13,8 @@ import jskills.numerics.MathUtils
 import jskills.trueskill.TrueSkillFactorGraph
 import jskills.trueskill.factors.GaussianPriorFactor
 import collection.JavaConversions._
+import collection.mutable.LinkedList
+import scala.collection.mutable.ListBuffer
 
 // We intentionally have no Posterior schedule since the only purpose here is to 
 class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: Seq[_ <: ITeam])
@@ -22,27 +22,21 @@ class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: S
 
   override def buildLayer() {
     for (currentTeam <- teams) {
-      val currentTeamSkills = new ArrayList[KeyedVariable[IPlayer, GaussianDistribution]]()
+      val currentTeamSkills = ListBuffer.empty[KeyedVariable[IPlayer, GaussianDistribution]]
 
-      for (
-        currentTeamPlayer <- currentTeam
-          .entrySet()
-      ) {
+      for (currentTeamPlayer <- currentTeam.entrySet()) {
         val playerSkill = createSkillOutputVariable(currentTeamPlayer.getKey())
         addLayerFactor(createPriorFactor(currentTeamPlayer.getKey(), currentTeamPlayer.getValue(), playerSkill))
-        currentTeamSkills.add(playerSkill)
+        currentTeamSkills += playerSkill
       }
 
-      addOutputVariableGroup(currentTeamSkills)
+      addOutputVariableGroup(currentTeamSkills.toList)
     }
   }
 
   override def createPriorSchedule(): Schedule[GaussianDistribution] = {
-    val schedules = new ArrayList[Schedule[GaussianDistribution]]()
-    for (prior <- localFactors) {
-      schedules.add(new ScheduleStep[GaussianDistribution](
-        "Prior to Skill Step", prior, 0))
-    }
+    val schedules = localFactors map (
+      new ScheduleStep[GaussianDistribution]("Prior to Skill Step", _, 0))
     return scheduleSequence(schedules, "All priors")
   }
 

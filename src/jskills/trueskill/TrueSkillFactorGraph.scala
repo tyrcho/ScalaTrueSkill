@@ -1,11 +1,6 @@
 package jskills.trueskill
 
-import java.util.ArrayList
-
 import collection.mutable.Map
-
-import java.util.List
-
 import jskills.GameInfo
 import jskills.IPlayer
 import jskills.ITeam
@@ -24,22 +19,20 @@ import jskills.trueskill.layers.PlayerPriorValuesToSkillsLayer
 import jskills.trueskill.layers.PlayerSkillsToPerformancesLayer
 import jskills.trueskill.layers.TeamDifferencesComparisonLayer
 import jskills.trueskill.layers.TeamPerformancesToTeamPerformanceDifferencesLayer
-
 import collection.JavaConversions._
+import scala.collection.mutable.ListBuffer
 
 class TrueSkillFactorGraph(
   val gameInfo: GameInfo, teams: Seq[_ <: ITeam], teamRanks: Array[Int])
   extends FactorGraph[TrueSkillFactorGraph] {
-  val layers = new ArrayList[FactorGraphLayerBase[GaussianDistribution]]()
   val priorLayer = new PlayerPriorValuesToSkillsLayer(this, teams)
-
-  layers.add(priorLayer)
-  layers.add(new PlayerSkillsToPerformancesLayer(this))
-  layers.add(new PlayerPerformancesToTeamPerformancesLayer(this))
-  layers.add(new IteratedTeamDifferencesInnerLayer(
-    this,
-    new TeamPerformancesToTeamPerformanceDifferencesLayer(this),
-    new TeamDifferencesComparisonLayer(this, teamRanks)))
+  val layers = List(priorLayer,
+    new PlayerSkillsToPerformancesLayer(this),
+    new PlayerPerformancesToTeamPerformancesLayer(this),
+    new IteratedTeamDifferencesInnerLayer(
+      this,
+      new TeamPerformancesToTeamPerformanceDifferencesLayer(this),
+      new TeamDifferencesComparisonLayer(this, teamRanks)))
 
   def BuildGraph() {
     var lastOutput: Any = null
@@ -71,10 +64,10 @@ class TrueSkillFactorGraph(
   //  }
 
   private def createFullSchedule(): Schedule[GaussianDistribution] = {
-    val fullSchedule = new ArrayList[Schedule[GaussianDistribution]]()
+    val fullSchedule = ListBuffer.empty[Schedule[GaussianDistribution]]
 
-    layers map (_.createPriorSchedule()) filter (_ != null) foreach (fullSchedule.add(_))
-    layers.reverse map (_.createPosteriorSchedule()) filter (_ != null) foreach (fullSchedule.add(_))
+    layers map (_.createPriorSchedule()) filter (_ != null) foreach (fullSchedule += _)
+    layers.reverse map (_.createPosteriorSchedule()) filter (_ != null) foreach (fullSchedule += _)
 
     return new ScheduleSequence[GaussianDistribution]("Full schedule", fullSchedule)
   }

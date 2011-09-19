@@ -1,28 +1,24 @@
 package jskills.factorgraphs
 
-import java.util.ArrayList
-
-import java.util.List
-
-import collection.JavaConversions._
 import jskills.Guard._
 import collection.mutable.Map
+import scala.collection.mutable.Seq
+import scala.collection.mutable.ListBuffer
 
-abstract class Factor[T](name: String) {
-  protected val messages = new ArrayList[Message[T]]()
+abstract class Factor[T](name: String, val messages: ListBuffer[Message[T]] = ListBuffer.empty[Message[T]]) {
   val messageToVariableBinding = Map.empty[Message[T], Variable[T]]
-  val variables: List[Variable[T]] = new ArrayList[Variable[T]]()
+  val variables = ListBuffer.empty[Variable[T]]
 
   /** Returns the log-normalization constant of that factor **/
   def getLogNormalization(): Double
 
   /** Returns the number of messages that the factor has **/
-  def getNumberOfMessages(): Int = messages.size()
+  def getNumberOfMessages(): Int = messages.size
 
   /** Update the message and marginal of the i-th variable that the factor is connected to **/
   def updateMessage(messageIndex: Int): Double = {
-    argumentIsValidIndex(messageIndex, messages.size(), "messageIndex")
-    return updateMessage(messages.get(messageIndex), messageToVariableBinding(messages(messageIndex)))
+    argumentIsValidIndex(messageIndex, messages.size, "messageIndex")
+    return updateMessage(messages(messageIndex), messageToVariableBinding(messages(messageIndex)))
   }
 
   protected def updateMessage(message: Message[T], variable: Variable[T]): Double =
@@ -36,8 +32,8 @@ abstract class Factor[T](name: String) {
    * constant
    */
   def sendMessage(messageIndex: Int): Double = {
-    argumentIsValidIndex(messageIndex, messages.size(), "messageIndex")
-    val message = messages.get(messageIndex)
+    argumentIsValidIndex(messageIndex, messages.size, "messageIndex")
+    val message = messages(messageIndex)
     val variable = messageToVariableBinding(message)
     return sendMessage(message, variable)
   }
@@ -47,9 +43,9 @@ abstract class Factor[T](name: String) {
   def createVariableToMessageBinding(variable: Variable[T]): Message[T]
 
   protected def createVariableToMessageBinding(variable: Variable[T], message: Message[T]): Message[T] = {
-    messages.add(message)
+    messages += message
     messageToVariableBinding.put(message, variable)
-    variables.add(variable)
+    variables += variable
     return message
   }
 

@@ -13,8 +13,8 @@ class GaussianGreaterThanFactor(epsilon: Double, variable: Variable[GaussianDist
   createVariableToMessageBinding(variable)
 
   override def getLogNormalization(): Double = {
-    val marginal = variables.get(0).value
-    val message = messages.get(0).value
+    val marginal = variables(0).value
+    val message = messages(0).value
     val messageFromVariable = divide(marginal, message)
     return -logProductNormalization(messageFromVariable, message) + Math.log(cumulativeTo((messageFromVariable.mean - epsilon) / messageFromVariable.standardDeviation))
   }
