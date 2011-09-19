@@ -13,6 +13,6 @@ class ScheduleLoop[T](name: String, scheduleToLoop: Schedule[T], maxDelta: Doubl
         throw new RuntimeException(format("Maximum iterations (%d) reached.", MAX_ITERATIONS))
       totalIterations += 1
     }
-    return delta
+     delta
   }
 }

@@ -9,13 +9,13 @@ import jskills.numerics.GaussianDistribution
 
 abstract class GaussianFactor(name: String) extends Factor[GaussianDistribution](name) {
 
-  /** Sends the factor-graph message with and returns the log-normalization constant **/
+  /** Sends the factor-graph message with and s the log-normalization constant **/
   override protected def sendMessage(message: Message[GaussianDistribution], variable: Variable[GaussianDistribution]): Double = {
     val marginal = variable.value
     val messageValue = message.value
     val logZ = GaussianDistribution.logProductNormalization(marginal, messageValue)
     variable.value = marginal.mult(messageValue)
-    return logZ
+     logZ
   }
 
   override def createVariableToMessageBinding(variable: Variable[GaussianDistribution]): Message[GaussianDistribution] =

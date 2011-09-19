@@ -63,7 +63,7 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
       }
     }
 
-    return result
+     result
   }
 
   private def updateDuels(
@@ -104,7 +104,7 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
       }
     }
 
-    return minQuality
+     minQuality
   }
 
   def updateDuelInfo(

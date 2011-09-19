@@ -11,8 +11,8 @@ object PartialPlay {
       if (partialPlayPercentage < smallestPercentage) {
         partialPlayPercentage = smallestPercentage
       }
-      return partialPlayPercentage
+       partialPlayPercentage
     }
-    return 1.0
+     1.0
   }
 }

@@ -60,7 +60,7 @@ class TrueSkillFactorGraph(
   //    }
   //
   //    val logZ = factorList.getLogNormalization()
-  //    return Math.exp(logZ)
+  //     Math.exp(logZ)
   //  }
 
   private def createFullSchedule(): Schedule[GaussianDistribution] = {
@@ -69,7 +69,7 @@ class TrueSkillFactorGraph(
     layers map (_.createPriorSchedule()) filter (_ != null) foreach (fullSchedule += _)
     layers.reverse map (_.createPosteriorSchedule()) filter (_ != null) foreach (fullSchedule += _)
 
-    return new ScheduleSequence[GaussianDistribution]("Full schedule", fullSchedule)
+     new ScheduleSequence[GaussianDistribution]("Full schedule", fullSchedule)
   }
 
   def getUpdatedRatings(): Map[IPlayer, Rating] = {
@@ -80,6 +80,6 @@ class TrueSkillFactorGraph(
       }
     }
 
-    return result
+     result
   }
 }

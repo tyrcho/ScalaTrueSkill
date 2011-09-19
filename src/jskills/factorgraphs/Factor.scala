@@ -18,7 +18,7 @@ abstract class Factor[T](name: String, val messages: ListBuffer[Message[T]] = Li
   /** Update the message and marginal of the i-th variable that the factor is connected to **/
   def updateMessage(messageIndex: Int): Double = {
     argumentIsValidIndex(messageIndex, messages.size, "messageIndex")
-    return updateMessage(messages(messageIndex), messageToVariableBinding(messages(messageIndex)))
+     updateMessage(messages(messageIndex), messageToVariableBinding(messages(messageIndex)))
   }
 
   protected def updateMessage(message: Message[T], variable: Variable[T]): Double =
@@ -28,14 +28,14 @@ abstract class Factor[T](name: String, val messages: ListBuffer[Message[T]] = Li
   def resetMarginals() { messageToVariableBinding.values foreach (_.resetToPrior) }
 
   /**
-   * Sends the ith message to the marginal and returns the log-normalization
+   * Sends the ith message to the marginal and s the log-normalization
    * constant
    */
   def sendMessage(messageIndex: Int): Double = {
     argumentIsValidIndex(messageIndex, messages.size, "messageIndex")
     val message = messages(messageIndex)
     val variable = messageToVariableBinding(message)
-    return sendMessage(message, variable)
+     sendMessage(message, variable)
   }
 
   protected def sendMessage(message: Message[T], variable: Variable[T]): Double
@@ -46,7 +46,7 @@ abstract class Factor[T](name: String, val messages: ListBuffer[Message[T]] = Li
     messages += message
     messageToVariableBinding.put(message, variable)
     variables += variable
-    return message
+     message
   }
 
   override def toString() = if (name != null) name else super.toString()

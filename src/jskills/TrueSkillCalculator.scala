@@ -16,7 +16,7 @@ object TrueSkillCalculator {
    * @param gameInfo Parameters for the game.
    * @param teams A mapping of team players and their ratings.
    * @param teamRanks The ranks of the teams where 1 is first place. For a tie, repeat the number (e.g. 1, 2, 2)
-   * @returns All the players and their new ratings.
+   * @s All the players and their new ratings.
    */
   def calculateNewRatings(gameInfo: GameInfo,
     teams: Seq[ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating] =
@@ -27,7 +27,7 @@ object TrueSkillCalculator {
    * Calculates the match quality as the likelihood of all teams drawing.
    * @param gameInfo Parameters for the game.
    * @param teams A mapping of team players and their ratings.
-   * @returns The match quality as a percentage (between 0.0 and 1.0).
+   * @s The match quality as a percentage (between 0.0 and 1.0).
    */
   def calculateMatchQuality(gameInfo: GameInfo, teams: Seq[ITeam]): Double =
     // Just punt the work to the full implementation

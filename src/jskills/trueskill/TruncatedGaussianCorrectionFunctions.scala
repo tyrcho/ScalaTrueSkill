@@ -12,7 +12,7 @@ object TruncatedGaussianCorrectionFunctions {
    * correction of a single-sided truncated Gaussian with unit variance."</remarks>
    * @param teamPerformanceDifference
    * @param drawMargin In the paper, it's referred to as just "?".
-   * @returns
+   * @s
    */
   def VExceedsMargin(teamPerformanceDifference: Double, drawMargin: Double, c: Double): Double =
     VExceedsMargin(teamPerformanceDifference / c, drawMargin / c)
@@ -20,9 +20,9 @@ object TruncatedGaussianCorrectionFunctions {
   def VExceedsMargin(teamPerformanceDifference: Double, drawMargin: Double): Double = {
     val denominator = cumulativeTo(teamPerformanceDifference - drawMargin)
     if (denominator < 2.222758749e-162) {
-      return -teamPerformanceDifference + drawMargin
+       -teamPerformanceDifference + drawMargin
     }
-    return at(teamPerformanceDifference - drawMargin) / denominator
+     at(teamPerformanceDifference - drawMargin) / denominator
   }
 
   /**
@@ -32,12 +32,12 @@ object TruncatedGaussianCorrectionFunctions {
    * @param teamPerformanceDifference
    * @param drawMargin
    * @param c
-   * @returns
+   * @s
    */
   def WExceedsMargin(teamPerformanceDifference: Double, drawMargin: Double, c: Double): Double = {
-    return WExceedsMargin(teamPerformanceDifference / c, drawMargin / c)
+     WExceedsMargin(teamPerformanceDifference / c, drawMargin / c)
     //var vWin = VExceedsMargin(teamPerformanceDifference, drawMargin, c)
-    //return vWin * (vWin + (teamPerformanceDifference - drawMargin) / c)
+    // vWin * (vWin + (teamPerformanceDifference - drawMargin) / c)
   }
 
   def WExceedsMargin(teamPerformanceDifference: Double, drawMargin: Double): Double = {
@@ -85,12 +85,12 @@ object TruncatedGaussianCorrectionFunctions {
       cumulativeTo(-drawMargin - teamPerformanceDifferenceAbsoluteValue)
 
     if (denominator < 2.222758749e-162) {
-      return 1.0
+       1.0
     }
 
     val vt = VWithinMargin(teamPerformanceDifferenceAbsoluteValue, drawMargin)
 
-    return vt * vt +
+     vt * vt +
       ((drawMargin - teamPerformanceDifferenceAbsoluteValue) * at(drawMargin - teamPerformanceDifferenceAbsoluteValue) -
         (-drawMargin - teamPerformanceDifferenceAbsoluteValue) * at(-drawMargin - teamPerformanceDifferenceAbsoluteValue)) /
         denominator

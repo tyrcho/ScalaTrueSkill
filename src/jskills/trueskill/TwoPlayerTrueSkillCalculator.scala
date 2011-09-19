@@ -99,7 +99,7 @@ class TwoPlayerTrueSkillCalculator
     val newMean = selfRating.mean + (rankMultiplier * meanMultiplier * v)
     val newStdDev = Math.sqrt(varianceWithDynamics * (1 - w * stdDevMultiplier))
 
-    return new Rating(newMean, newStdDev)
+     new Rating(newMean, newStdDev)
   }
 
   override def calculateMatchQuality(gameInfo: GameInfo, teams: Seq[_ <: ITeam]): Double = {

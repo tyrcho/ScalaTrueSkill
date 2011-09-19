@@ -26,7 +26,7 @@ class PlayerPerformancesToTeamPerformancesLayer(parentGraph: TrueSkillFactorGrap
 
   override def createPriorSchedule(): Schedule[GaussianDistribution] = {
     val schedules = localFactors map (new ScheduleStep[GaussianDistribution]("Perf to Team Perf Step", _, 0))
-    return scheduleSequence(schedules, "all player perf to team perf schedule")
+     scheduleSequence(schedules, "all player perf to team perf schedule")
   }
 
   def createPlayerToTeamSumFactor(teamMembers: Seq[KeyedVariable[IPlayer, GaussianDistribution]], sumVariable: Variable[GaussianDistribution]): GaussianWeightedSumFactor = {
@@ -58,6 +58,6 @@ class PlayerPerformancesToTeamPerformancesLayer(parentGraph: TrueSkillFactorGrap
     }
     sb.delete(sb.length() - 2, sb.length())
 
-    return Variable[GaussianDistribution](GaussianDistribution.UNIFORM, "Team[%s]'s performance", sb.toString())
+     Variable[GaussianDistribution](GaussianDistribution.UNIFORM, "Team[%s]'s performance", sb.toString())
   }
 }

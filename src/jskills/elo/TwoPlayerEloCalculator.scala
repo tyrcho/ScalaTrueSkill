@@ -42,7 +42,7 @@ abstract class TwoPlayerEloCalculator(kFactor: KFactor)
       calculateNewRating(gameInfo, player2Rating, player1Rating,
         if (isDraw) PairwiseComparison.DRAW else PairwiseComparison.LOSE))
 
-    return result
+     result
   }
 
   protected def calculateNewRating(gameInfo: GameInfo,
@@ -55,7 +55,7 @@ abstract class TwoPlayerEloCalculator(kFactor: KFactor)
     val ratingChange = k * (actualProbability - expectedProbability)
     val newRating = selfRating + ratingChange
 
-    return new EloRating(newRating)
+     new EloRating(newRating)
   }
 
   protected def getPlayerWinProbability(gameInfo: GameInfo, playerRating: Double, opponentRating: Double): Double
@@ -77,7 +77,7 @@ abstract class TwoPlayerEloCalculator(kFactor: KFactor)
     // of the specific curve being used
     val deltaFrom50Percent = Math.abs(getPlayerWinProbability(gameInfo,
       player1Rating, player2Rating) - 0.5)
-    return (0.5 - deltaFrom50Percent) / 0.5
+     (0.5 - deltaFrom50Percent) / 0.5
   }
 }
 

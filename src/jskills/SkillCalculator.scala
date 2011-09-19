@@ -23,7 +23,7 @@ abstract class SkillCalculator(supportedOptions: Seq[SupportedOptions],
    * @param teamRanks
    *            The ranks of the teams where 1 is first place. For a tie,
    *            repeat the number (e.g. 1, 2, 2)
-   * @returns All the players and their new ratings.
+   * @s All the players and their new ratings.
    */
   def calculateNewRatings(gameInfo: GameInfo,
     teams: Seq[_ <: ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating]
@@ -35,7 +35,7 @@ abstract class SkillCalculator(supportedOptions: Seq[SupportedOptions],
    *            Parameters for the game.
    * @param teams
    *            A mapping of team players and their ratings.
-   * @returns The quality of the match between the teams as a percentage (0% =
+   * @s The quality of the match between the teams as a percentage (0% =
    *          bad, 100% = well matched).
    */
   def calculateMatchQuality(gameInfo: GameInfo, teams: Seq[_ <: ITeam]): Double

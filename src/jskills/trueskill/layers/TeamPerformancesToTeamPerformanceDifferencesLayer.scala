@@ -27,11 +27,11 @@ class TeamPerformancesToTeamPerformanceDifferencesLayer(parentGraph: TrueSkillFa
     weakerTeam: Variable[GaussianDistribution],
     output: Variable[GaussianDistribution]): GaussianWeightedSumFactor = {
     val teams = List(strongerTeam, weakerTeam)
-    return new GaussianWeightedSumFactor(output, teams, Array(1.0, -1.0))
+     new GaussianWeightedSumFactor(output, teams, Array(1.0, -1.0))
   }
 
   private def createOutputVariable(): Variable[GaussianDistribution] = {
-    return new Variable[GaussianDistribution](
+     new Variable[GaussianDistribution](
       GaussianDistribution.UNIFORM, "Team performance difference")
   }
 }

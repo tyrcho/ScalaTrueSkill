@@ -26,7 +26,7 @@ class GaussianPriorFactor(mean: Double, variance: Double, variable: Variable[Gau
       oldMarginal.precision + newMessage.precision - oldMessage.value.precision)
     variable.value = newMarginal
     message.value = newMessage
-    return sub(oldMarginal, newMarginal)
+     sub(oldMarginal, newMarginal)
   }
 
   override def getLogNormalization() = 0

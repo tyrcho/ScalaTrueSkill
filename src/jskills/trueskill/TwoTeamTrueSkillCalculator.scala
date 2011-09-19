@@ -138,6 +138,6 @@ class TwoTeamTrueSkillCalculator
     val expPart = Math.exp((-1 * square(team1MeanSum - team2MeanSum))
       / (2 * (totalPlayers * betaSquared + team1StdDevSquared + team2SigmaSquared)))
 
-    return expPart * sqrtPart
+     expPart * sqrtPart
   }
 }

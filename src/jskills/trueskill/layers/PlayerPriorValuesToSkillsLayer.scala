@@ -37,7 +37,7 @@ class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: S
   override def createPriorSchedule(): Schedule[GaussianDistribution] = {
     val schedules = localFactors map (
       new ScheduleStep[GaussianDistribution]("Prior to Skill Step", _, 0))
-    return scheduleSequence(schedules, "All priors")
+     scheduleSequence(schedules, "All priors")
   }
 
   private def createPriorFactor(player: IPlayer, priorRating: Rating, skillsVariable: Variable[GaussianDistribution]): GaussianPriorFactor =

@@ -8,7 +8,7 @@ object GameInfo {
   private val defaultInitialStandardDeviation = defaultInitialMean / 3.0
 
   def getDefaultGameInfo(): GameInfo = {
-    // We return a fresh copy since we have public setters that can mutate state
+    // We  a fresh copy since we have public setters that can mutate state
     new GameInfo(defaultInitialMean,
       defaultInitialStandardDeviation,
       defaultBeta,

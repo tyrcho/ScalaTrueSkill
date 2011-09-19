@@ -44,7 +44,7 @@ class GaussianLikelihoodFactor(betaSquared: Double, variable1: Variable[Gaussian
     variable1.value = newMarginal
 
     // Return the difference in the new marginal
-    return sub(newMarginal, marginal1)
+     sub(newMarginal, marginal1)
   }
 
   override def updateMessage(messageIndex: Int): Double = {

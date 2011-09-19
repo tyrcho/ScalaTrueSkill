@@ -36,7 +36,7 @@ abstract class FactorGraphLayer[TParentFactorGraph <: FactorGraph[TParentFactorG
     nameFormat: String,
     args: Any*): Schedule[TValue] = {
     val formattedName = format(nameFormat, args)
-    return new ScheduleSequence[TValue](formattedName, itemsToSequence)
+     new ScheduleSequence[TValue](formattedName, itemsToSequence)
   }
 
   protected def addLayerFactor(factor: TFactor) {

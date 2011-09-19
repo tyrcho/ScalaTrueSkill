@@ -6,9 +6,6 @@ package jskills.numerics
  * The whole purpose of this class is to make the code for the
  * SkillCalculator(s) look a little cleaner
  * <p>
- * Derived classes can't use this class's static ctors they way they could in
- * C#, so I'm going to eschew the relative type safety afforded by Moser's
- * scheme and make this class final. A Range is a Range is a Range.
  */
 class Range(val min: Int, val max: Int) {
   def isInRange(value: Int): Boolean = (min <= value) && (value <= max)

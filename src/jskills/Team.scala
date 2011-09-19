@@ -16,11 +16,11 @@ class Team extends HashMap[IPlayer, Rating] with ITeam {
    *            The player to add.
    * @param rating
    *            The rating of the player
-   * @returns The instance of the team (for chaining convenience).
+   * @s The instance of the team (for chaining convenience).
    */
   def addPlayer(player: IPlayer, rating: Rating): Team = {
     put(player, rating)
-    return this
+     this
   }
 }
 

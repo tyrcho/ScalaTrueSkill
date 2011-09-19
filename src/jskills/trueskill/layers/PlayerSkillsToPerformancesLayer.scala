@@ -38,11 +38,11 @@ class PlayerSkillsToPerformancesLayer(parentGraph: TrueSkillFactorGraph)
 
   override def createPriorSchedule(): Schedule[GaussianDistribution] = {
     val schedules = localFactors map (new ScheduleStep[GaussianDistribution]("Skill to Perf step", _, 0))
-    return scheduleSequence(schedules, "All skill to performance sending")
+     scheduleSequence(schedules, "All skill to performance sending")
   }
 
   override def createPosteriorSchedule(): Schedule[GaussianDistribution] = {
     val schedules = localFactors map (new ScheduleStep[GaussianDistribution]("Skill to Perf step", _, 1))
-    return scheduleSequence(schedules, "All skill to performance sending")
+     scheduleSequence(schedules, "All skill to performance sending")
   }
 }

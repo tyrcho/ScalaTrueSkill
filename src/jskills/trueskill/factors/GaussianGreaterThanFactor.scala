@@ -16,7 +16,7 @@ class GaussianGreaterThanFactor(epsilon: Double, variable: Variable[GaussianDist
     val marginal = variables(0).value
     val message = messages(0).value
     val messageFromVariable = divide(marginal, message)
-    return -logProductNormalization(messageFromVariable, message) + Math.log(cumulativeTo((messageFromVariable.mean - epsilon) / messageFromVariable.standardDeviation))
+     -logProductNormalization(messageFromVariable, message) + Math.log(cumulativeTo((messageFromVariable.mean - epsilon) / messageFromVariable.standardDeviation))
   }
 
   override protected def updateMessage(message: Message[GaussianDistribution], variable: Variable[GaussianDistribution]): Double = {
@@ -48,6 +48,6 @@ class GaussianGreaterThanFactor(epsilon: Double, variable: Variable[GaussianDist
     variable.value = newMarginal
 
     // Return the difference in the new marginal
-    return sub(newMarginal, oldMarginal)
+     sub(newMarginal, oldMarginal)
   }
 }

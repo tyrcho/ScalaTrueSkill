@@ -38,7 +38,7 @@ object GaussianWeightedSumFactor {
       }
     }
 
-    return sb.toString()
+     sb.toString()
   }
 }
 
@@ -136,7 +136,7 @@ class GaussianWeightedSumFactor(
       result += GaussianDistribution.logRatioNormalization(vars(i).value, messages(i).value)
     }
 
-    return result
+     result
   }
 
   private def updateHelper(weights: Seq[Double],
@@ -192,7 +192,7 @@ class GaussianWeightedSumFactor(
     variables(0).value = newMarginal
 
     // Return the difference in the new marginal
-    return sub(newMarginal, marginal0)
+     sub(newMarginal, marginal0)
   }
 
   override def updateMessage(messageIndex: Int): Double = {
@@ -214,6 +214,6 @@ class GaussianWeightedSumFactor(
       updatedVariables += allVariables(indicesToUse(i))
     }
 
-    return updateHelper(weights(messageIndex), weightsSquared(messageIndex), updatedMessages, updatedVariables)
+     updateHelper(weights(messageIndex), weightsSquared(messageIndex), updatedMessages, updatedVariables)
   }
 }

@@ -9,7 +9,7 @@ class GaussianEloCalculator(factor: KFactor = GaussianEloCalculator.StableKFacto
   override def getPlayerWinProbability(gameInfo: GameInfo, playerRating: Double, opponentRating: Double): Double = {
     val ratingDifference = playerRating - opponentRating
     // See equation 1.1 in the TrueSkill paper
-    return GaussianDistribution.cumulativeTo(ratingDifference / (Math.sqrt(2) * gameInfo.beta))
+     GaussianDistribution.cumulativeTo(ratingDifference / (Math.sqrt(2) * gameInfo.beta))
   }
 }
 

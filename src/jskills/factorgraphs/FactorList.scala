@@ -20,13 +20,13 @@ class FactorList[TValue] {
   //    var sumLogS = 0.0
   //    //    for (f <- factors) sumLogS += f.getLogNormalization()
   //
-  //    return 0.0 //sumLogZ + sumLogS
+  //     0.0 //sumLogZ + sumLogS
   //  }
 
   def size(): Int = factors.size
 
   def addFactor(factor: Factor[TValue]): Factor[TValue] = {
     factors += factor
-    return factor
+     factor
   }
 }
