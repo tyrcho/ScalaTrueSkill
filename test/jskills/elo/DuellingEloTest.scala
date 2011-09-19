@@ -2,8 +2,6 @@ package jskills.elo
 
 import java.util.Arrays
 
-import java.util.Map
-
 import jskills.GameInfo
 import jskills.IPlayer
 import jskills.ITeam
@@ -42,10 +40,10 @@ class DuellingEloTest {
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(2, 1))
 
     // TODO: Verify?
-    AssertRating(37, newRatingsWinLose.get(player1))
-    AssertRating(37, newRatingsWinLose.get(player2))
-    AssertRating(13, newRatingsWinLose.get(player3))
-    AssertRating(13, newRatingsWinLose.get(player4))
+    AssertRating(37, newRatingsWinLose(player1))
+    AssertRating(37, newRatingsWinLose(player2))
+    AssertRating(13, newRatingsWinLose(player3))
+    AssertRating(13, newRatingsWinLose(player4))
 
     val quality = calculator.calculateMatchQuality(gameInfo, teams)
     assertEquals(1.0, quality, 0.001)

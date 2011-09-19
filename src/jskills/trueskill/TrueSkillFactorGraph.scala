@@ -2,9 +2,10 @@ package jskills.trueskill
 
 import java.util.ArrayList
 
-import java.util.HashMap
+import collection.mutable.Map
+
 import java.util.List
-import java.util.Map
+
 import jskills.GameInfo
 import jskills.IPlayer
 import jskills.ITeam
@@ -79,7 +80,7 @@ class TrueSkillFactorGraph(
   }
 
   def getUpdatedRatings(): Map[IPlayer, Rating] = {
-    val result = new HashMap[IPlayer, Rating]()
+    val result = Map.empty[IPlayer, Rating]
     for (currentTeam <- priorLayer.getOutputVariablesGroups()) {
       for (currentPlayer <- currentTeam) {
         result.put(currentPlayer.key, new Rating(currentPlayer.value.mean, currentPlayer.value.standardDeviation))

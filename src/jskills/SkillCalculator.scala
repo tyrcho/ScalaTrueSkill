@@ -1,11 +1,10 @@
 package jskills
 
-
 import java.util.EnumSet
-import java.util.Map
 
 import jskills.numerics.Range
 import collection.JavaConversions._
+import collection.mutable.Map
 
 /**
  * Base class for all skill calculator implementations.
@@ -53,7 +52,7 @@ abstract class SkillCalculator(supportedOptions: Seq[SupportedOptions],
     Guard.argumentNotNull(teams, "teams")
     var countOfTeams = 0
     for (currentTeam <- teams) {
-      if (!playersPerTeam.isInRange(currentTeam.size())) {
+      if (!playersPerTeam.isInRange(currentTeam.size)) {
         throw new IllegalArgumentException()
       }
       countOfTeams += 1

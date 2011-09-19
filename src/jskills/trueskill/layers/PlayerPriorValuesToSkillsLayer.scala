@@ -2,9 +2,6 @@ package jskills.trueskill.layers
 
 import java.util.ArrayList
 
-import java.util.List
-import java.util.Map.Entry
-
 import jskills.IPlayer
 import jskills.ITeam
 import jskills.Rating

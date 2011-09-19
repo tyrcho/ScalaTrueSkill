@@ -3,10 +3,10 @@ package jskills.trueskill
 import jskills.numerics.MathUtils._
 
 import java.util.EnumSet
-import java.util.HashMap
+
 import java.util.Iterator
 import java.util.List
-import java.util.Map
+
 import jskills.GameInfo
 import jskills.Guard
 import jskills.IPlayer
@@ -17,6 +17,7 @@ import jskills.Rating
 import jskills.SkillCalculator
 import jskills.numerics.Range
 import collection.JavaConversions._
+import collection.mutable.Map
 
 /**
  * Calculates the new ratings for only two players. [remarks] When you only have
@@ -40,16 +41,16 @@ class TwoPlayerTrueSkillCalculator
     // Since we verified that each team has one player, we know the player
     // is the first one
     val winningTeam = teamsl.get(0)
-    val winner = winningTeam.keySet().iterator().next()
-    val winnerPreviousRating = winningTeam.get(winner)
+    val winner = winningTeam.head._1
+    val winnerPreviousRating = winningTeam(winner)
 
     val losingTeam = teamsl.get(1)
-    val loser = losingTeam.keySet().iterator().next()
-    val loserPreviousRating = losingTeam.get(loser)
+    val loser = losingTeam.head._1
+    val loserPreviousRating = losingTeam(loser)
 
     val wasDraw = (teamRanks(0) == teamRanks(1))
 
-    val results = new HashMap[IPlayer, Rating]()
+    val results = Map.empty[IPlayer, Rating]
     results.put(winner,
       calculateNewRating(gameInfo, winnerPreviousRating,
         loserPreviousRating, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.WIN))

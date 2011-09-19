@@ -1,10 +1,9 @@
 package jskills.elo
 
 import java.util.EnumSet
-import java.util.HashMap
+
 import java.util.List
-import java.util.Map
-import java.util.Map.Entry
+import collection.mutable.Map
 import jskills.GameInfo
 import jskills.IPlayer
 import jskills.ITeam
@@ -41,7 +40,7 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
 
     val teamsList = teamsl.toArray[ITeam]
 
-    val deltas = new HashMap[IPlayer, Map[IPlayer, Double]]()
+    val deltas = Map.empty[IPlayer, Map[IPlayer, Double]]
 
     for (ixCurrentTeam <- 0 until teamsList.length) {
       for (ixOtherTeam <- 0 until teamsList.length) {
@@ -61,11 +60,11 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
       }
     }
 
-    val result = new HashMap[IPlayer, Rating]()
+    val result = Map.empty[IPlayer, Rating]
 
     for (currentTeam <- teamsList) {
       for ((ck, cv) <- currentTeam) {
-        val aa = deltas.get(ck).values()
+        val aa = deltas(ck).values()
         val currentPlayerAverageDuellingDelta = MathUtils.mean(aa.toSeq)
         result.put(ck, new EloRating(cv.mean + currentPlayerAverageDuellingDelta))
       }
@@ -91,8 +90,8 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
       case PairwiseComparison.DRAW => twoPlayerEloCalculator.calculateNewRatings(gameInfo, t1, Seq(1, 1))
     }
 
-    updateDuelInfo(duels, player1, player1Rating, duelOutcomes.get(player1), player2)
-    updateDuelInfo(duels, player2, player2Rating, duelOutcomes.get(player2), player1)
+    updateDuelInfo(duels, player1, player1Rating, duelOutcomes(player1), player2)
+    updateDuelInfo(duels, player2, player2Rating, duelOutcomes(player2), player1)
   }
 
   override def calculateMatchQuality(gameInfo: GameInfo, teams: Seq[_ <: ITeam]): Double = {
@@ -123,13 +122,7 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
     selfBeforeRating: Rating,
     selfAfterRating: Rating,
     opponent: IPlayer) {
-    var selfToOpponentDuelDeltas = duels.get(self)
-
-    if (selfToOpponentDuelDeltas == null) {
-      selfToOpponentDuelDeltas = new HashMap[IPlayer, Double]()
-      duels.put(self, selfToOpponentDuelDeltas)
-    }
-
+    val selfToOpponentDuelDeltas = duels.getOrElseUpdate(self, Map.empty)
     selfToOpponentDuelDeltas.put(opponent, selfAfterRating.mean - selfBeforeRating.mean)
   }
 }

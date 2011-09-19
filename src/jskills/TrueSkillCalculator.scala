@@ -1,7 +1,6 @@
 package jskills
 
-import java.util.Map
-
+import collection.mutable.Map
 
 import jskills.trueskill.FactorGraphTrueSkillCalculator
 

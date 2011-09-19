@@ -2,7 +2,7 @@ package jskills
 
 import java.util.ArrayList
 
-import java.util.HashMap
+import collection.mutable.HashMap
 import java.util.List
 
 /**

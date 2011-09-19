@@ -3,10 +3,10 @@ package jskills.elo
 import java.util.ArrayList
 
 import java.util.EnumSet
-import java.util.HashMap
+
 import java.util.Iterator
 import java.util.List
-import java.util.Map
+
 import jskills.GameInfo
 import jskills.IPlayer
 import jskills.ITeam
@@ -18,6 +18,7 @@ import jskills.numerics.Range
 import jskills.SupportedOptions
 import jskills.PairwiseComparison._
 import collection.JavaConversions._
+import collection.mutable.Map
 
 abstract class TwoPlayerEloCalculator(kFactor: KFactor)
   extends SkillCalculator(Seq(), Range.exactly(2), Range.exactly(1)) {
@@ -28,15 +29,15 @@ abstract class TwoPlayerEloCalculator(kFactor: KFactor)
     validateTeamCountAndPlayersCountPerTeam(teams)
     val teamsl = RankSorter.sort(teams, teamRanks)
 
-    val result = new HashMap[IPlayer, Rating]()
+    val result = Map.empty[IPlayer, Rating]
     val isDraw = (teamRanks(0) == teamRanks(1))
 
     val players = new ArrayList[IPlayer](2)
     for (team <- teamsl)
-      players.add(team.keySet().toArray(new Array[IPlayer](1))(0))
+      players.add(team.keySet.head)
 
-    val player1Rating = teamsl.get(0).get(players.get(0)).mean
-    val player2Rating = teamsl.get(1).get(players.get(1)).mean
+    val player1Rating = teamsl.get(0).get(players.get(0)).get.mean
+    val player2Rating = teamsl.get(1).get(players.get(1)).get.mean
 
     result.put(
       players.get(0),
@@ -71,12 +72,12 @@ abstract class TwoPlayerEloCalculator(kFactor: KFactor)
     // Extract both players from the teams
     val players = new ArrayList[IPlayer](2)
     for (team <- teams)
-      players.add(team.keySet().toArray(new Array[IPlayer](0))(0))
+      players.add(team.keySet.head)
 
     // Extract each player's rating from their team
     val teamit = teams.iterator
-    val player1Rating = teamit.next().get(players.get(0)).mean
-    val player2Rating = teamit.next().get(players.get(1)).mean
+    val player1Rating = teamit.next().get(players.get(0)).get.mean
+    val player2Rating = teamit.next().get(players.get(1)).get.mean
 
     // The TrueSkill paper mentions that they used s1 - s2 (rating
     // difference) to determine match quality. I convert that to a

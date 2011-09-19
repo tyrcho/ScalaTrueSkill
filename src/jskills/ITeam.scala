@@ -1,5 +1,4 @@
 package jskills
-
-import java.util.Map
+import collection.mutable.Map
 
 trait ITeam extends Map[IPlayer, Rating]

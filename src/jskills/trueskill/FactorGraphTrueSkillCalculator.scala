@@ -5,7 +5,7 @@ import java.util.ArrayList
 
 import java.util.EnumSet
 import java.util.List
-import java.util.Map
+
 import jskills.GameInfo
 import jskills.Guard
 import jskills.IPlayer
@@ -18,6 +18,8 @@ import org.ejml.data.SimpleMatrix
 import collection.JavaConversions._
 import jskills.SupportedOptions
 import jskills.PartialPlay
+
+import collection.mutable.Map
 
 /**
  * Calculates TrueSkill using a full factor graph.
@@ -156,14 +158,14 @@ class FactorGraphTrueSkillCalculator
       for (j <- 0 until totalPreviousPlayers) currentRowValues.add(0.)
       playerAssignments.add(currentRowValues)
 
-      for (player <- currentTeam.keySet()) {
+      for (player <- currentTeam.keySet) {
         currentRowValues.add(PartialPlay.getPartialPlayPercentage(player))
         // indicates the player is on the team
         totalPreviousPlayers += 1
       }
 
       val nextTeam = teamAssignmentsList.get(i + 1)
-      for (nextTeamPlayer <- nextTeam.keySet()) {
+      for (nextTeamPlayer <- nextTeam.keySet) {
         // Add a -1 * playing time to represent the difference
         currentRowValues.add(-1 * PartialPlay.getPartialPlayPercentage(nextTeamPlayer))
       }

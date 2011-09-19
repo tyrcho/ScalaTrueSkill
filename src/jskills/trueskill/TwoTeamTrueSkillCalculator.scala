@@ -3,11 +3,9 @@ package jskills.trueskill
 import jskills.numerics.MathUtils._
 
 import java.util.EnumSet
-import java.util.HashMap
+
 import java.util.Iterator
 import java.util.List
-import java.util.Map
-import java.util.Map.Entry
 
 import jskills.GameInfo
 import jskills.Guard
@@ -19,8 +17,9 @@ import jskills.Rating
 import jskills.SkillCalculator
 import jskills.numerics.Range
 import collection.JavaConversions._
-
+import collection.mutable.Map
 /**
+ *
  * Calculates new ratings for only two teams where each team has 1 or more
  * players. [remarks] When you only have two teams, the math is still simple: no
  * factor graphs are used yet. [/remarks]
@@ -40,7 +39,7 @@ class TwoTeamTrueSkillCalculator
 
     val wasDraw = (teamRanks(0) == teamRanks(1))
 
-    val results = new HashMap[IPlayer, Rating]()
+    val results = Map.empty[IPlayer, Rating]
 
     updatePlayerRatings(gameInfo, results, team1, team2, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.WIN)
 
@@ -58,7 +57,7 @@ class TwoTeamTrueSkillCalculator
     val betaSquared = square(gameInfo.beta)
     val tauSquared = square(gameInfo.dynamicsFactor)
 
-    val totalPlayers = selfTeam.size() + otherTeam.size()
+    val totalPlayers = selfTeam.size + otherTeam.size
 
     val selfMeanSum = selfTeam.values() map (_.mean) sum
     val otherTeamMeanSum = otherTeam.values() map (_.mean) sum

@@ -31,22 +31,16 @@ class Player[T](
     prime + (if (id == null) 0 else id.hashCode())
   }
 
-  override def equals(obj: Any): Boolean = {
-    if (this == obj) return true
-    if (obj == null) return false
-    if (obj.isInstanceOf[Player[T]]) {
-      val other: Player[T] = obj.asInstanceOf[Player[T]]
-      if (id == null) {
-        if (other.id != null) return false
-      } else if (!id.equals(other.id)) return false
-      return true
+  override def equals(that: Any): Boolean = {
+    that match {
+      case other: Player[T] => if (id == null) other.id == null else id.equals(other.id)
+      case _ => false
     }
-    return false
   }
 
   override def toString() = if (id != null) id.toString() else super.toString()
-
 }
+
 object Player {
   /** = 100% play time **/
   val DefaultPartialPlayPercentage = 1.0

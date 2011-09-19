@@ -1,10 +1,8 @@
 package jskills.trueskill
 
-import org.junit.Assert.assertEquals
+import org.junit.Assert._
 
 import java.util.Arrays
-
-import java.util.Map
 
 import jskills.GameInfo
 import jskills.IPlayer
@@ -961,9 +959,10 @@ object TrueSkillCalculatorTests {
   // Helpers
   //------------------------------------------------------------------------------
 
-  private def assertRating(expectedMean: Double, expectedStandardDeviation: Double, actual: Rating) {
-    assertEquals(actual.mean, expectedMean, ErrorTolerance)
-    assertEquals(actual.standardDeviation, expectedStandardDeviation, ErrorTolerance)
+  private def assertRating(expectedMean: Double, expectedStandardDeviation: Double, actual: Option[Rating]) {
+    assertTrue(actual.isDefined)
+    assertEquals(actual.get.mean, expectedMean, ErrorTolerance)
+    assertEquals(actual.get.standardDeviation, expectedStandardDeviation, ErrorTolerance)
   }
 
   private def assertMatchQuality(expectedMatchQuality: Double, actualMatchQuality: Double) {
