@@ -18,10 +18,10 @@ import collection.JavaConversions._
 class PlayerPerformancesToTeamPerformancesLayer(parentGraph: TrueSkillFactorGraph)
   extends TrueSkillFactorGraphLayer[KeyedVariable[IPlayer, GaussianDistribution], GaussianWeightedSumFactor, Variable[GaussianDistribution]](parentGraph) {
 
-  override def BuildLayer() {
+  override def buildLayer() {
     for (currentTeam <- inputVariablesGroups) {
-      val teamPerformance = CreateOutputVariable(currentTeam)
-      AddLayerFactor(createPlayerToTeamSumFactor(currentTeam,
+      val teamPerformance = createOutputVariable(currentTeam)
+      addLayerFactor(createPlayerToTeamSumFactor(currentTeam,
         teamPerformance))
 
       // REVIEW: Does it make sense to have groups of one?
@@ -35,7 +35,7 @@ class PlayerPerformancesToTeamPerformancesLayer(parentGraph: TrueSkillFactorGrap
       schedules.add(new ScheduleStep[GaussianDistribution](
         "Perf to Team Perf Step", weightedSumFactor, 0))
     }
-    return ScheduleSequence(schedules,
+    return scheduleSequence(schedules,
       "all player perf to team perf schedule")
   }
 
@@ -57,10 +57,10 @@ class PlayerPerformancesToTeamPerformancesLayer(parentGraph: TrueSkillFactorGrap
           "team sum perf @" + i, currentFactor, i))
       }
     }
-    return ScheduleSequence(schedules, "all of the team's sum iterations")
+    return scheduleSequence(schedules, "all of the team's sum iterations")
   }
 
-  private def CreateOutputVariable(team: List[KeyedVariable[IPlayer, GaussianDistribution]]): Variable[GaussianDistribution] = {
+  private def createOutputVariable(team: List[KeyedVariable[IPlayer, GaussianDistribution]]): Variable[GaussianDistribution] = {
     val sb = new StringBuilder()
     for (teamMember <- team) {
       sb.append(teamMember.key.toString())

@@ -7,7 +7,7 @@ abstract class FactorGraphLayerBase[TValue] {
 
   def getUntypedFactors(): Collection[Factor[TValue]]
 
-  def BuildLayer()
+  def buildLayer()
 
   def createPriorSchedule(): Schedule[TValue] = null
 
@@ -15,5 +15,5 @@ abstract class FactorGraphLayerBase[TValue] {
 
   def getOutputVariablesGroups(): List[_ <: List[_ <: Any]]
 
-  def SetRawInputVariablesGroups(o: Any)
+  def setRawInputVariablesGroups(o: Any)
 }

@@ -16,7 +16,7 @@ abstract class FactorGraphLayer[TParentFactorGraph <: FactorGraph[TParentFactorG
 
   def getOutputVariablesGroups() = outputVariablesGroups
 
-  def SetRawInputVariablesGroups(o: Any) {
+  def setRawInputVariablesGroups(o: Any) {
     inputVariablesGroups.clear
     for (l <- o.asInstanceOf[List[List[TInputVariable]]]) {
       inputVariablesGroups.add(l)
@@ -35,7 +35,7 @@ abstract class FactorGraphLayer[TParentFactorGraph <: FactorGraph[TParentFactorG
     addOutputVariableGroup(g)
   }
 
-  protected def ScheduleSequence(
+  protected def scheduleSequence(
     itemsToSequence: Collection[Schedule[TValue]],
     nameFormat: String,
     args: Any*): Schedule[TValue] = {
@@ -43,7 +43,7 @@ abstract class FactorGraphLayer[TParentFactorGraph <: FactorGraph[TParentFactorG
     return new ScheduleSequence[TValue](formattedName, itemsToSequence)
   }
 
-  protected def AddLayerFactor(factor: TFactor) {
+  protected def addLayerFactor(factor: TFactor) {
     localFactors.add(factor)
   }
 }

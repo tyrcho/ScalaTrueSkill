@@ -11,12 +11,12 @@ class FactorList[TValue] {
 
   //  def getLogNormalization(): Double = {
   //    // TODO can these 3 loops be rolled into 1?
-  //    factors foreach (_.ResetMarginals)
+  //    factors foreach (_.resetMarginals)
   //
   //    var sumLogZ = 0.0
   //    for (f <- factors) {
   //      for (j <- 0 until f.getNumberOfMessages())
-  //        sumLogZ += f.SendMessage(j)
+  //        sumLogZ += f.sendMessage(j)
   //    }
   //
   //    var sumLogS = 0.0

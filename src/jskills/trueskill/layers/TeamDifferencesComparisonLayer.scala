@@ -15,14 +15,14 @@ class TeamDifferencesComparisonLayer(parentGraph: TrueSkillFactorGraph, teamRank
   val gameInfo = parentGraph.gameInfo
   val epsilon = DrawMargin.GetDrawMarginFromDrawProbability(gameInfo.drawProbability, gameInfo.beta)
 
-  override def BuildLayer() {
+  override def buildLayer() {
     for (i <- 0 until inputVariablesGroups.size()) {
       val isDraw = (teamRanks(i) == teamRanks(i + 1))
       val teamDifference = inputVariablesGroups.get(i).get(0)
       val factor = if (isDraw)
         new GaussianWithinFactor(epsilon, teamDifference).asInstanceOf[GaussianFactor]
       else new GaussianGreaterThanFactor(epsilon, teamDifference)
-      AddLayerFactor(factor)
+      addLayerFactor(factor)
     }
   }
 }

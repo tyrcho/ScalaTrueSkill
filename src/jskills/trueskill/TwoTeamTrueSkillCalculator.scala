@@ -43,14 +43,14 @@ class TwoTeamTrueSkillCalculator
 
     val results = new HashMap[IPlayer, Rating]()
 
-    UpdatePlayerRatings(gameInfo, results, team1, team2, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.WIN)
+    updatePlayerRatings(gameInfo, results, team1, team2, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.WIN)
 
-    UpdatePlayerRatings(gameInfo, results, team2, team1, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.LOSE)
+    updatePlayerRatings(gameInfo, results, team2, team1, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.LOSE)
 
     results
   }
 
-  private def UpdatePlayerRatings(gameInfo: GameInfo,
+  private def updatePlayerRatings(gameInfo: GameInfo,
     newPlayerRatings: Map[IPlayer, Rating],
     selfTeam: ITeam,
     otherTeam: ITeam,

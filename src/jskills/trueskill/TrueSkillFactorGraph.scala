@@ -45,15 +45,15 @@ class TrueSkillFactorGraph(
     var lastOutput: Any = null
     for (currentLayer <- layers) {
       if (lastOutput != null) {
-        currentLayer.SetRawInputVariablesGroups(lastOutput)
+        currentLayer.setRawInputVariablesGroups(lastOutput)
       }
-      currentLayer.BuildLayer()
+      currentLayer.buildLayer()
       lastOutput = currentLayer.getOutputVariablesGroups()
     }
   }
 
-  def RunSchedule() {
-    val fullSchedule = CreateFullSchedule()
+  def runSchedule() {
+    val fullSchedule = createFullSchedule()
     fullSchedule.visit()
   }
 
@@ -70,7 +70,7 @@ class TrueSkillFactorGraph(
   //    return Math.exp(logZ)
   //  }
 
-  private def CreateFullSchedule(): Schedule[GaussianDistribution] = {
+  private def createFullSchedule(): Schedule[GaussianDistribution] = {
     val fullSchedule = new ArrayList[Schedule[GaussianDistribution]]()
 
     layers map (_.createPriorSchedule()) filter (_ != null) foreach (fullSchedule.add(_))
@@ -79,7 +79,7 @@ class TrueSkillFactorGraph(
     return new ScheduleSequence[GaussianDistribution]("Full schedule", fullSchedule)
   }
 
-  def GetUpdatedRatings(): Map[IPlayer, Rating] = {
+  def getUpdatedRatings(): Map[IPlayer, Rating] = {
     val result = new HashMap[IPlayer, Rating]()
     for (currentTeam <- priorLayer.getOutputVariablesGroups()) {
       for (currentPlayer <- currentTeam) {

@@ -10,7 +10,7 @@ import jskills.numerics.GaussianDistribution
  * [remarks]See the accompanying math paper for more details.[/remarks]
  */
 class GaussianGreaterThanFactor(epsilon: Double, variable: Variable[GaussianDistribution]) extends GaussianFactor(format("%s ] %4.3f", variable, epsilon)) {
-  CreateVariableToMessageBinding(variable)
+  createVariableToMessageBinding(variable)
 
   override def getLogNormalization(): Double = {
     val marginal = variables.get(0).value

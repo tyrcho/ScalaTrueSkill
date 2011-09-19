@@ -51,16 +51,16 @@ class TwoPlayerTrueSkillCalculator
 
     val results = new HashMap[IPlayer, Rating]()
     results.put(winner,
-      CalculateNewRating(gameInfo, winnerPreviousRating,
+      calculateNewRating(gameInfo, winnerPreviousRating,
         loserPreviousRating, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.WIN))
     results.put(loser,
-      CalculateNewRating(gameInfo, loserPreviousRating,
+      calculateNewRating(gameInfo, loserPreviousRating,
         winnerPreviousRating, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.LOSE))
 
     results
   }
 
-  private def CalculateNewRating(gameInfo: GameInfo,
+  private def calculateNewRating(gameInfo: GameInfo,
     selfRating: Rating, opponentRating: Rating,
     comparison: PairwiseComparison): Rating = {
     val drawMargin = DrawMargin.GetDrawMarginFromDrawProbability(gameInfo.drawProbability, gameInfo.beta)

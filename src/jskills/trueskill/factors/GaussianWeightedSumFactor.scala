@@ -129,9 +129,9 @@ class GaussianWeightedSumFactor(
     variableIndexOrdersForWeights.add(variableIndices)
   }
 
-  CreateVariableToMessageBinding(sumVariable)
+  createVariableToMessageBinding(sumVariable)
 
-  variablesToSum foreach CreateVariableToMessageBinding
+  variablesToSum foreach createVariableToMessageBinding
 
   override def getLogNormalization(): Double = {
     val vars = variables
@@ -145,7 +145,7 @@ class GaussianWeightedSumFactor(
     return result
   }
 
-  private def UpdateHelper(weights: Array[Double],
+  private def updateHelper(weights: Array[Double],
     weightsSquared: Array[Double],
     messages: List[Message[GaussianDistribution]],
     variables: List[Variable[GaussianDistribution]]): Double = {
@@ -220,6 +220,6 @@ class GaussianWeightedSumFactor(
       updatedVariables.add(allVariables.get(indicesToUse(i)))
     }
 
-    return UpdateHelper(weights(messageIndex), weightsSquared(messageIndex), updatedMessages, updatedVariables)
+    return updateHelper(weights(messageIndex), weightsSquared(messageIndex), updatedMessages, updatedVariables)
   }
 }

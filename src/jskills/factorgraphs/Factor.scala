@@ -30,24 +30,24 @@ abstract class Factor[T]( name: String) {
     throw new UnsupportedOperationException()
 
   /** Resets the marginal of the variables a factor is connected to **/
-  def ResetMarginals() { messageToVariableBinding.values foreach (_.resetToPrior) }
+  def resetMarginals() { messageToVariableBinding.values foreach (_.resetToPrior) }
 
   /**
    * Sends the ith message to the marginal and returns the log-normalization
    * constant
    */
-  def SendMessage(messageIndex: Int): Double = {
+  def sendMessage(messageIndex: Int): Double = {
     argumentIsValidIndex(messageIndex, messages.size(), "messageIndex")
     val message = messages.get(messageIndex)
     val variable = messageToVariableBinding.get(message)
-    return SendMessage(message, variable)
+    return sendMessage(message, variable)
   }
 
-  protected def SendMessage(message: Message[T], variable: Variable[T]): Double
+  protected def sendMessage(message: Message[T], variable: Variable[T]): Double
 
-  def CreateVariableToMessageBinding(variable: Variable[T]): Message[T]
+  def createVariableToMessageBinding(variable: Variable[T]): Message[T]
 
-  protected def CreateVariableToMessageBinding(variable: Variable[T], message: Message[T]): Message[T] = {
+  protected def createVariableToMessageBinding(variable: Variable[T], message: Message[T]): Message[T] = {
     messages.add(message)
     messageToVariableBinding.put(message, variable)
     variables.add(variable)

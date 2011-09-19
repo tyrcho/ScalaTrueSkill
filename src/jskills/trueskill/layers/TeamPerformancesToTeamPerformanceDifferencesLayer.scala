@@ -11,13 +11,13 @@ import jskills.trueskill.factors.GaussianWeightedSumFactor
 class TeamPerformancesToTeamPerformanceDifferencesLayer(parentGraph: TrueSkillFactorGraph)
   extends TrueSkillFactorGraphLayer[Variable[GaussianDistribution], GaussianWeightedSumFactor, Variable[GaussianDistribution]](parentGraph) {
 
-  override def BuildLayer() {
+  override def buildLayer() {
     for (i <- 0 until inputVariablesGroups.size() - 1) {
       val strongerTeam = inputVariablesGroups.get(i).get(0)
       val weakerTeam = inputVariablesGroups.get(i + 1).get(0)
 
       val currentDifference = createOutputVariable()
-      AddLayerFactor(CreateTeamPerformanceToDifferenceFactor(
+      addLayerFactor(createTeamPerformanceToDifferenceFactor(
         strongerTeam, weakerTeam, currentDifference))
 
       // REVIEW: Does it make sense to have groups of one?
@@ -25,7 +25,7 @@ class TeamPerformancesToTeamPerformanceDifferencesLayer(parentGraph: TrueSkillFa
     }
   }
 
-  private def CreateTeamPerformanceToDifferenceFactor(
+  private def createTeamPerformanceToDifferenceFactor(
     strongerTeam: Variable[GaussianDistribution],
     weakerTeam: Variable[GaussianDistribution],
     output: Variable[GaussianDistribution]): GaussianWeightedSumFactor = {

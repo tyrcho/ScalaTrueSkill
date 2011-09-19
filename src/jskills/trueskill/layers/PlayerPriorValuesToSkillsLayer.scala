@@ -23,7 +23,7 @@ import collection.JavaConversions._
 class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: Collection[_ <: ITeam])
   extends TrueSkillFactorGraphLayer[DefaultVariable[GaussianDistribution], GaussianPriorFactor, KeyedVariable[IPlayer, GaussianDistribution]](parentGraph) {
 
-  override def BuildLayer() {
+  override def buildLayer() {
     for (currentTeam <- teams) {
       val currentTeamSkills = new ArrayList[KeyedVariable[IPlayer, GaussianDistribution]]()
 
@@ -31,8 +31,8 @@ class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: C
         currentTeamPlayer <- currentTeam
           .entrySet()
       ) {
-        val playerSkill = CreateSkillOutputVariable(currentTeamPlayer.getKey())
-        AddLayerFactor(CreatePriorFactor(currentTeamPlayer.getKey(), currentTeamPlayer.getValue(), playerSkill))
+        val playerSkill = createSkillOutputVariable(currentTeamPlayer.getKey())
+        addLayerFactor(createPriorFactor(currentTeamPlayer.getKey(), currentTeamPlayer.getValue(), playerSkill))
         currentTeamSkills.add(playerSkill)
       }
 
@@ -46,14 +46,14 @@ class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: C
       schedules.add(new ScheduleStep[GaussianDistribution](
         "Prior to Skill Step", prior, 0))
     }
-    return ScheduleSequence(schedules, "All priors")
+    return scheduleSequence(schedules, "All priors")
   }
 
-  private def CreatePriorFactor(player: IPlayer, priorRating: Rating, skillsVariable: Variable[GaussianDistribution]): GaussianPriorFactor =
+  private def createPriorFactor(player: IPlayer, priorRating: Rating, skillsVariable: Variable[GaussianDistribution]): GaussianPriorFactor =
     new GaussianPriorFactor(priorRating.mean,
       MathUtils.square(priorRating.standardDeviation) + MathUtils.square(parentGraph.gameInfo.dynamicsFactor),
       skillsVariable)
 
-  private def CreateSkillOutputVariable(key: IPlayer): KeyedVariable[IPlayer, GaussianDistribution] =
+  private def createSkillOutputVariable(key: IPlayer): KeyedVariable[IPlayer, GaussianDistribution] =
     KeyedVariable[IPlayer, GaussianDistribution](key, GaussianDistribution.UNIFORM, "%s's skill", key.toString())
 }

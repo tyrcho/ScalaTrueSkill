@@ -36,22 +36,22 @@ class FactorGraphTrueSkillCalculator
 
     val factorGraph = new TrueSkillFactorGraph(gameInfo, teamsl, teamRanks.toArray[Int])
     factorGraph.BuildGraph()
-    factorGraph.RunSchedule()
+    factorGraph.runSchedule()
 
     //    factorGraph.GetProbabilityOfRanking()
 
-    factorGraph.GetUpdatedRatings()
+    factorGraph.getUpdatedRatings()
   }
 
   override def calculateMatchQuality(gameInfo: GameInfo,
     teams: Collection[_ <: ITeam]): Double = {
     // We need to create the A matrix which is the player team assigments.
     val teamAssignmentsList = new ArrayList[ITeam](teams)
-    val skillsMatrix = GetPlayerCovarianceMatrix(teamAssignmentsList)
-    val meanVector = GetPlayerMeansVector(teamAssignmentsList)
+    val skillsMatrix = getPlayerCovarianceMatrix(teamAssignmentsList)
+    val meanVector = getPlayerMeansVector(teamAssignmentsList)
     val meanVectorTranspose = meanVector.transpose()
 
-    val playerTeamAssignmentsMatrix = CreatePlayerTeamAssignmentMatrix(
+    val playerTeamAssignmentsMatrix = createTeamPerformanceToDifferenceFactor(
       teamAssignmentsList, meanVector.numRows())
     val playerTeamAssignmentsMatrixTranspose = playerTeamAssignmentsMatrix.transpose()
 
@@ -76,9 +76,9 @@ class FactorGraphTrueSkillCalculator
     Math.exp(expPart) * Math.sqrt(sqrtPart)
   }
 
-  def GetPlayerMeansVector(teamAssignmentsList: Collection[_ <: ITeam]): SimpleMatrix = {
+  def getPlayerMeansVector(teamAssignmentsList: Collection[_ <: ITeam]): SimpleMatrix = {
     // A simple list of all the player means.
-    val temp = GetPlayerMeanRatingValues(teamAssignmentsList)
+    val temp = getPlayerMeanRatingValues(teamAssignmentsList)
     val tempa = new Array[Double](temp.size())
     for (i <- 0 until tempa.length) tempa(i) = temp.get(i)
     return new SimpleMatrix(Array.fill(1)(tempa)).transpose()
@@ -88,8 +88,8 @@ class FactorGraphTrueSkillCalculator
    * This is a square matrix whose diagonal values represent the variance
    * (square of standard deviation) of all players.
    */
-  private def GetPlayerCovarianceMatrix(teamAssignmentsList: Collection[_ <: ITeam]): SimpleMatrix = {
-    val temp = GetPlayerVarianceRatingValues(teamAssignmentsList).toSeq
+  private def getPlayerCovarianceMatrix(teamAssignmentsList: Collection[_ <: ITeam]): SimpleMatrix = {
+    val temp = getPlayerVarianceRatingValues(teamAssignmentsList).toSeq
     return SimpleMatrix.diag(temp: _*).transpose()
   }
 
@@ -97,7 +97,7 @@ class FactorGraphTrueSkillCalculator
    * TODO Make array? Helper function that gets a list of values for all
    * player ratings
    */
-  private def GetPlayerMeanRatingValues(teamAssignmentsList: Collection[_ <: ITeam]): List[Double] = {
+  private def getPlayerMeanRatingValues(teamAssignmentsList: Collection[_ <: ITeam]): List[Double] = {
     val playerRatingValues = new ArrayList[Double]()
     for (currentTeam <- teamAssignmentsList)
       for (currentRating <- currentTeam.values())
@@ -110,7 +110,7 @@ class FactorGraphTrueSkillCalculator
    * TODO Make array? Helper function that gets a list of values for all
    * player ratings
    */
-  private def GetPlayerVarianceRatingValues(teamAssignmentsList: Collection[_ <: ITeam]): List[Double] = {
+  private def getPlayerVarianceRatingValues(teamAssignmentsList: Collection[_ <: ITeam]): List[Double] = {
     val playerRatingValues = new ArrayList[Double]()
     for (currentTeam <- teamAssignmentsList)
       for (currentRating <- currentTeam.values())
@@ -142,7 +142,7 @@ class FactorGraphTrueSkillCalculator
    * |  0.00 -1.00 |
    * [/pre]
    */
-  private def CreatePlayerTeamAssignmentMatrix(teamAssignmentsList: List[ITeam], totalPlayers: Int): SimpleMatrix = {
+  private def createTeamPerformanceToDifferenceFactor(teamAssignmentsList: List[ITeam], totalPlayers: Int): SimpleMatrix = {
     val playerAssignments = new ArrayList[List[Double]]()
     var totalPreviousPlayers = 0
 

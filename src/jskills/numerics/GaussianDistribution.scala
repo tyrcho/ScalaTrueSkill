@@ -80,7 +80,7 @@ object GaussianDistribution {
   def apply(distribution: GaussianDistribution) =
     new GaussianDistribution(distribution.mean, distribution.standardDeviation, distribution.variance, distribution.precision, distribution.precisionMean)
 
-  private def InverseErrorFunctionCumulativeTo(p: Double): Double = {
+  private def inverseErrorFunctionCumulativeTo(p: Double): Double = {
     // From page 265 of numerical recipes                       
     if (p >= 2.0) return -100
     if (p <= 0.0) return 100
@@ -97,7 +97,7 @@ object GaussianDistribution {
 
   def inverseCumulativeTo(x: Double, mean: Double, standardDeviation: Double): Double = {
     // From numerical recipes, page 320
-    return mean - sqrt(2) * standardDeviation * InverseErrorFunctionCumulativeTo(2 * x)
+    return mean - sqrt(2) * standardDeviation * inverseErrorFunctionCumulativeTo(2 * x)
   }
 
   def inverseCumulativeTo(x: Double): Double = {
