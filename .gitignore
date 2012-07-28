@@ -8,3 +8,5 @@ test-output
 war/WEB-INF/appengine-generated
 war/WEB-INF/classes
 target
+.cache
+.settings/*
