@@ -37,6 +37,9 @@ class GaussianDistribution(
   val precision: Double,
   /** Precision times mean, \u03bc/\u03c3^2 **/
   val precisionMean: Double) {
+
+  import GaussianDistribution._
+
   /**
    * The normalization constant multiplies the exponential and causes the
    * integral over (-Inf,Inf) to equal 1
@@ -47,7 +50,7 @@ class GaussianDistribution(
   // http://www.astro.psu.edu/~mce/A451_2/A451/downloads/notes0.pdf
   def getNormalizationConstant() = 1.0 / (sqrt(2 * PI) * standardDeviation)
 
-  def mult(other: GaussianDistribution): GaussianDistribution = GaussianDistribution.prod(this, other)
+  def *(other: GaussianDistribution): GaussianDistribution = GaussianDistribution.prod(this, other)
 
   override def toString = format("Mean(\u03bc)=%f, Std-Dev(\u03c3)=%f", mean, standardDeviation)
 
@@ -55,51 +58,15 @@ class GaussianDistribution(
     o match {
       case g: GaussianDistribution =>
         import java.lang.Double.compare
-        if (compare(mean, g.mean) != 0)  false
-        if (compare(standardDeviation, g.standardDeviation) != 0)  false
-        if (compare(variance, g.variance) != 0)  false
-        if (compare(precision, g.precision) != 0)  false
-        if (compare(precisionMean, g.precisionMean) != 0)  false
-         true
+        if (compare(mean, g.mean) != 0) false
+        if (compare(standardDeviation, g.standardDeviation) != 0) false
+        if (compare(variance, g.variance) != 0) false
+        if (compare(precision, g.precision) != 0) false
+        if (compare(precisionMean, g.precisionMean) != 0) false
+        true
       case _ => false
     }
   }
-}
-object GaussianDistribution {
-  /**
-   * The Gaussian representation of a flat line.
-   */
-  def UNIFORM: GaussianDistribution = fromPrecisionMean(0, 0)
-
-  def apply(mean: Double, standardDeviation: Double) =
-    new GaussianDistribution(mean, standardDeviation, square(standardDeviation), 1.0 / square(standardDeviation), mean / square(standardDeviation))
-
-  def apply(rating: Rating): GaussianDistribution =
-    GaussianDistribution(rating.mean, rating.standardDeviation)
-
-  def apply(distribution: GaussianDistribution) =
-    new GaussianDistribution(distribution.mean, distribution.standardDeviation, distribution.variance, distribution.precision, distribution.precisionMean)
-
-  private def inverseErrorFunctionCumulativeTo(p: Double): Double = {
-    // From page 265 of numerical recipes                       
-    if (p >= 2.0)  -100
-    if (p <= 0.0)  100
-    val pp = if (p < 1.0) p else 2 - p
-    val t = sqrt(-2 * log(pp / 2.0)) // Initial guess
-    var x = -0.70711 * ((2.30753 + t * 0.27061) / (1.0 + t * (0.99229 + t * 0.04481)) - t)
-
-    for (j <- 0 until 2) {
-      val err = errorFunctionCumulativeTo(x) - pp
-      x += err / (1.1283791670955126 * exp(-(x * x)) - x * err) // Halley
-    }
-    if (p < 1.0) x else -x
-  }
-
-  // From numerical recipes, page 320
-  def inverseCumulativeTo(x: Double, mean: Double, standardDeviation: Double): Double =
-    mean - sqrt(2) * standardDeviation * inverseErrorFunctionCumulativeTo(2 * x)
-
-  def inverseCumulativeTo(x: Double): Double = inverseCumulativeTo(x, 0, 1)
 
   /**
    * <pre>
@@ -114,21 +81,60 @@ object GaussianDistribution {
    *         width.
    * @see http://mathworld.wolfram.com/NormalDistribution.html
    */
-  def at(x: Double): Double = at(x, 0, 1)
-
-  def at(x: Double, mean: Double, standardDeviation: Double): Double = {
+  def at(x: Double): Double = {
     val multiplier = 1.0 / (standardDeviation * sqrt(2 * PI))
     val expPart = exp((-1.0 * pow(x - mean, 2.0)) / (2 * (standardDeviation * standardDeviation)))
     multiplier * expPart
   }
 
-  def cumulativeTo(x: Double, mean: Double, standardDeviation: Double): Double = {
+  def cumulativeTo(x: Double): Double = {
     val invsqrt2 = -0.7071067811865476
     val result = errorFunctionCumulativeTo(invsqrt2 * x)
     0.5 * result
   }
 
-  def cumulativeTo(x: Double): Double = cumulativeTo(x, 0, 1)
+  // From numerical recipes, page 320
+  def inverseCumulativeTo(x: Double): Double =
+    mean - sqrt(2) * standardDeviation * inverseErrorFunctionCumulativeTo(2 * x)
+
+}
+
+object GaussianDistribution {
+  /**
+   * The Gaussian representation of a flat line.
+   */
+  def UNIFORM: GaussianDistribution = fromPrecisionMean(0, 0)
+  def STANDARD = GaussianDistribution(0, 1)
+
+  def apply(mean: Double, standardDeviation: Double) =
+    new GaussianDistribution(mean, standardDeviation, square(standardDeviation), 1.0 / square(standardDeviation), mean / square(standardDeviation))
+
+  def apply(rating: Rating): GaussianDistribution =
+    GaussianDistribution(rating.mean, rating.standardDeviation)
+
+  def apply(distribution: GaussianDistribution) =
+    new GaussianDistribution(distribution.mean, distribution.standardDeviation, distribution.variance, distribution.precision, distribution.precisionMean)
+
+  private def inverseErrorFunctionCumulativeTo(p: Double): Double = {
+    // From page 265 of numerical recipes                       
+    if (p >= 2.0) -100
+    if (p <= 0.0) 100
+    val pp = if (p < 1.0) p else 2 - p
+    val t = sqrt(-2 * log(pp / 2.0)) // Initial guess
+    var x = -0.70711 * ((2.30753 + t * 0.27061) / (1.0 + t * (0.99229 + t * 0.04481)) - t)
+
+    for (j <- 0 until 2) {
+      val err = errorFunctionCumulativeTo(x) - pp
+      x += err / (1.1283791670955126 * exp(-(x * x)) - x * err) // Halley
+    }
+    if (p < 1.0) x else -x
+  }
+
+  def inverseCumulativeTo(x: Double): Double = STANDARD.inverseCumulativeTo(x)
+
+  def at(x: Double): Double = STANDARD.at(x)
+
+  def cumulativeTo(x: Double): Double = STANDARD.cumulativeTo(x)
 
   def errorFunctionCumulativeTo(x: Double): Double = {
     // Derived from page 265 of Numerical Recipes 3rd Edition            
@@ -162,22 +168,22 @@ object GaussianDistribution {
   def sub(left: GaussianDistribution, right: GaussianDistribution) = absoluteDifference(left, right)
 
   def logProductNormalization(left: GaussianDistribution, right: GaussianDistribution): Double = {
-    if ((left.precision == 0) || (right.precision == 0))  0
+    if ((left.precision == 0) || (right.precision == 0)) 0
     val varianceSum = left.variance + right.variance
     val meanDifference = left.mean - right.mean
     val logSqrt2Pi = log(sqrt(2 * PI))
-     -logSqrt2Pi - (log(varianceSum) / 2.0) - (square(meanDifference) / (2.0 * varianceSum))
+    -logSqrt2Pi - (log(varianceSum) / 2.0) - (square(meanDifference) / (2.0 * varianceSum))
   }
 
   def divide(numerator: GaussianDistribution, denominator: GaussianDistribution): GaussianDistribution =
     fromPrecisionMean(numerator.precisionMean - denominator.precisionMean, numerator.precision - denominator.precision)
 
   def logRatioNormalization(numerator: GaussianDistribution, denominator: GaussianDistribution): Double = {
-    if ((numerator.precision == 0) || (denominator.precision == 0))  0
+    if ((numerator.precision == 0) || (denominator.precision == 0)) 0
     val varianceDifference = denominator.variance - numerator.variance
     val meanDifference = numerator.mean - denominator.mean
     val logSqrt2Pi = log(sqrt(2 * PI))
-     log(denominator.variance) + logSqrt2Pi - log(varianceDifference) / 2.0 + square(meanDifference) / (2 * varianceDifference)
+    log(denominator.variance) + logSqrt2Pi - log(varianceDifference) / 2.0 + square(meanDifference) / (2 * varianceDifference)
   }
 
   def fromPrecisionMean(precisionMean: Double, precision: Double) =

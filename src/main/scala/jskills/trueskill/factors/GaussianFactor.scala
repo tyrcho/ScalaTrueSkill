@@ -14,8 +14,8 @@ abstract class GaussianFactor(name: String) extends Factor[GaussianDistribution]
     val marginal = variable.value
     val messageValue = message.value
     val logZ = GaussianDistribution.logProductNormalization(marginal, messageValue)
-    variable.value = marginal.mult(messageValue)
-     logZ
+    variable.value = marginal * messageValue
+    logZ
   }
 
   override def createVariableToMessageBinding(variable: Variable[GaussianDistribution]): Message[GaussianDistribution] =
