@@ -2,7 +2,7 @@ package jskills.numerics
 
 import org.junit.Assert._
 
-import org.ejml.data.SimpleMatrix
+import org.ejml.simple.SimpleMatrix
 import org.junit.Test
 
 class MatrixTests {

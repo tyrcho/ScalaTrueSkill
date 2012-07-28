@@ -28,12 +28,19 @@
 				<groupId>org.scala-tools</groupId>
 				<artifactId>maven-scala-plugin</artifactId>
 				<version>${maven.scala.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+							<goal>testCompile</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
 
 	<repositories>
-
 		<repository>
 			<id>objectify-appengine</id>
 			<name>Objectify Maven Repository</name>
@@ -127,16 +134,17 @@
 			<version>${gae.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.googlecode.objectify</groupId>
-			<artifactId>objectify</artifactId>
-			<version>2.2.2</version>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-jpa_3.0_spec</artifactId>
 			<version>1.1.1</version>
 		</dependency>
 
+
+		<dependency>
+			<groupId>com.googlecode.efficient-java-matrix-library</groupId>
+			<artifactId>ejml</artifactId>
+			<version>0.19</version>
+		</dependency>
 
 
 		<!-- These dependencies are here just for enabling logging. -->
@@ -176,11 +184,6 @@
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-dev</artifactId>
-			<version>${gwt.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
 			<version>${gwt.version}</version>
 		</dependency>
 		<dependency>

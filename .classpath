@@ -4,7 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container/WordbookVaadinGAE"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/ejml-0.11.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-1.2.16.jar"/>
 	<classpathentry kind="src" output="target/classes" path="src/main/scala">
 		<attributes>

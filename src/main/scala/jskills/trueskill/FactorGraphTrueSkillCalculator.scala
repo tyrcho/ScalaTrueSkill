@@ -9,7 +9,7 @@ import jskills.RankSorter
 import jskills.Rating
 import jskills.SkillCalculator
 import jskills.numerics.Range
-import org.ejml.data.SimpleMatrix
+import org.ejml.simple.SimpleMatrix
 
 import jskills.SupportedOptions
 import jskills.PartialPlay
