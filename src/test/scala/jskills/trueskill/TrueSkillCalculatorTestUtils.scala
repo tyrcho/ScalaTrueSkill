@@ -10,7 +10,7 @@ import jskills.Rating
 import jskills.SkillCalculator
 import jskills.Team
 
-object TrueSkillCalculatorTests {
+trait TrueSkillCalculatorTestUtils {
 
   private val ErrorTolerance = 0.085
 

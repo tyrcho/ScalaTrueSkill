@@ -3,7 +3,7 @@ package jskills.trueskill
 import org.junit.Before
 import org.junit.Test
 
-class TwoTeamTrueSkillCalculatorTest {
+class TwoTeamTrueSkillCalculatorTest extends TrueSkillCalculatorTestUtils {
 
   var calculator: TwoTeamTrueSkillCalculator = null
 
@@ -11,13 +11,13 @@ class TwoTeamTrueSkillCalculatorTest {
     calculator = new TwoTeamTrueSkillCalculator()
   }
 
-  @Test def TestAllTwoPlayerScenarios() {
+  @Test def testAllTwoPlayerScenarios() {
     // This calculator supports up to two teams with many players each
-    TrueSkillCalculatorTests.TestAllTwoPlayerScenarios(calculator)
+    TestAllTwoPlayerScenarios(calculator)
   }
 
-  @Test def TestAllTwoTeamScenarios() {
+  @Test def testAllTwoTeamScenarios() {
     // This calculator supports up to two teams with many players each
-    TrueSkillCalculatorTests.TestAllTwoTeamScenarios(calculator)
+    TestAllTwoTeamScenarios(calculator)
   }
 }

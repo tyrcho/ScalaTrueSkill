@@ -1,15 +1,16 @@
 package jskills.numerics
 
 import org.junit.Test
+import org.scalatest.junit.AssertionsForJUnit
 import org.junit.Assert._
 import java.lang.Math.sqrt
 import MathUtils.square
 
-class GaussianDistributionTests {
+class GaussianDistributionTest extends AssertionsForJUnit {
   val ErrorTolerance = 0.000001
 
   @Test
-  def CumulativeToTests() {
+  def cumulativeToTest() {
     // Verified with WolframAlpha
     // (e.g.
     // http://www.wolframalpha.com/input/?i=CDF%5BNormalDistribution%5B0%2C1%5D%2C+0.5%5D
@@ -18,7 +19,7 @@ class GaussianDistributionTests {
   }
 
   @Test
-  def AtTests() {
+  def AtTest() {
     // Verified with WolframAlpha
     // (e.g.
     // http://www.wolframalpha.com/input/?i=PDF%5BNormalDistribution%5B0%2C1%5D%2C+0.5%5D
@@ -27,7 +28,7 @@ class GaussianDistributionTests {
   }
 
   @Test
-  def MultiplicationTests() {
+  def MultiplicationTest() {
     // I verified this against the formula at
     // http://www.tina-vision.net/tina-knoppix/tina-memo/2003-003.pdf
     val standardNormal = GaussianDistribution(0, 1)
@@ -52,7 +53,7 @@ class GaussianDistributionTests {
       ErrorTolerance)
   }
 
-  @Test def DivisionTests() {
+  @Test def DivisionTest() {
     // Since the multiplication was worked out by hand, we use the same
     // numbers but work backwards
     val product = GaussianDistribution(0.2, 3.0 / sqrt(10))
@@ -75,7 +76,7 @@ class GaussianDistributionTests {
       ErrorTolerance)
   }
 
-  @Test def LogProductNormalizationTests() {
+  @Test def LogProductNormalizationTest() {
     // Verified with Ralf Herbrich's F# implementation
     val standardNormal = GaussianDistribution(0, 1)
     val lpn = GaussianDistribution.logProductNormalization(
@@ -88,7 +89,7 @@ class GaussianDistributionTests {
     assertEquals(-2.5168046699816684, lpn2, ErrorTolerance)
   }
 
-  @Test def LogRatioNormalizationTests() {
+  @Test def LogRatioNormalizationTest() {
     // Verified with Ralf Herbrich's F# implementation
     val m1s2 = GaussianDistribution(1, 2)
     val m3s4 = GaussianDistribution(3, 4)
@@ -96,7 +97,7 @@ class GaussianDistributionTests {
     assertEquals(2.6157405972171204, lrn, ErrorTolerance)
   }
 
-  @Test def AbsoluteDifferenceTests() {
+  @Test def AbsoluteDifferenceTest() {
     // Verified with Ralf Herbrich's F# implementation
     val standardNormal = GaussianDistribution(0, 1)
     val absDiff = GaussianDistribution.absoluteDifference(standardNormal, standardNormal)

@@ -4,8 +4,9 @@ import org.junit.Assert._
 
 import org.ejml.simple.SimpleMatrix
 import org.junit.Test
+import org.scalatest.junit.AssertionsForJUnit
 
-class MatrixTests {
+class MatrixTest extends AssertionsForJUnit {
   val ERROR_TOLERANCE = 0.0000000000001
 
   @Test def TwoByTwoDeterminantTests() {
