@@ -7,3 +7,4 @@ war/WEB-INF/classes
 .cache
 .settings
 *.class
+*.bin
