@@ -13,6 +13,19 @@ class PlayerEditor extends HorizontalLayout {
     for (f <- Seq(name, team, mu, sigma)) f.setEnabled(false)
   }
 
+  def values = Player(
+    name.getValue.toString,
+    team.getValue.toString,
+    mu.getValue.toString.toDouble,
+    mu.getValue.toString.toDouble)
+
+  def values_=(p: Player) {
+    name.setValue(p.name)
+    team.setValue(p.team)
+    mu.setValue(p.mu)
+    sigma.setValue(p.sigma)
+  }
+
   private def addField(c: String, initialValue: String): TextField =
     add(new TextField(caption = c, value = initialValue))
 }

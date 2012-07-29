@@ -182,5 +182,10 @@
 			<artifactId>scala-wrappers</artifactId>
 			<version>0.1</version>
 		</dependency>
+		<dependency>
+			<groupId>info.daviot</groupId>
+			<artifactId>TrueSkillEngine</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
 	</dependencies>
 </project>

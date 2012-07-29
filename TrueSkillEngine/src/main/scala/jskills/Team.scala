@@ -1,9 +1,6 @@
 package jskills
 
-
-
 import collection.mutable.HashMap
-
 
 /**
  * Helper class for working with a single team.
@@ -20,7 +17,7 @@ class Team extends HashMap[IPlayer, Rating] with ITeam {
    */
   def addPlayer(player: IPlayer, rating: Rating): Team = {
     put(player, rating)
-     this
+    this
   }
 }
 
@@ -35,5 +32,11 @@ object Team {
    */
   def apply(player: IPlayer, rating: Rating) = {
     new Team().addPlayer(player, rating)
+  }
+
+  def apply(players: Iterable[(IPlayer, Rating)]) = {
+    val t = new Team()
+    t ++= players
+    t
   }
 }
