@@ -13,8 +13,7 @@
 	<properties>
 		<vaadin.version>6.7.1</vaadin.version>
 		<gae.version>1.6.0</gae.version>
-		<gwt.version>2.3.0</gwt.version>
-		<gwt.plugin.version>2.2.0</gwt.plugin.version>
+		<gae.plugin.version>0.9.4</gae.plugin.version>
 	</properties>
 
 	<repositories>
@@ -55,6 +54,63 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>net.kindleit</groupId>
+				<artifactId>maven-gae-plugin</artifactId>
+				<version>${gae.plugin.version}</version>
+				<configuration>
+					<serverId>appengine.google.com</serverId>
+					<sdkDir>${appengine.sdk.root}</sdkDir>
+					<appDir>${basedir}/war</appDir>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>net.kindleit</groupId>
+						<artifactId>gae-runtime</artifactId>
+						<version>${gae.version}</version>
+						<type>pom</type>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				 <version>2.5</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>war/WEB-INF/lib</directory>
+							<includes>
+								<include>*.jar</include>
+							</includes>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>war/WEB-INF/lib</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<warSourceDirectory>war</warSourceDirectory>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -86,13 +142,6 @@
 			<artifactId>vaadin</artifactId>
 			<version>${vaadin.version}</version>
 		</dependency>
-		<!-- This is also used by gwt-maven-plugin to deduce GWT version number. -->
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-			<version>${gwt.version}</version>
-			<scope>compile</scope>
-		</dependency>
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
@@ -119,11 +168,6 @@
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-1.0-sdk</artifactId>
 			<version>${gae.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode.objectify</groupId>
-			<artifactId>objectify</artifactId>
-			<version>2.2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>
@@ -168,16 +212,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-dev</artifactId>
-			<version>${gwt.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-			<version>${gwt.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.vaadin.addons</groupId>
 			<artifactId>scala-wrappers</artifactId>
 			<version>0.1</version>
@@ -185,7 +219,7 @@
 		<dependency>
 			<groupId>info.daviot</groupId>
 			<artifactId>TrueSkillEngine</artifactId>
-			<version>${pom.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 </project>
