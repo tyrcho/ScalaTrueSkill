@@ -15,7 +15,7 @@
 		<gae.version>1.7.0</gae.version>
 		<gae.plugin.version>0.9.4</gae.plugin.version>
 		<!-- This is just for "eclipse:eclipse" goal to always attempt downloading 
-		sources -->
+			sources -->
 		<downloadSources>true</downloadSources>
 		<!-- Upload to http://test.latest.<applicationName>.appspot.com by default -->
 		<gae.application.version>3</gae.application.version>
@@ -68,7 +68,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.1-beta-1</version>
+				<version>2.1.1</version>
 				<configuration>
 					<webResources>
 						<resource>
@@ -84,7 +84,7 @@
 
 
 			<!-- The actual maven-gae-plugin. Type "mvn gae:run" to run project, "mvn 
-			gae:deploy" to upload to GAE. -->
+				gae:deploy" to upload to GAE. -->
 			<plugin>
 				<groupId>net.kindleit</groupId>
 				<artifactId>maven-gae-plugin</artifactId>
@@ -160,7 +160,7 @@
 		</dependency>
 
 		<!-- jars from GAE's "lib/user" must be added as compile-time dependencies, 
-		as described here in "Copying JARs" section: http://code.google.com/appengine/docs/java/tools/ant.html -->
+			as described here in "Copying JARs" section: http://code.google.com/appengine/docs/java/tools/ant.html -->
 
 		<dependency>
 			<groupId>javax.persistence</groupId>
@@ -197,18 +197,20 @@
 			<version>0.9.24</version>
 		</dependency>
 		<!-- GAE libraries for local testing as described here: http://code.google.com/appengine/docs/java/howto/unittesting.html -->
+
+
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-labs</artifactId>
 			<version>${gae.version}</version>
-			<scope>compile</scope>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-stubs</artifactId>
 			<version>${gae.version}</version>
-			<scope>compile</scope>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -227,6 +229,11 @@
 			<groupId>info.daviot</groupId>
 			<artifactId>TrueSkillEngine</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
 		</dependency>
 	</dependencies>
 </project>

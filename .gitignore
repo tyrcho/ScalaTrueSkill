@@ -8,3 +8,5 @@ test-output
 target
 .cache
 .settings
+.classpath
+.project
