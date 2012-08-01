@@ -1,10 +1,10 @@
+
 *~
 *.sw?
+bin
+deploy
+test-output
 .scala_dependencies
-war/WEB-INF/appengine-generated
 target
-war/WEB-INF/classes
 .cache
 .settings
-*.class
-*.bin
