@@ -12,8 +12,17 @@
 
 	<properties>
 		<vaadin.version>6.7.1</vaadin.version>
-		<gae.version>1.6.0</gae.version>
+		<gae.version>1.7.0</gae.version>
 		<gae.plugin.version>0.9.4</gae.plugin.version>
+		<!-- This is just for "eclipse:eclipse" goal to always attempt downloading 
+		sources -->
+		<downloadSources>true</downloadSources>
+		<!-- Upload to http://test.latest.<applicationName>.appspot.com by default -->
+		<gae.application.version>3</gae.application.version>
+
+		<!-- port defaults to 8080 -->
+		<gae.port>8080</gae.port>
+
 	</properties>
 
 	<repositories>
@@ -54,61 +63,50 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>net.kindleit</groupId>
-				<artifactId>maven-gae-plugin</artifactId>
-				<version>${gae.plugin.version}</version>
-				<configuration>
-					<serverId>appengine.google.com</serverId>
-					<sdkDir>${appengine.sdk.root}</sdkDir>
-					<appDir>${basedir}/war</appDir>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>net.kindleit</groupId>
-						<artifactId>gae-runtime</artifactId>
-						<version>${gae.version}</version>
-						<type>pom</type>
-					</dependency>
-				</dependencies>
-			</plugin>
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				 <version>2.5</version>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>war/WEB-INF/lib</directory>
-							<includes>
-								<include>*.jar</include>
-							</includes>
-							<followSymlinks>false</followSymlinks>
-						</fileset>
-					</filesets>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>clean</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>war/WEB-INF/lib</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.0.2</version>
+				<version>2.1-beta-1</version>
 				<configuration>
-					<warSourceDirectory>war</warSourceDirectory>
+					<webResources>
+						<resource>
+							<directory>src/main/webapp</directory>
+							<filtering>true</filtering>
+							<includes>
+								<include>**/appengine-web.xml</include>
+							</includes>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+
+
+			<!-- The actual maven-gae-plugin. Type "mvn gae:run" to run project, "mvn 
+			gae:deploy" to upload to GAE. -->
+			<plugin>
+				<groupId>net.kindleit</groupId>
+				<artifactId>maven-gae-plugin</artifactId>
+				<version>0.9.4</version>
+			</plugin>
+
+			<!-- Upload application to the appspot automatically, during release:perform -->
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<goals>gae:deploy</goals>
+				</configuration>
+			</plugin>
+
+			<!-- Java compiler version -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -155,8 +153,14 @@
 			<classifier>sources</classifier>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<version>1.1</version>
+		</dependency>
+
 		<!-- jars from GAE's "lib/user" must be added as compile-time dependencies, 
-			as described here in "Copying JARs" section: http://code.google.com/appengine/docs/java/tools/ant.html -->
+		as described here in "Copying JARs" section: http://code.google.com/appengine/docs/java/tools/ant.html -->
 
 		<dependency>
 			<groupId>javax.persistence</groupId>
@@ -164,10 +168,13 @@
 			<version>1.0</version>
 		</dependency>
 
+
+		<!-- Google App Engine meta-package -->
 		<dependency>
-			<groupId>com.google.appengine</groupId>
-			<artifactId>appengine-api-1.0-sdk</artifactId>
+			<groupId>net.kindleit</groupId>
+			<artifactId>gae-runtime</artifactId>
 			<version>${gae.version}</version>
+			<type>pom</type>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>
@@ -181,13 +188,13 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.6.0</version>
+			<version>1.6.1</version>
 		</dependency>
 
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>0.9.22</version>
+			<version>0.9.24</version>
 		</dependency>
 		<!-- GAE libraries for local testing as described here: http://code.google.com/appengine/docs/java/howto/unittesting.html -->
 		<dependency>
@@ -208,7 +215,7 @@
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-testing</artifactId>
 			<version>${gae.version}</version>
-			<scope>compile</scope>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
