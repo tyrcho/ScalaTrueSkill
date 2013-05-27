@@ -3,7 +3,7 @@ package jskills.trueskill
 import scala.collection.mutable.Map
 
 import jskills.GameInfo
-import jskills.IPlayer
+import jskills.Player
 import jskills.ITeam
 import jskills.PairwiseComparison
 import jskills.RankSorter
@@ -20,7 +20,7 @@ class TwoTeamTrueSkillCalculator
   extends SkillCalculator(Seq(), 2 to 2, 1 to Int.MaxValue) {
 
   override def calculateNewRatings(gameInfo: GameInfo,
-    teams: Seq[_ <: ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating] = {
+    teams: Seq[_ <: ITeam], teamRanks: Seq[Int]): Map[Player, Rating] = {
     validateTeamCountAndPlayersCountPerTeam(teams)
 
     val teamsl = RankSorter.sort(teams, teamRanks)
@@ -30,7 +30,7 @@ class TwoTeamTrueSkillCalculator
 
     val wasDraw = (teamRanks(0) == teamRanks(1))
 
-    val results = Map.empty[IPlayer, Rating]
+    val results = Map.empty[Player, Rating]
 
     updatePlayerRatings(gameInfo, results, team1, team2, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.WIN)
 
@@ -40,7 +40,7 @@ class TwoTeamTrueSkillCalculator
   }
 
   private def updatePlayerRatings(gameInfo: GameInfo,
-    newPlayerRatings: Map[IPlayer, Rating],
+    newPlayerRatings: Map[Player, Rating],
     selfTeam: ITeam,
     otherTeam: ITeam,
     selfToOtherTeamComparison: PairwiseComparison) {

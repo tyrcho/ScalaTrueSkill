@@ -2,7 +2,7 @@ package jskills.trueskill
 
 import collection.mutable.Map
 import jskills.GameInfo
-import jskills.IPlayer
+import jskills.Player
 import jskills.ITeam
 import jskills.Rating
 import jskills.factorgraphs.Factor
@@ -72,8 +72,8 @@ class TrueSkillFactorGraph(
      new ScheduleSequence[GaussianDistribution]("Full schedule", fullSchedule)
   }
 
-  def getUpdatedRatings(): Map[IPlayer, Rating] = {
-    val result = Map.empty[IPlayer, Rating]
+  def getUpdatedRatings(): Map[Player, Rating] = {
+    val result = Map.empty[Player, Rating]
     for (currentTeam <- priorLayer.getOutputVariablesGroups()) {
       for (currentPlayer <- currentTeam) {
         result.put(currentPlayer.key, new Rating(currentPlayer.value.mean, currentPlayer.value.standardDeviation))

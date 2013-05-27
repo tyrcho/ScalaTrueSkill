@@ -6,7 +6,7 @@ import scala.collection.mutable.Map
 import org.ejml.simple.SimpleMatrix
 
 import jskills.GameInfo
-import jskills.IPlayer
+import jskills.Player
 import jskills.ITeam
 import jskills.PartialPlay
 import jskills.RankSorter
@@ -24,7 +24,7 @@ class FactorGraphTrueSkillCalculator
     1 to Int.MaxValue) {
 
   override def calculateNewRatings(gameInfo: GameInfo,
-    teams: Seq[_ <: ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating] = {
+    teams: Seq[_ <: ITeam], teamRanks: Seq[Int]): Map[Player, Rating] = {
     validateTeamCountAndPlayersCountPerTeam(teams)
 
     val teamsl = RankSorter.sort(teams, teamRanks)

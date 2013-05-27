@@ -3,7 +3,7 @@ package jskills.trueskill
 import org.junit.Assert._
 
 import jskills.GameInfo
-import jskills.IPlayer
+import jskills.Player
 import jskills.ITeam
 import jskills.Player
 import jskills.Rating

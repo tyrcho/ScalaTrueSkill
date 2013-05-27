@@ -1,7 +1,7 @@
 package jskills.elo
 
 import jskills.GameInfo
-import jskills.IPlayer
+import jskills.Player
 import jskills.ITeam
 import jskills.PairwiseComparison
 import jskills.RankSorter
@@ -17,11 +17,11 @@ abstract class TwoPlayerEloCalculator(kFactor: KFactor)
 
   override def calculateNewRatings(gameInfo: GameInfo,
     teams: Seq[_ <: ITeam],
-    teamRanks: Seq[Int]): Map[IPlayer, Rating] = {
+    teamRanks: Seq[Int]): Map[Player, Rating] = {
     validateTeamCountAndPlayersCountPerTeam(teams)
     val teamsl = RankSorter.sort(teams, teamRanks)
 
-    val result = Map.empty[IPlayer, Rating]
+    val result = Map.empty[Player, Rating]
     val isDraw = (teamRanks(0) == teamRanks(1))
 
     val players = teamsl map (_.keySet.head)

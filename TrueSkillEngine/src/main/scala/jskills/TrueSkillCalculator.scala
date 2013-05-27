@@ -19,7 +19,7 @@ object TrueSkillCalculator {
    * @s All the players and their new ratings.
    */
   def calculateNewRatings(gameInfo: GameInfo,
-    teams: Seq[ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating] =
+    teams: Seq[ITeam], teamRanks: Seq[Int]): Map[Player, Rating] =
     // Just punt the work to the full implementation
     calculator.calculateNewRatings(gameInfo, teams, teamRanks)
 

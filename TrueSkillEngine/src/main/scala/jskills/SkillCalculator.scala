@@ -24,7 +24,7 @@ abstract class SkillCalculator(supportedOptions: Seq[SupportedOptions],
    * @s All the players and their new ratings.
    */
   def calculateNewRatings(gameInfo: GameInfo,
-    teams: Seq[_ <: ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating]
+    teams: Seq[_ <: ITeam], teamRanks: Seq[Int]): Map[Player, Rating]
 
   /**
    * Calculates the match quality as the likelihood of all teams drawing.

@@ -1,6 +1,6 @@
 package jskills.trueskill.layers
 
-import jskills.IPlayer
+import jskills.Player
 import jskills.factorgraphs.KeyedVariable
 import jskills.factorgraphs.Schedule
 import jskills.factorgraphs.ScheduleStep
@@ -13,11 +13,11 @@ import jskills.trueskill.factors.GaussianLikelihoodFactor
 import scala.collection.mutable.ListBuffer
 
 class PlayerSkillsToPerformancesLayer(parentGraph: TrueSkillFactorGraph)
-  extends TrueSkillFactorGraphLayer[KeyedVariable[IPlayer, GaussianDistribution], GaussianLikelihoodFactor, KeyedVariable[IPlayer, GaussianDistribution]](parentGraph) {
+  extends TrueSkillFactorGraphLayer[KeyedVariable[Player, GaussianDistribution], GaussianLikelihoodFactor, KeyedVariable[Player, GaussianDistribution]](parentGraph) {
 
   override def buildLayer() {
     for (currentTeam <- inputVariablesGroups) {
-      val currentTeamPlayerPerformances = ListBuffer.empty[KeyedVariable[IPlayer, GaussianDistribution]]
+      val currentTeamPlayerPerformances = ListBuffer.empty[KeyedVariable[Player, GaussianDistribution]]
 
       for (playerSkillVariable <- currentTeam) {
         val playerPerformance = createOutputVariable(playerSkillVariable.key)
@@ -29,12 +29,12 @@ class PlayerSkillsToPerformancesLayer(parentGraph: TrueSkillFactorGraph)
   }
 
   private def createLikelihood(
-    playerSkill: KeyedVariable[IPlayer, GaussianDistribution],
-    playerPerformance: KeyedVariable[IPlayer, GaussianDistribution]): GaussianLikelihoodFactor =
+    playerSkill: KeyedVariable[Player, GaussianDistribution],
+    playerPerformance: KeyedVariable[Player, GaussianDistribution]): GaussianLikelihoodFactor =
     new GaussianLikelihoodFactor(MathUtils.square(parentGraph.gameInfo.beta), playerPerformance, playerSkill)
 
-  private def createOutputVariable(key: IPlayer): KeyedVariable[IPlayer, GaussianDistribution] =
-    KeyedVariable[IPlayer, GaussianDistribution](key, GaussianDistribution.UNIFORM, "%s's performance", key)
+  private def createOutputVariable(key: Player): KeyedVariable[Player, GaussianDistribution] =
+    KeyedVariable[Player, GaussianDistribution](key, GaussianDistribution.UNIFORM, "%s's performance", key)
 
   override def createPriorSchedule(): Schedule[GaussianDistribution] = {
     val schedules = localFactors map (new ScheduleStep[GaussianDistribution]("Skill to Perf step", _, 0))

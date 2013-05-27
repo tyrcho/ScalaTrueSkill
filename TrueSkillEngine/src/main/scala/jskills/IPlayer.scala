@@ -1,3 +1,0 @@
-package jskills
-
-trait IPlayer 

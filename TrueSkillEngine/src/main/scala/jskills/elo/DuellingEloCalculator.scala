@@ -2,7 +2,7 @@ package jskills.elo
 
 import collection.mutable.Map
 import jskills.GameInfo
-import jskills.IPlayer
+import jskills.Player
 import jskills.ITeam
 import jskills.PairwiseComparison
 import jskills.Player
@@ -18,7 +18,7 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
 
   override def calculateNewRatings(gameInfo: GameInfo,
     teams: Seq[_ <: ITeam],
-    teamRanks: Seq[Int]): Map[IPlayer, Rating] = {
+    teamRanks: Seq[Int]): Map[Player, Rating] = {
     // On page 6 of the TrueSkill paper, the authors write:
     /*
 		 * "When we had to process a team game or a game with more than two
@@ -33,7 +33,7 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
     val teamsList = RankSorter.sort(teams, teamRanks)
     val tr = teamRanks.sortBy(i => i)
 
-    val deltas = Map.empty[IPlayer, Map[IPlayer, Double]]
+    val deltas = Map.empty[Player, Map[Player, Double]]
 
     for (ixCurrentTeam <- 0 until teamsList.length) {
       for (ixOtherTeam <- 0 until teamsList.length) {
@@ -53,7 +53,7 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
       }
     }
 
-    val result = Map.empty[IPlayer, Rating]
+    val result = Map.empty[Player, Rating]
 
     for (currentTeam <- teamsList) {
       for ((ck, cv) <- currentTeam) {
@@ -68,10 +68,10 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
 
   private def updateDuels(
     gameInfo: GameInfo,
-    duels: Map[IPlayer, Map[IPlayer, Double]],
-    player1: IPlayer,
+    duels: Map[Player, Map[Player, Double]],
+    player1: Player,
     player1Rating: Rating,
-    player2: IPlayer,
+    player2: Player,
     player2Rating: Rating,
     weakToStrongComparison: PairwiseComparison) {
 
@@ -94,11 +94,11 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
 
     for (ixCurrentTeam <- 0 until teams.length) {
       val currentTeamAverageRating = new EloRating(Rating.calcMeanMean(teams(ixCurrentTeam).values.toSeq))
-      val currentTeam = Team(new Player[Integer](ixCurrentTeam), currentTeamAverageRating)
+      val currentTeam = Team(new Player(ixCurrentTeam), currentTeamAverageRating)
 
       for (ixOtherTeam <- ixCurrentTeam + 1 until teams.length) {
         val otherTeamAverageRating = new EloRating(Rating.calcMeanMean(teams(ixOtherTeam).values.toSeq))
-        val otherTeam = Team(new Player[Integer](ixOtherTeam), otherTeamAverageRating)
+        val otherTeam = Team(new Player(ixOtherTeam), otherTeamAverageRating)
 
         minQuality = Math.min(minQuality, twoPlayerEloCalculator.calculateMatchQuality(gameInfo, List(currentTeam, otherTeam)))
       }
@@ -108,11 +108,11 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
   }
 
   def updateDuelInfo(
-    duels: Map[IPlayer, Map[IPlayer, Double]],
-    self: IPlayer,
+    duels: Map[Player, Map[Player, Double]],
+    self: Player,
     selfBeforeRating: Rating,
     selfAfterRating: Rating,
-    opponent: IPlayer) {
+    opponent: Player) {
     val selfToOpponentDuelDeltas = duels.getOrElseUpdate(self, Map.empty)
     selfToOpponentDuelDeltas.put(opponent, selfAfterRating.mean - selfBeforeRating.mean)
   }
