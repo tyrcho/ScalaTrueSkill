@@ -71,14 +71,8 @@ class TrueSkillFactorGraph(
     new ScheduleSequence[GaussianDistribution]("Full schedule", fullSchedule)
   }
 
-  //TODO : better for loop
-  def getUpdatedRatings: Map[Player, Rating] = {
-    var result = Map.empty[Player, Rating]
-    for (currentTeam <- priorLayer.getOutputVariablesGroups()) {
-      for (currentPlayer <- currentTeam) {
-        result += currentPlayer.key -> new Rating(currentPlayer.value.mean, currentPlayer.value.standardDeviation)
-      }
-    }
-    result
-  }
+  def getUpdatedRatings: Map[Player, Rating] = (for {
+    currentTeam <- priorLayer.getOutputVariablesGroups
+    currentPlayer <- currentTeam
+  } yield currentPlayer.key -> new Rating(currentPlayer.value.mean, currentPlayer.value.standardDeviation)).toMap
 }

@@ -31,39 +31,28 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
     val teamsList = RankSorter.sort(teams, teamRanks)
     val tr = teamRanks.sortBy(i => i)
 
-    //TODO loop
     var deltas = Map.empty[Player, Map[Player, Double]]
-
-    for (ixCurrentTeam <- 0 until teamsList.length) {
-      for (ixOtherTeam <- 0 until teamsList.length) {
-        if (ixOtherTeam != ixCurrentTeam) {
-
-          val currentTeam = teamsList(ixCurrentTeam)
-          val otherTeam = teamsList(ixOtherTeam)
-
-          // Remember that bigger numbers mean worse rank (e.g.
-          // other-current is what we want)
-          val comparison = PairwiseComparison.fromMultiplier(signum(tr(ixOtherTeam) - tr(ixCurrentTeam)))
-
-          for ((ck, cv) <- currentTeam)
-            for ((ok, ov) <- otherTeam)
-              deltas = updateDuels(gameInfo, deltas, ck, cv, ok, ov, comparison)
-        }
-      }
+    for {
+      ixCurrentTeam <- 0 until teamsList.length
+      ixOtherTeam <- 0 until teamsList.length
+      if (ixOtherTeam != ixCurrentTeam)
+      currentTeam = teamsList(ixCurrentTeam)
+      otherTeam = teamsList(ixOtherTeam)
+      // Remember that bigger numbers mean worse rank (e.g.
+      // other-current is what we want)
+      comparison = PairwiseComparison.fromMultiplier(signum(tr(ixOtherTeam) - tr(ixCurrentTeam)))
+      (ck, cv) <- currentTeam
+      (ok, ov) <- otherTeam
+    } {
+      deltas = updateDuels(gameInfo, deltas, ck, cv, ok, ov, comparison)
     }
 
-    //TODO : loop
-    var result = Map.empty[Player, Rating]
-
-    for (currentTeam <- teamsList) {
-      for ((ck, cv) <- currentTeam) {
-        val aa = deltas(ck).values
-        val currentPlayerAverageDuellingDelta = MathUtils.mean(aa)
-        result += ck -> new EloRating(cv.mean + currentPlayerAverageDuellingDelta)
-      }
-    }
-
-    result
+    (for {
+      currentTeam <- teamsList
+      (ck, cv) <- currentTeam
+      aa = deltas(ck).values
+      currentPlayerAverageDuellingDelta = MathUtils.mean(aa)
+    } yield ck -> new EloRating(cv.mean + currentPlayerAverageDuellingDelta)).toMap
   }
 
   private def updateDuels(

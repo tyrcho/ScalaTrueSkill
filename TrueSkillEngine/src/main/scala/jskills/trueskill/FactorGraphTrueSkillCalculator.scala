@@ -84,17 +84,9 @@ class FactorGraphTrueSkillCalculator
     SimpleMatrix.diag(temp: _*).transpose()
   }
 
-  /**
-   * TODO Make array? Helper function that gets a list of values for all
-   * player ratings
-   */
   private def getPlayerMeanRatingValues(teamAssignmentsList: Seq[Map[Player,Rating]]): Seq[Double] =
     teamAssignmentsList map (_.values map (_.mean)) flatten
 
-  /**
-   * TODO Make array? Helper function that gets a list of values for all
-   * player ratings
-   */
   private def getPlayerVarianceRatingValues(teamAssignmentsList: Seq[Map[Player,Rating]]): Seq[Double] =
     teamAssignmentsList map (_.values map (_.getVariance())) flatten
 
