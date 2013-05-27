@@ -7,7 +7,6 @@ import jskills.Rating
 import jskills.factorgraphs.Factor
 import jskills.factorgraphs.FactorGraph
 import jskills.factorgraphs.FactorGraphLayerBase
-import jskills.factorgraphs.FactorList
 import jskills.factorgraphs.KeyedVariable
 import jskills.factorgraphs.Schedule
 import jskills.factorgraphs.ScheduleSequence

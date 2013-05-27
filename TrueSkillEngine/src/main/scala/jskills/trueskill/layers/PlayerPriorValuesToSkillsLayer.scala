@@ -1,9 +1,9 @@
 package jskills.trueskill.layers
 
+import scala.collection.mutable.ListBuffer
+
 import jskills.Player
-import jskills.ITeam
 import jskills.Rating
-import jskills.factorgraphs.DefaultVariable
 import jskills.factorgraphs.KeyedVariable
 import jskills.factorgraphs.Schedule
 import jskills.factorgraphs.ScheduleStep
@@ -13,12 +13,9 @@ import jskills.numerics.MathUtils
 import jskills.trueskill.TrueSkillFactorGraph
 import jskills.trueskill.factors.GaussianPriorFactor
 
-import collection.mutable.LinkedList
-import scala.collection.mutable.ListBuffer
-
 // We intentionally have no Posterior schedule since the only purpose here is to 
 class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: Seq[Map[Player,Rating]])
-  extends TrueSkillFactorGraphLayer[DefaultVariable[GaussianDistribution], GaussianPriorFactor, KeyedVariable[Player, GaussianDistribution]](parentGraph) {
+  extends TrueSkillFactorGraphLayer[Variable[GaussianDistribution], GaussianPriorFactor, KeyedVariable[Player, GaussianDistribution]](parentGraph) {
 
   override def buildLayer() {
     for (currentTeam <- teams) {
