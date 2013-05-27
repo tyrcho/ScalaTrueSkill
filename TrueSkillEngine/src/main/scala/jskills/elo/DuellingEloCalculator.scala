@@ -11,11 +11,10 @@ import jskills.Rating
 import jskills.SkillCalculator
 import jskills.Team
 import jskills.numerics.MathUtils
-import jskills.numerics.Range
 import scala.math._
 
 class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
-  extends SkillCalculator(Seq(), Range.atLeast(2), Range.atLeast(1)) {
+  extends SkillCalculator(Seq(), 2 to Int.MaxValue, 1 to Int.MaxValue) {
 
   override def calculateNewRatings(gameInfo: GameInfo,
     teams: Seq[_ <: ITeam],
@@ -64,7 +63,7 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
       }
     }
 
-     result
+    result
   }
 
   private def updateDuels(
@@ -105,7 +104,7 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
       }
     }
 
-     minQuality
+    minQuality
   }
 
   def updateDuelInfo(

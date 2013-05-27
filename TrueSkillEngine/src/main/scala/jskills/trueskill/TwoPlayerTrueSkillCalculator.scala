@@ -8,7 +8,6 @@ import jskills.RankSorter
 import jskills.Rating
 import jskills.SkillCalculator
 import jskills.numerics.MathUtils.square
-import jskills.numerics.Range
 import jskills.ITeam
 
 /**
@@ -18,7 +17,7 @@ import jskills.ITeam
  * [/remarks]
  */
 class TwoPlayerTrueSkillCalculator
-  extends SkillCalculator(Seq(), Range.exactly(2), Range.exactly(1)) {
+  extends SkillCalculator(Seq(), 2 to 2, 1 to Int.MaxValue) {
 
   override def calculateNewRatings(gameInfo: GameInfo,
     teams: Seq[_ <: ITeam], tr: Seq[Int]): Map[IPlayer, Rating] = {

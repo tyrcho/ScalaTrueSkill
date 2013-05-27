@@ -7,14 +7,13 @@ import jskills.PairwiseComparison
 import jskills.RankSorter
 import jskills.Rating
 import jskills.SkillCalculator
-import jskills.numerics.Range
 import jskills.SupportedOptions
 import jskills.PairwiseComparison._
 
 import collection.mutable.Map
 
 abstract class TwoPlayerEloCalculator(kFactor: KFactor)
-  extends SkillCalculator(Seq(), Range.exactly(2), Range.exactly(1)) {
+  extends SkillCalculator(Seq(), 2 to 2, 1 to 1) {
 
   override def calculateNewRatings(gameInfo: GameInfo,
     teams: Seq[_ <: ITeam],

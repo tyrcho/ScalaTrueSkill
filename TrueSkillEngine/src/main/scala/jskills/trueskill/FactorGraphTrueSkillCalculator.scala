@@ -14,15 +14,14 @@ import jskills.Rating
 import jskills.SkillCalculator
 import jskills.SupportedOptions
 import jskills.numerics.MathUtils.square
-import jskills.numerics.Range
 
 /**
  * Calculates TrueSkill using a full factor graph.
  */
 class FactorGraphTrueSkillCalculator
   extends SkillCalculator(Seq(SupportedOptions.PartialPlay, SupportedOptions.PartialUpdate),
-    Range.atLeast(2),
-    Range.atLeast(1)) {
+    2 to Int.MaxValue,
+    1 to Int.MaxValue) {
 
   override def calculateNewRatings(gameInfo: GameInfo,
     teams: Seq[_ <: ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating] = {

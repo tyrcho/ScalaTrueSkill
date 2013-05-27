@@ -2,8 +2,6 @@ package jskills
 
 import scala.collection.mutable.Map
 
-import jskills.numerics.Range
-
 /**
  * Base class for all skill calculator implementations.
  */
@@ -47,13 +45,10 @@ abstract class SkillCalculator(supportedOptions: Seq[SupportedOptions],
 
   private def validateTeamCountAndPlayersCountPerTeam(
     teams: Seq[_ <: ITeam], totalTeams: Range, playersPerTeam: Range) {
-    var countOfTeams = 0
     for (currentTeam <- teams) {
-      require(playersPerTeam.isInRange(currentTeam.size))
-      countOfTeams += 1
+      require(playersPerTeam contains currentTeam.size)
     }
-
-    require(totalTeams.isInRange(countOfTeams))
+    require(totalTeams contains teams.size)
   }
 }
 

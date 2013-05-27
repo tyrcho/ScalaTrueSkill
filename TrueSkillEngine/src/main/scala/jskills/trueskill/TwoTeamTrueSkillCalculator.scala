@@ -10,7 +10,6 @@ import jskills.RankSorter
 import jskills.Rating
 import jskills.SkillCalculator
 import jskills.numerics.MathUtils.square
-import jskills.numerics.Range
 /**
  *
  * Calculates new ratings for only two teams where each team has 1 or more
@@ -18,7 +17,7 @@ import jskills.numerics.Range
  * factor graphs are used yet. [/remarks]
  */
 class TwoTeamTrueSkillCalculator
-  extends SkillCalculator(Seq(), Range.exactly(2), Range.atLeast(1)) {
+  extends SkillCalculator(Seq(), 2 to 2, 1 to Int.MaxValue) {
 
   override def calculateNewRatings(gameInfo: GameInfo,
     teams: Seq[_ <: ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating] = {
