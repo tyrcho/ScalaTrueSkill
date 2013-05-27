@@ -12,6 +12,7 @@ import jskills.SkillCalculator
 import jskills.Team
 import jskills.numerics.MathUtils
 import jskills.numerics.Range
+import scala.math._
 
 class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
   extends SkillCalculator(Seq(), Range.atLeast(2), Range.atLeast(1)) {
@@ -44,7 +45,7 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
 
           // Remember that bigger numbers mean worse rank (e.g.
           // other-current is what we want)
-          val comparison = PairwiseComparison.fromMultiplier(Math.signum(tr(ixOtherTeam) - tr(ixCurrentTeam)))
+          val comparison = PairwiseComparison.fromMultiplier(signum(tr(ixOtherTeam) - tr(ixCurrentTeam)))
 
           for ((ck, cv) <- currentTeam)
             for ((ok, ov) <- otherTeam)
