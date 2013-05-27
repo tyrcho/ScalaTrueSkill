@@ -10,18 +10,15 @@ import jskills.SkillCalculator
 import jskills.SupportedOptions
 import jskills.PairwiseComparison._
 
-import collection.mutable.Map
-
 abstract class TwoPlayerEloCalculator(kFactor: KFactor)
   extends SkillCalculator(Seq(), 2 to 2, 1 to 1) {
 
   override def calculateNewRatings(gameInfo: GameInfo,
-    teams: Seq[_ <: ITeam],
+    teams: Seq[Map[Player, Rating]],
     teamRanks: Seq[Int]): Map[Player, Rating] = {
     validateTeamCountAndPlayersCountPerTeam(teams)
     val teamsl = RankSorter.sort(teams, teamRanks)
 
-    val result = Map.empty[Player, Rating]
     val isDraw = (teamRanks(0) == teamRanks(1))
 
     val players = teamsl map (_.keySet.head)
@@ -29,14 +26,13 @@ abstract class TwoPlayerEloCalculator(kFactor: KFactor)
     val player1Rating = teamsl(0)(players(0)).mean
     val player2Rating = teamsl(1)(players(1)).mean
 
-    result.put(players(0),
-      calculateNewRating(gameInfo, player1Rating, player2Rating,
-        if (isDraw) PairwiseComparison.DRAW else PairwiseComparison.WIN))
-    result.put(players(1),
-      calculateNewRating(gameInfo, player2Rating, player1Rating,
-        if (isDraw) PairwiseComparison.DRAW else PairwiseComparison.LOSE))
-
-    result
+    Map(
+      players(0) ->
+        calculateNewRating(gameInfo, player1Rating, player2Rating,
+          if (isDraw) PairwiseComparison.DRAW else PairwiseComparison.WIN),
+      players(1) ->
+        calculateNewRating(gameInfo, player2Rating, player1Rating,
+          if (isDraw) PairwiseComparison.DRAW else PairwiseComparison.LOSE))
   }
 
   protected def calculateNewRating(gameInfo: GameInfo,
@@ -54,7 +50,7 @@ abstract class TwoPlayerEloCalculator(kFactor: KFactor)
 
   protected def getPlayerWinProbability(gameInfo: GameInfo, playerRating: Double, opponentRating: Double): Double
 
-  override def calculateMatchQuality(gameInfo: GameInfo, teams: Seq[_ <: ITeam]): Double = {
+  override def calculateMatchQuality(gameInfo: GameInfo, teams: Seq[Map[Player, Rating]]): Double = {
     validateTeamCountAndPlayersCountPerTeam(teams)
 
     // Extract both players from the teams

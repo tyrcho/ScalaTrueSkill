@@ -1,7 +1,5 @@
 package jskills.trueskill
 
-import scala.collection.mutable.Map
-
 import jskills.GameInfo
 import jskills.Player
 import jskills.ITeam
@@ -20,7 +18,7 @@ class TwoTeamTrueSkillCalculator
   extends SkillCalculator(Seq(), 2 to 2, 1 to Int.MaxValue) {
 
   override def calculateNewRatings(gameInfo: GameInfo,
-    teams: Seq[_ <: ITeam], teamRanks: Seq[Int]): Map[Player, Rating] = {
+    teams: Seq[Map[Player, Rating]], teamRanks: Seq[Int]): Map[Player, Rating] = {
     validateTeamCountAndPlayersCountPerTeam(teams)
 
     val teamsl = RankSorter.sort(teams, teamRanks)
@@ -30,20 +28,17 @@ class TwoTeamTrueSkillCalculator
 
     val wasDraw = (teamRanks(0) == teamRanks(1))
 
-    val results = Map.empty[Player, Rating]
+    val results = updatePlayerRatings(gameInfo, Map.empty[Player, Rating], team1, team2, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.WIN)
+    val results2 = updatePlayerRatings(gameInfo, results, team2, team1, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.LOSE)
 
-    updatePlayerRatings(gameInfo, results, team1, team2, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.WIN)
-
-    updatePlayerRatings(gameInfo, results, team2, team1, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.LOSE)
-
-    results
+    results2
   }
 
   private def updatePlayerRatings(gameInfo: GameInfo,
     newPlayerRatings: Map[Player, Rating],
     selfTeam: ITeam,
     otherTeam: ITeam,
-    selfToOtherTeamComparison: PairwiseComparison) {
+    selfToOtherTeamComparison: PairwiseComparison) = {
     val drawMargin = DrawMargin.getDrawMarginFromDrawProbability(gameInfo.drawProbability, gameInfo.beta)
     val betaSquared = square(gameInfo.beta)
     val tauSquared = square(gameInfo.dynamicsFactor)
@@ -87,6 +82,7 @@ class TwoTeamTrueSkillCalculator
       rankMultiplier = 1
     }
 
+    var ratings = newPlayerRatings
     for (teamPlayerRatingPair <- selfTeam) {
       val previousPlayerRating = teamPlayerRatingPair._2
 
@@ -98,11 +94,12 @@ class TwoTeamTrueSkillCalculator
 
       val newStdDev = Math.sqrt((square(previousPlayerRating.standardDeviation) + tauSquared) * (1 - w * stdDevMultiplier))
 
-      newPlayerRatings.put(teamPlayerRatingPair._1, new Rating(newMean, newStdDev))
+      ratings += teamPlayerRatingPair._1 -> new Rating(newMean, newStdDev)
     }
+    ratings
   }
 
-  override def calculateMatchQuality(gameInfo: GameInfo, teams: Seq[_ <: ITeam]): Double = {
+  override def calculateMatchQuality(gameInfo: GameInfo, teams: Seq[Map[Player, Rating]]): Double = {
     validateTeamCountAndPlayersCountPerTeam(teams)
 
     // We've verified that there's just two teams
@@ -133,6 +130,6 @@ class TwoTeamTrueSkillCalculator
     val expPart = Math.exp((-1 * square(team1MeanSum - team2MeanSum))
       / (2 * (totalPlayers * betaSquared + team1StdDevSquared + team2SigmaSquared)))
 
-     expPart * sqrtPart
+    expPart * sqrtPart
   }
 }

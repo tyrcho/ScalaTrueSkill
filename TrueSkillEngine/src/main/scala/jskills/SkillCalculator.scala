@@ -1,6 +1,5 @@
 package jskills
 
-import scala.collection.mutable.Map
 
 /**
  * Base class for all skill calculator implementations.
@@ -24,7 +23,7 @@ abstract class SkillCalculator(supportedOptions: Seq[SupportedOptions],
    * @s All the players and their new ratings.
    */
   def calculateNewRatings(gameInfo: GameInfo,
-    teams: Seq[_ <: ITeam], teamRanks: Seq[Int]): Map[Player, Rating]
+    teams: Seq[Map[Player,Rating]], teamRanks: Seq[Int]): Map[Player, Rating]
 
   /**
    * Calculates the match quality as the likelihood of all teams drawing.
@@ -39,12 +38,12 @@ abstract class SkillCalculator(supportedOptions: Seq[SupportedOptions],
   def calculateMatchQuality(gameInfo: GameInfo, teams: Seq[_ <: ITeam]): Double
 
   protected def validateTeamCountAndPlayersCountPerTeam(
-    teams: Seq[_ <: ITeam]) {
+   teams: Seq[Map[Player,Rating]]) {
     validateTeamCountAndPlayersCountPerTeam(teams, totalTeamsAllowed, playerPerTeamAllowed)
   }
 
   private def validateTeamCountAndPlayersCountPerTeam(
-    teams: Seq[_ <: ITeam], totalTeams: Range, playersPerTeam: Range) {
+    teams: Seq[Map[Player,Rating]], totalTeams: Range, playersPerTeam: Range) {
     for (currentTeam <- teams) {
       require(playersPerTeam contains currentTeam.size)
     }

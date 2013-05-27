@@ -1,6 +1,5 @@
 package jskills.trueskill
 
-import collection.mutable.Map
 import jskills.GameInfo
 import jskills.Player
 import jskills.ITeam
@@ -23,7 +22,7 @@ import jskills.trueskill.layers.TeamPerformancesToTeamPerformanceDifferencesLaye
 import scala.collection.mutable.ListBuffer
 
 class TrueSkillFactorGraph(
-  val gameInfo: GameInfo, teams: Seq[_ <: ITeam], teamRanks: Seq[Int])
+  val gameInfo: GameInfo, teams: Seq[Map[Player, Rating]], teamRanks: Seq[Int])
   extends FactorGraph[TrueSkillFactorGraph] {
   val priorLayer = new PlayerPriorValuesToSkillsLayer(this, teams)
   val layers = List(priorLayer,
@@ -69,17 +68,17 @@ class TrueSkillFactorGraph(
     layers map (_.createPriorSchedule()) filter (_ != null) foreach (fullSchedule += _)
     layers.reverse map (_.createPosteriorSchedule()) filter (_ != null) foreach (fullSchedule += _)
 
-     new ScheduleSequence[GaussianDistribution]("Full schedule", fullSchedule)
+    new ScheduleSequence[GaussianDistribution]("Full schedule", fullSchedule)
   }
 
-  def getUpdatedRatings(): Map[Player, Rating] = {
-    val result = Map.empty[Player, Rating]
+  //TODO : better for loop
+  def getUpdatedRatings: Map[Player, Rating] = {
+    var result = Map.empty[Player, Rating]
     for (currentTeam <- priorLayer.getOutputVariablesGroups()) {
       for (currentPlayer <- currentTeam) {
-        result.put(currentPlayer.key, new Rating(currentPlayer.value.mean, currentPlayer.value.standardDeviation))
+        result += currentPlayer.key -> new Rating(currentPlayer.value.mean, currentPlayer.value.standardDeviation)
       }
     }
-
-     result
+    result
   }
 }

@@ -17,7 +17,7 @@ import collection.mutable.LinkedList
 import scala.collection.mutable.ListBuffer
 
 // We intentionally have no Posterior schedule since the only purpose here is to 
-class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: Seq[_ <: ITeam])
+class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: Seq[Map[Player,Rating]])
   extends TrueSkillFactorGraphLayer[DefaultVariable[GaussianDistribution], GaussianPriorFactor, KeyedVariable[Player, GaussianDistribution]](parentGraph) {
 
   override def buildLayer() {

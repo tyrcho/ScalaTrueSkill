@@ -1,6 +1,5 @@
 package jskills.trueskill
 
-import scala.collection.mutable.Map
 import jskills.GameInfo
 import jskills.Player
 import jskills.PairwiseComparison
@@ -8,7 +7,6 @@ import jskills.RankSorter
 import jskills.Rating
 import jskills.SkillCalculator
 import jskills.numerics.MathUtils.square
-import jskills.ITeam
 
 /**
  * Calculates the new ratings for only two players. [remarks] When you only have
@@ -20,7 +18,7 @@ class TwoPlayerTrueSkillCalculator
   extends SkillCalculator(Seq(), 2 to 2, 1 to Int.MaxValue) {
 
   override def calculateNewRatings(gameInfo: GameInfo,
-    teams: Seq[_ <: ITeam], tr: Seq[Int]): Map[Player, Rating] = {
+    teams: Seq[Map[Player, Rating]], tr: Seq[Int]): Map[Player, Rating] = {
     // Basic argument checking
     validateTeamCountAndPlayersCountPerTeam(teams)
 
@@ -40,15 +38,12 @@ class TwoPlayerTrueSkillCalculator
 
     val wasDraw = (teamRanks(0) == teamRanks(1))
 
-    val results = Map.empty[Player, Rating]
-    results.put(winner,
+    Map(winner ->
       calculateNewRating(gameInfo, winnerPreviousRating,
-        loserPreviousRating, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.WIN))
-    results.put(loser,
-      calculateNewRating(gameInfo, loserPreviousRating,
-        winnerPreviousRating, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.LOSE))
-
-    results
+        loserPreviousRating, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.WIN),
+      loser ->
+        calculateNewRating(gameInfo, loserPreviousRating,
+          winnerPreviousRating, if (wasDraw) PairwiseComparison.DRAW else PairwiseComparison.LOSE))
   }
 
   private def calculateNewRating(gameInfo: GameInfo,
@@ -94,10 +89,10 @@ class TwoPlayerTrueSkillCalculator
     val newMean = selfRating.mean + (rankMultiplier * meanMultiplier * v)
     val newStdDev = Math.sqrt(varianceWithDynamics * (1 - w * stdDevMultiplier))
 
-     new Rating(newMean, newStdDev)
+    new Rating(newMean, newStdDev)
   }
 
-  override def calculateMatchQuality(gameInfo: GameInfo, teams: Seq[_ <: ITeam]): Double = {
+  override def calculateMatchQuality(gameInfo: GameInfo, teams: Seq[Map[Player, Rating]]): Double = {
     validateTeamCountAndPlayersCountPerTeam(teams)
 
     val player1Rating = teams(0).values.head
