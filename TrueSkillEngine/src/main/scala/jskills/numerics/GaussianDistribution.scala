@@ -24,19 +24,19 @@ import jskills.Rating
  *
  * @see http://mathworld.wolfram.com/NormalDistribution.html
  */
-class GaussianDistribution(
+case class GaussianDistribution(
   /** The peak of the Gaussian, \u03bc **/
-  val mean: Double,
+  mean: Double,
   /** The width of the Gaussian, \u03c3, where the height drops to max/e **/
-  val standardDeviation: Double,
+  standardDeviation: Double,
   /** The square of the standard deviation, \u03c3^2 **/
-  val variance: Double,
+  variance: Double,
   // Precision and PrecisionMean are used because they make multiplying and
   // dividing simpler (see the accompanying math paper for more details)
   /** 1/\u03c3^2 **/
-  val precision: Double,
+  precision: Double,
   /** Precision times mean, \u03bc/\u03c3^2 **/
-  val precisionMean: Double) {
+  precisionMean: Double) {
 
   import GaussianDistribution._
 
@@ -48,25 +48,11 @@ class GaussianDistribution(
    */
   // Great derivation of this is at
   // http://www.astro.psu.edu/~mce/A451_2/A451/downloads/notes0.pdf
-  def getNormalizationConstant() = 1.0 / (sqrt(2 * PI) * standardDeviation)
+  def getNormalizationConstant = 1.0 / (sqrt(2 * PI) * standardDeviation)
 
   def *(other: GaussianDistribution): GaussianDistribution = GaussianDistribution.prod(this, other)
 
   override def toString = format("Mean(\u03bc)=%f, Std-Dev(\u03c3)=%f", mean, standardDeviation)
-
-  override def equals(o: Any): Boolean = {
-    o match {
-      case g: GaussianDistribution =>
-        import java.lang.Double.compare
-        if (compare(mean, g.mean) != 0) false
-        if (compare(standardDeviation, g.standardDeviation) != 0) false
-        if (compare(variance, g.variance) != 0) false
-        if (compare(precision, g.precision) != 0) false
-        if (compare(precisionMean, g.precisionMean) != 0) false
-        true
-      case _ => false
-    }
-  }
 
   /**
    * <pre>
@@ -81,7 +67,7 @@ class GaussianDistribution(
    *         width.
    * @see http://mathworld.wolfram.com/NormalDistribution.html
    */
-  def at(x: Double): Double = {
+  def apply(x: Double): Double = {
     val multiplier = 1.0 / (standardDeviation * sqrt(2 * PI))
     val expPart = exp((-1.0 * pow(x - mean, 2.0)) / (2 * (standardDeviation * standardDeviation)))
     multiplier * expPart
@@ -132,7 +118,7 @@ object GaussianDistribution {
 
   def inverseCumulativeTo(x: Double): Double = STANDARD.inverseCumulativeTo(x)
 
-  def at(x: Double): Double = STANDARD.at(x)
+  def at(x: Double): Double = STANDARD(x)
 
   def cumulativeTo(x: Double): Double = STANDARD.cumulativeTo(x)
 

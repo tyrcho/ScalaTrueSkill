@@ -22,15 +22,15 @@ class DuellingEloTest {
     val player2 = new Player(2)
 
     val team1 = Map(
-      player1 -> gameInfo.getDefaultRating(),
-      player2 -> gameInfo.getDefaultRating())
+      player1 -> gameInfo.getDefaultRating,
+      player2 -> gameInfo.getDefaultRating)
 
     val player3 = new Player(3)
     val player4 = new Player(4)
 
     val team2 = Map(
-      player3 -> gameInfo.getDefaultRating(),
-      player4 -> gameInfo.getDefaultRating())
+      player3 -> gameInfo.getDefaultRating,
+      player4 -> gameInfo.getDefaultRating)
 
     val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(2, 1))

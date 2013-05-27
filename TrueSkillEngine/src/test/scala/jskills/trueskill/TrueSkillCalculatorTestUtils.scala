@@ -79,8 +79,8 @@ trait TrueSkillCalculatorTestUtils {
     val player2 = new Player(2)
     val gameInfo = GameInfo.defaultGameInfo
 
-    val team1 = Team(player1, gameInfo.getDefaultRating())
-    val team2 = Team(player2, gameInfo.getDefaultRating())
+    val team1 = Team(player1, gameInfo.getDefaultRating)
+    val team2 = Team(player2, gameInfo.getDefaultRating)
     val teams = Seq(team1, team2)
 
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2))
@@ -99,8 +99,8 @@ trait TrueSkillCalculatorTestUtils {
     val player2 = new Player(2)
     val gameInfo = GameInfo.defaultGameInfo
 
-    val team1 = Team(player1, gameInfo.getDefaultRating())
-    val team2 = Team(player2, gameInfo.getDefaultRating())
+    val team1 = Team(player1, gameInfo.getDefaultRating)
+    val team2 = Team(player2, gameInfo.getDefaultRating)
     val teams = Seq(team1, team2)
 
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 1))
@@ -137,7 +137,7 @@ trait TrueSkillCalculatorTestUtils {
 
     val gameInfo = GameInfo.defaultGameInfo
 
-    val team1 = Team(player1, gameInfo.getDefaultRating())
+    val team1 = Team(player1, gameInfo.getDefaultRating)
 
     val player2 = new Player(2)
 
@@ -167,15 +167,15 @@ trait TrueSkillCalculatorTestUtils {
     val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = Map(
-      player1 -> gameInfo.getDefaultRating(),
-      player2 -> gameInfo.getDefaultRating())
+      player1 -> gameInfo.getDefaultRating,
+      player2 -> gameInfo.getDefaultRating)
 
     val player3 = new Player(3)
     val player4 = new Player(4)
 
     val team2 = Map(
-      player3 -> gameInfo.getDefaultRating(),
-      player4 -> gameInfo.getDefaultRating())
+      player3 -> gameInfo.getDefaultRating,
+      player4 -> gameInfo.getDefaultRating)
 
     val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2))
@@ -198,15 +198,15 @@ trait TrueSkillCalculatorTestUtils {
     val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = Map(
-      player1 -> gameInfo.getDefaultRating(),
-      player2 -> gameInfo.getDefaultRating())
+      player1 -> gameInfo.getDefaultRating,
+      player2 -> gameInfo.getDefaultRating)
 
     val player3 = new Player(3)
     val player4 = new Player(4)
 
     val team2 = Map(
-      player3 -> gameInfo.getDefaultRating(),
-      player4 -> gameInfo.getDefaultRating())
+      player3 -> gameInfo.getDefaultRating,
+      player4 -> gameInfo.getDefaultRating)
 
     val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 1))
@@ -293,10 +293,10 @@ trait TrueSkillCalculatorTestUtils {
     val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = Map(
-      player1 -> gameInfo.getDefaultRating(),
-      player2 -> gameInfo.getDefaultRating(),
-      player3 -> gameInfo.getDefaultRating(),
-      player4 -> gameInfo.getDefaultRating())
+      player1 -> gameInfo.getDefaultRating,
+      player2 -> gameInfo.getDefaultRating,
+      player3 -> gameInfo.getDefaultRating,
+      player4 -> gameInfo.getDefaultRating)
 
     val player5 = new Player(5)
     val player6 = new Player(6)
@@ -304,10 +304,10 @@ trait TrueSkillCalculatorTestUtils {
     val player8 = new Player(8)
 
     val team2 = Map(
-      player5 -> gameInfo.getDefaultRating(),
-      player6 -> gameInfo.getDefaultRating(),
-      player7 -> gameInfo.getDefaultRating(),
-      player8 -> gameInfo.getDefaultRating())
+      player5 -> gameInfo.getDefaultRating,
+      player6 -> gameInfo.getDefaultRating,
+      player7 -> gameInfo.getDefaultRating,
+      player8 -> gameInfo.getDefaultRating)
 
     val teams = Seq(team1, team2)
 
@@ -334,14 +334,14 @@ trait TrueSkillCalculatorTestUtils {
     val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = Map(
-      player1 -> gameInfo.getDefaultRating())
+      player1 -> gameInfo.getDefaultRating)
 
     val player2 = new Player(2)
     val player3 = new Player(3)
 
     val team2 = Map(
-      player2 -> gameInfo.getDefaultRating(),
-      player3 -> gameInfo.getDefaultRating())
+      player2 -> gameInfo.getDefaultRating,
+      player3 -> gameInfo.getDefaultRating)
 
     val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2))
@@ -390,16 +390,16 @@ trait TrueSkillCalculatorTestUtils {
     val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = Map(
-      player1 -> gameInfo.getDefaultRating())
+      player1 -> gameInfo.getDefaultRating)
 
     val player2 = new Player(2)
     val player3 = new Player(3)
     val player4 = new Player(4)
 
     val team2 = Map(
-      player2 -> gameInfo.getDefaultRating(),
-      player3 -> gameInfo.getDefaultRating(),
-      player4 -> gameInfo.getDefaultRating())
+      player2 -> gameInfo.getDefaultRating,
+      player3 -> gameInfo.getDefaultRating,
+      player4 -> gameInfo.getDefaultRating)
 
     val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2))
@@ -421,14 +421,14 @@ trait TrueSkillCalculatorTestUtils {
     val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = Map(
-      player1 -> gameInfo.getDefaultRating())
+      player1 -> gameInfo.getDefaultRating)
 
     val player2 = new Player(2)
     val player3 = new Player(3)
 
     val team2 = Map(
-      player2 -> gameInfo.getDefaultRating(),
-      player3 -> gameInfo.getDefaultRating())
+      player2 -> gameInfo.getDefaultRating,
+      player3 -> gameInfo.getDefaultRating)
 
     val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 1))
@@ -449,16 +449,16 @@ trait TrueSkillCalculatorTestUtils {
     val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = Map(
-      player1 -> gameInfo.getDefaultRating())
+      player1 -> gameInfo.getDefaultRating)
 
     val player2 = new Player(2)
     val player3 = new Player(3)
     val player4 = new Player(4)
 
     val team2 = Map(
-      player2 -> gameInfo.getDefaultRating(),
-      player3 -> gameInfo.getDefaultRating(),
-      player4 -> gameInfo.getDefaultRating())
+      player2 -> gameInfo.getDefaultRating,
+      player3 -> gameInfo.getDefaultRating,
+      player4 -> gameInfo.getDefaultRating)
 
     val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 1))
@@ -480,7 +480,7 @@ trait TrueSkillCalculatorTestUtils {
     val gameInfo = GameInfo.defaultGameInfo
 
     val team1 = Map(
-      player1 -> gameInfo.getDefaultRating())
+      player1 -> gameInfo.getDefaultRating)
 
     val player2 = new Player(2)
     val player3 = new Player(3)
@@ -491,13 +491,13 @@ trait TrueSkillCalculatorTestUtils {
     val player8 = new Player(8)
 
     val team2 = Map(
-      player2 -> gameInfo.getDefaultRating(),
-      player3 -> gameInfo.getDefaultRating(),
-      player4 -> gameInfo.getDefaultRating(),
-      player5 -> gameInfo.getDefaultRating(),
-      player6 -> gameInfo.getDefaultRating(),
-      player7 -> gameInfo.getDefaultRating(),
-      player8 -> gameInfo.getDefaultRating())
+      player2 -> gameInfo.getDefaultRating,
+      player3 -> gameInfo.getDefaultRating,
+      player4 -> gameInfo.getDefaultRating,
+      player5 -> gameInfo.getDefaultRating,
+      player6 -> gameInfo.getDefaultRating,
+      player7 -> gameInfo.getDefaultRating,
+      player8 -> gameInfo.getDefaultRating)
 
     val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2))
@@ -618,9 +618,9 @@ trait TrueSkillCalculatorTestUtils {
     val player3 = new Player(3)
     val gameInfo = GameInfo.defaultGameInfo
 
-    val team1 = Team(player1, gameInfo.getDefaultRating())
-    val team2 = Team(player2, gameInfo.getDefaultRating())
-    val team3 = Team(player3, gameInfo.getDefaultRating())
+    val team1 = Team(player1, gameInfo.getDefaultRating)
+    val team2 = Team(player2, gameInfo.getDefaultRating)
+    val team3 = Team(player3, gameInfo.getDefaultRating)
 
     val teams = Seq(team1, team2, team3)
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2, 3))
@@ -644,9 +644,9 @@ trait TrueSkillCalculatorTestUtils {
     val player3 = new Player(3)
     val gameInfo = GameInfo.defaultGameInfo
 
-    val team1 = Team(player1, gameInfo.getDefaultRating())
-    val team2 = Team(player2, gameInfo.getDefaultRating())
-    val team3 = Team(player3, gameInfo.getDefaultRating())
+    val team1 = Team(player1, gameInfo.getDefaultRating)
+    val team2 = Team(player2, gameInfo.getDefaultRating)
+    val team3 = Team(player3, gameInfo.getDefaultRating)
 
     val teams = Seq(team1, team2, team3)
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 1, 1))
@@ -671,10 +671,10 @@ trait TrueSkillCalculatorTestUtils {
     val player4 = new Player(4)
     val gameInfo = GameInfo.defaultGameInfo
 
-    val team1 = Team(player1, gameInfo.getDefaultRating())
-    val team2 = Team(player2, gameInfo.getDefaultRating())
-    val team3 = Team(player3, gameInfo.getDefaultRating())
-    val team4 = Team(player4, gameInfo.getDefaultRating())
+    val team1 = Team(player1, gameInfo.getDefaultRating)
+    val team2 = Team(player2, gameInfo.getDefaultRating)
+    val team3 = Team(player3, gameInfo.getDefaultRating)
+    val team4 = Team(player4, gameInfo.getDefaultRating)
 
     val teams = Seq(team1, team2, team3, team4)
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2, 3, 4))
@@ -702,11 +702,11 @@ trait TrueSkillCalculatorTestUtils {
     val player5 = new Player(5)
     val gameInfo = GameInfo.defaultGameInfo
 
-    val team1 = Team(player1, gameInfo.getDefaultRating())
-    val team2 = Team(player2, gameInfo.getDefaultRating())
-    val team3 = Team(player3, gameInfo.getDefaultRating())
-    val team4 = Team(player4, gameInfo.getDefaultRating())
-    val team5 = Team(player5, gameInfo.getDefaultRating())
+    val team1 = Team(player1, gameInfo.getDefaultRating)
+    val team2 = Team(player2, gameInfo.getDefaultRating)
+    val team3 = Team(player3, gameInfo.getDefaultRating)
+    val team4 = Team(player4, gameInfo.getDefaultRating)
+    val team5 = Team(player5, gameInfo.getDefaultRating)
 
     val teams = Seq(team1, team2, team3, team4,
       team5)
@@ -742,14 +742,14 @@ trait TrueSkillCalculatorTestUtils {
     val player8 = new Player(8)
     val gameInfo = GameInfo.defaultGameInfo
 
-    val team1 = Team(player1, gameInfo.getDefaultRating())
-    val team2 = Team(player2, gameInfo.getDefaultRating())
-    val team3 = Team(player3, gameInfo.getDefaultRating())
-    val team4 = Team(player4, gameInfo.getDefaultRating())
-    val team5 = Team(player5, gameInfo.getDefaultRating())
-    val team6 = Team(player6, gameInfo.getDefaultRating())
-    val team7 = Team(player7, gameInfo.getDefaultRating())
-    val team8 = Team(player8, gameInfo.getDefaultRating())
+    val team1 = Team(player1, gameInfo.getDefaultRating)
+    val team2 = Team(player2, gameInfo.getDefaultRating)
+    val team3 = Team(player3, gameInfo.getDefaultRating)
+    val team4 = Team(player4, gameInfo.getDefaultRating)
+    val team5 = Team(player5, gameInfo.getDefaultRating)
+    val team6 = Team(player6, gameInfo.getDefaultRating)
+    val team7 = Team(player7, gameInfo.getDefaultRating)
+    val team8 = Team(player8, gameInfo.getDefaultRating)
 
     val teams = Seq(team1, team2, team3, team4,
       team5, team6, team7, team8)
@@ -854,22 +854,22 @@ trait TrueSkillCalculatorTestUtils {
     val player16 = new Player(16)
     val gameInfo = GameInfo.defaultGameInfo
 
-    val team1 = Team(player1, gameInfo.getDefaultRating())
-    val team2 = Team(player2, gameInfo.getDefaultRating())
-    val team3 = Team(player3, gameInfo.getDefaultRating())
-    val team4 = Team(player4, gameInfo.getDefaultRating())
-    val team5 = Team(player5, gameInfo.getDefaultRating())
-    val team6 = Team(player6, gameInfo.getDefaultRating())
-    val team7 = Team(player7, gameInfo.getDefaultRating())
-    val team8 = Team(player8, gameInfo.getDefaultRating())
-    val team9 = Team(player9, gameInfo.getDefaultRating())
-    val team10 = Team(player10, gameInfo.getDefaultRating())
-    val team11 = Team(player11, gameInfo.getDefaultRating())
-    val team12 = Team(player12, gameInfo.getDefaultRating())
-    val team13 = Team(player13, gameInfo.getDefaultRating())
-    val team14 = Team(player14, gameInfo.getDefaultRating())
-    val team15 = Team(player15, gameInfo.getDefaultRating())
-    val team16 = Team(player16, gameInfo.getDefaultRating())
+    val team1 = Team(player1, gameInfo.getDefaultRating)
+    val team2 = Team(player2, gameInfo.getDefaultRating)
+    val team3 = Team(player3, gameInfo.getDefaultRating)
+    val team4 = Team(player4, gameInfo.getDefaultRating)
+    val team5 = Team(player5, gameInfo.getDefaultRating)
+    val team6 = Team(player6, gameInfo.getDefaultRating)
+    val team7 = Team(player7, gameInfo.getDefaultRating)
+    val team8 = Team(player8, gameInfo.getDefaultRating)
+    val team9 = Team(player9, gameInfo.getDefaultRating)
+    val team10 = Team(player10, gameInfo.getDefaultRating)
+    val team11 = Team(player11, gameInfo.getDefaultRating)
+    val team12 = Team(player12, gameInfo.getDefaultRating)
+    val team13 = Team(player13, gameInfo.getDefaultRating)
+    val team14 = Team(player14, gameInfo.getDefaultRating)
+    val team15 = Team(player15, gameInfo.getDefaultRating)
+    val team16 = Team(player16, gameInfo.getDefaultRating)
 
     val teams = Seq(
       team1, team2, team3, team4, team5,
@@ -937,14 +937,14 @@ trait TrueSkillCalculatorTestUtils {
     val gameInfo = GameInfo.defaultGameInfo
 
     val p1 = new Player(1)
-    val team1 = Team(p1, gameInfo.getDefaultRating())
+    val team1 = Team(p1, gameInfo.getDefaultRating)
 
     val p2 = new Player(2, 0.0)
     val p3 = new Player(3, 1.00)
 
     val team2 = Map(
-      p2 -> gameInfo.getDefaultRating(),
-      p3 -> gameInfo.getDefaultRating())
+      p2 -> gameInfo.getDefaultRating,
+      p3 -> gameInfo.getDefaultRating)
 
     val teams = Seq(team1, team2)
     val newRatings = calculator.calculateNewRatings(gameInfo, teams, Seq(1, 2))

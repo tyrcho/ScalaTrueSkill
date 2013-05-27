@@ -2,27 +2,24 @@ package jskills
 
 object GameInfo {
   val defaultInitialMean = 25.0
-  val defaultBeta = defaultInitialMean / 6.0
-  val defaultDrawProbability = 0.10
-  val defaultDynamicsFactor = defaultInitialMean / 300.0
-  val defaultInitialStandardDeviation = defaultInitialMean / 3.0
 
-  val defaultGameInfo = new GameInfo(defaultInitialMean,
-    defaultInitialStandardDeviation,
-    defaultBeta,
-    defaultDynamicsFactor,
-    defaultDrawProbability)
+  val defaultGameInfo = new GameInfo(
+    initialMean = defaultInitialMean,
+    initialStandardDeviation = defaultInitialMean / 3.0,
+    beta = defaultInitialMean / 6.0,
+    dynamicsFactor = defaultInitialMean / 300.0,
+    drawProbability = 0.10)
 }
 /**
  * Parameters about the game for calculating the TrueSkill.
  */
-class GameInfo(
-  val initialMean: Double,
-  val initialStandardDeviation: Double,
-  val beta: Double,
-  val dynamicsFactor: Double,
-  val drawProbability: Double) {
+case class GameInfo(
+  initialMean: Double,
+  initialStandardDeviation: Double,
+  beta: Double,
+  dynamicsFactor: Double,
+  drawProbability: Double) {
 
-  def getDefaultRating(): Rating =
+  def getDefaultRating: Rating =
     new Rating(initialMean, initialStandardDeviation)
 }
