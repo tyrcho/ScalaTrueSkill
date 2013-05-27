@@ -1,18 +1,15 @@
 package jskills.trueskill
 
-import jskills.numerics.MathUtils._
-
+import scala.collection.mutable.Map
 import jskills.GameInfo
-import jskills.Guard
 import jskills.IPlayer
-import jskills.ITeam
 import jskills.PairwiseComparison
 import jskills.RankSorter
 import jskills.Rating
 import jskills.SkillCalculator
+import jskills.numerics.MathUtils.square
 import jskills.numerics.Range
-
-import collection.mutable.Map
+import jskills.ITeam
 
 /**
  * Calculates the new ratings for only two players. [remarks] When you only have
@@ -26,7 +23,6 @@ class TwoPlayerTrueSkillCalculator
   override def calculateNewRatings(gameInfo: GameInfo,
     teams: Seq[_ <: ITeam], tr: Seq[Int]): Map[IPlayer, Rating] = {
     // Basic argument checking
-    Guard.argumentNotNull(gameInfo, "gameInfo")
     validateTeamCountAndPlayersCountPerTeam(teams)
 
     // Make sure things are in order
@@ -103,7 +99,6 @@ class TwoPlayerTrueSkillCalculator
   }
 
   override def calculateMatchQuality(gameInfo: GameInfo, teams: Seq[_ <: ITeam]): Double = {
-    Guard.argumentNotNull(gameInfo, "gameInfo")
     validateTeamCountAndPlayersCountPerTeam(teams)
 
     val player1Rating = teams(0).values.head

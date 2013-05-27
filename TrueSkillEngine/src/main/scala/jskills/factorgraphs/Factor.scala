@@ -1,6 +1,5 @@
 package jskills.factorgraphs
 
-import jskills.Guard._
 import collection.mutable.Map
 import scala.collection.mutable.Seq
 import scala.collection.mutable.ListBuffer
@@ -17,8 +16,7 @@ abstract class Factor[T](name: String, val messages: ListBuffer[Message[T]] = Li
 
   /** Update the message and marginal of the i-th variable that the factor is connected to **/
   def updateMessage(messageIndex: Int): Double = {
-    argumentIsValidIndex(messageIndex, messages.size, "messageIndex")
-     updateMessage(messages(messageIndex), messageToVariableBinding(messages(messageIndex)))
+    updateMessage(messages(messageIndex), messageToVariableBinding(messages(messageIndex)))
   }
 
   protected def updateMessage(message: Message[T], variable: Variable[T]): Double =
@@ -32,10 +30,9 @@ abstract class Factor[T](name: String, val messages: ListBuffer[Message[T]] = Li
    * constant
    */
   def sendMessage(messageIndex: Int): Double = {
-    argumentIsValidIndex(messageIndex, messages.size, "messageIndex")
     val message = messages(messageIndex)
     val variable = messageToVariableBinding(message)
-     sendMessage(message, variable)
+    sendMessage(message, variable)
   }
 
   protected def sendMessage(message: Message[T], variable: Variable[T]): Double
@@ -46,7 +43,7 @@ abstract class Factor[T](name: String, val messages: ListBuffer[Message[T]] = Li
     messages += message
     messageToVariableBinding.put(message, variable)
     variables += variable
-     message
+    message
   }
 
   override def toString() = if (name != null) name else super.toString()

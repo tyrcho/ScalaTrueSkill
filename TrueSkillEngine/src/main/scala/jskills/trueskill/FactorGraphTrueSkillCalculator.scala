@@ -1,20 +1,20 @@
 package jskills.trueskill
 
-import jskills.numerics.MathUtils._
+import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.Map
+
+import org.ejml.simple.SimpleMatrix
+
 import jskills.GameInfo
-import jskills.Guard
 import jskills.IPlayer
 import jskills.ITeam
+import jskills.PartialPlay
 import jskills.RankSorter
 import jskills.Rating
 import jskills.SkillCalculator
-import jskills.numerics.Range
-import org.ejml.simple.SimpleMatrix
-
 import jskills.SupportedOptions
-import jskills.PartialPlay
-import collection.mutable.Map
-import scala.collection.mutable.ListBuffer
+import jskills.numerics.MathUtils.square
+import jskills.numerics.Range
 
 /**
  * Calculates TrueSkill using a full factor graph.
@@ -26,7 +26,6 @@ class FactorGraphTrueSkillCalculator
 
   override def calculateNewRatings(gameInfo: GameInfo,
     teams: Seq[_ <: ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating] = {
-    Guard.argumentNotNull(gameInfo, "gameInfo")
     validateTeamCountAndPlayersCountPerTeam(teams)
 
     val teamsl = RankSorter.sort(teams, teamRanks)

@@ -15,8 +15,6 @@ object RankSorter {
    * @ the items sorted according to their ranks
    */
   def sort[T](items: Seq[T], itemRanks: Seq[Int]): Seq[T] = {
-    Guard.argumentNotNull(items, "items")
-    Guard.argumentNotNull(itemRanks, "itemRanks")
     val map = items.zipWithIndex
     val sorted = map.sortBy(i => itemRanks(i._2))
     sorted.map(_._1)

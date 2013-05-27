@@ -1,18 +1,16 @@
 package jskills.trueskill
 
-import jskills.numerics.MathUtils._
+import scala.collection.mutable.Map
 
 import jskills.GameInfo
-import jskills.Guard
 import jskills.IPlayer
 import jskills.ITeam
 import jskills.PairwiseComparison
 import jskills.RankSorter
 import jskills.Rating
 import jskills.SkillCalculator
+import jskills.numerics.MathUtils.square
 import jskills.numerics.Range
-
-import collection.mutable.Map
 /**
  *
  * Calculates new ratings for only two teams where each team has 1 or more
@@ -24,7 +22,6 @@ class TwoTeamTrueSkillCalculator
 
   override def calculateNewRatings(gameInfo: GameInfo,
     teams: Seq[_ <: ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating] = {
-    Guard.argumentNotNull(gameInfo, "gameInfo")
     validateTeamCountAndPlayersCountPerTeam(teams)
 
     val teamsl = RankSorter.sort(teams, teamRanks)
@@ -107,7 +104,6 @@ class TwoTeamTrueSkillCalculator
   }
 
   override def calculateMatchQuality(gameInfo: GameInfo, teams: Seq[_ <: ITeam]): Double = {
-    Guard.argumentNotNull(gameInfo, "gameInfo")
     validateTeamCountAndPlayersCountPerTeam(teams)
 
     // We've verified that there's just two teams
