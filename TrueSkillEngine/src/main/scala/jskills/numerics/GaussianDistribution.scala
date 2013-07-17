@@ -83,12 +83,6 @@ case class GaussianDistribution(
     multiplier * expPart
   }
 
-  def cumulativeTo(x: Double): Double = {
-    val invsqrt2 = -0.7071067811865476
-    val result = errorFunctionCumulativeTo(invsqrt2 * x)
-    0.5 * result
-  }
-
   // From numerical recipes, page 320
   def inverseCumulativeTo(x: Double): Double =
     mean - sqrt(2) * standardDeviation * inverseErrorFunctionCumulativeTo(2 * x)
@@ -111,6 +105,12 @@ object GaussianDistribution {
   def apply(distribution: GaussianDistribution) =
     new GaussianDistribution(distribution.mean, distribution.standardDeviation, distribution.variance, distribution.precision, distribution.precisionMean)
 
+  def cumulativeTo(x: Double): Double = {
+    val invsqrt2 = -0.7071067811865476
+    val result = errorFunctionCumulativeTo(invsqrt2 * x)
+    0.5 * result
+  }
+
   private def inverseErrorFunctionCumulativeTo(p: Double): Double = {
     // From page 265 of numerical recipes                       
     if (p >= 2.0) -100
@@ -129,8 +129,6 @@ object GaussianDistribution {
   def inverseCumulativeTo(x: Double): Double = STANDARD.inverseCumulativeTo(x)
 
   def at(x: Double): Double = STANDARD(x)
-
-  def cumulativeTo(x: Double): Double = STANDARD.cumulativeTo(x)
 
   def errorFunctionCumulativeTo(x: Double): Double = {
     // Derived from page 265 of Numerical Recipes 3rd Edition            
