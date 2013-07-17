@@ -1,5 +1,7 @@
 package jskills
 
+import jskills.trueskill.DrawMargin
+
 object GameInfo {
   val defaultInitialMean = 25.0
 
@@ -22,4 +24,6 @@ case class GameInfo(
 
   def getDefaultRating: Rating =
     new Rating(initialMean, initialStandardDeviation)
+
+  def drawMargin = DrawMargin.getDrawMarginFromDrawProbability(drawProbability, beta)
 }

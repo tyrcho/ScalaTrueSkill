@@ -22,13 +22,13 @@ class GaussianWithinFactor(epsilon: Double, variable: Variable[GaussianDistribut
     val std = messageFromVariable.standardDeviation
     val z = cumulativeTo((epsilon - mean) / std) - cumulativeTo((-epsilon - mean) / std)
 
-     -logProductNormalization(messageFromVariable, message) + Math.log(z)
+    -logProductNormalization(messageFromVariable, message) + Math.log(z)
   }
 
   override protected def updateMessage(message: Message[GaussianDistribution], variable: Variable[GaussianDistribution]): Double = {
     val oldMarginal = GaussianDistribution(variable.value)
     val oldMessage = GaussianDistribution(message.value)
-    val messageFromVariable = divide(oldMarginal, oldMessage)
+    val messageFromVariable = oldMarginal / oldMessage
 
     val c = messageFromVariable.precision
     var d = messageFromVariable.precisionMean
@@ -44,13 +44,13 @@ class GaussianWithinFactor(epsilon: Double, variable: Variable[GaussianDistribut
     val newPrecisionMean = (d + sqrtC * VWithinMargin(dOnSqrtC, epsilonTimesSqrtC)) / denominator
 
     val newMarginal = fromPrecisionMean(newPrecisionMean, newPrecision)
-    val newMessage = divide(prod(oldMessage, newMarginal), oldMarginal)
+    val newMessage = oldMessage * newMarginal / oldMarginal
 
     // Update the message and marginal
     message.value = newMessage
     variable.value = newMarginal
 
     // Return the difference in the new marginal
-     sub(newMarginal, oldMarginal)
+    sub(newMarginal, oldMarginal)
   }
 }
