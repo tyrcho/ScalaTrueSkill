@@ -36,20 +36,20 @@ object Rating {
 }
 
 /** Container for a player's rating. **/
-class Rating(
+case class Rating(
   /** The statistical mean value of the rating (also known as μ).*/
-  val mean: Double,
+  mean: Double,
   /** The number of standardDeviation to subtract from the mean to achieve a conservative rating.*/
-  val standardDeviation: Double,
+  standardDeviation: Double,
   /** The number of standardDeviations to subtract from the mean to achieve a conservative rating.*/
-  val conservativeStandardDeviationMultiplier: Double = Rating.defaultConservativeStandardDeviationMultiplier) {
+  conservativeStandardDeviationMultiplier: Double = Rating.defaultConservativeStandardDeviationMultiplier) {
 
   /** A conservative estimate of skill based on the mean and standard deviation. **/
   val conservativeRating: Double = mean - conservativeStandardDeviationMultiplier * standardDeviation
 
   /** The variance of the rating (standard deviation squared) **/
-  def getVariance(): Double = square(standardDeviation)
+  def getVariance: Double = square(standardDeviation)
 
-  override def toString(): String = format("Mean(μ)=%f, Std-Dev(σ)=%f", mean, standardDeviation)
+  override def toString: String = format("Mean(μ)=%f, Std-Dev(σ)=%f", mean, standardDeviation)
 
 }

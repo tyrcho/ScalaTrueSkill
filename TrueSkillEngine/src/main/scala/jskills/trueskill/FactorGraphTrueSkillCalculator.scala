@@ -88,7 +88,7 @@ class FactorGraphTrueSkillCalculator
     teamAssignmentsList map (_.values map (_.mean)) flatten
 
   private def getPlayerVarianceRatingValues(teamAssignmentsList: Seq[Map[Player,Rating]]): Seq[Double] =
-    teamAssignmentsList map (_.values map (_.getVariance())) flatten
+    teamAssignmentsList map (_.values map (_.getVariance)) flatten
 
   /**
    * The team assignment matrix is often referred to as the "A" matrix. It's a
