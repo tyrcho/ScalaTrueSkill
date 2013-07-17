@@ -34,7 +34,7 @@ class FactorGraphTrueSkillCalculator
 
     factorGraph.getUpdatedRatings
   }
-
+  
   override def calculateMatchQuality(gameInfo: GameInfo,
     teams: Seq[Map[Player,Rating]]): Double = {
     // We need to create the A matrix which is the player team assigments.

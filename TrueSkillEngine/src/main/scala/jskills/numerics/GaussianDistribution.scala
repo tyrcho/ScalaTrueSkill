@@ -51,6 +51,16 @@ case class GaussianDistribution(
   def getNormalizationConstant = 1.0 / (sqrt(2 * PI) * standardDeviation)
 
   def *(other: GaussianDistribution): GaussianDistribution = GaussianDistribution.prod(this, other)
+  def /(other: GaussianDistribution): GaussianDistribution = GaussianDistribution.divide(this, other)
+
+  def *(ratio: Double): GaussianDistribution = GaussianDistribution(ratio * mean, ratio * standardDeviation)
+
+  def +(shift: Double): GaussianDistribution = GaussianDistribution(mean + shift, standardDeviation)
+  def -(shift: Double): GaussianDistribution = GaussianDistribution(mean - shift, standardDeviation)
+
+  def +(other: GaussianDistribution): GaussianDistribution =
+    GaussianDistribution(other.mean + mean,
+      Math.sqrt(standardDeviation * standardDeviation + other.standardDeviation * other.standardDeviation))
 
   override def toString = format("Mean(\u03bc)=%f, Std-Dev(\u03c3)=%f", mean, standardDeviation)
 
