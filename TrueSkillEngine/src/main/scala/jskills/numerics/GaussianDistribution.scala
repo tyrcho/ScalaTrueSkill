@@ -58,6 +58,7 @@ case class GaussianDistribution(
   def +(shift: Double): GaussianDistribution = GaussianDistribution(mean + shift, standardDeviation)
   def -(shift: Double): GaussianDistribution = GaussianDistribution(mean - shift, standardDeviation)
 
+  def -(other: GaussianDistribution): GaussianDistribution = this + (other * (-1))
   def +(other: GaussianDistribution): GaussianDistribution =
     GaussianDistribution(other.mean + mean,
       Math.sqrt(standardDeviation * standardDeviation + other.standardDeviation * other.standardDeviation))
@@ -85,7 +86,7 @@ case class GaussianDistribution(
 
   def cumulativeTo(x: Double): Double = {
     val invsqrt2 = -0.7071067811865476
-    val result = errorFunctionCumulativeTo(invsqrt2 * x)
+    val result = errorFunctionCumulativeTo(invsqrt2 * (x - mean) / standardDeviation)
     0.5 * result
   }
 
