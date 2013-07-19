@@ -1,10 +1,10 @@
 package jskills
 
-
 import jskills.numerics.MathUtils.square
 
 import jskills.numerics.GaussianDistribution
 import jskills.numerics.GaussianDistribution._
+import math._
 
 object Rating {
   private val defaultConservativeStandardDeviationMultiplier: Double = 3
@@ -33,6 +33,14 @@ object Rating {
   }
 
   def calcMeanMean(ratings: Seq[Rating]): Double = (ratings map (_.mean) sum) / ratings.size
+
+  implicit def toGaussian(r: Rating) = GaussianDistribution(r.mean, r.standardDeviation)
+
+  def avgFromTeam(teamRatings: Iterable[Rating]): Rating = {
+    val mean = (teamRatings map (_.mean) sum) / teamRatings.size
+    val stdDev = sqrt(teamRatings map (r => square(r.standardDeviation)) sum) / teamRatings.size
+    Rating(mean, stdDev)
+  }
 }
 
 /** Container for a player's rating. **/
