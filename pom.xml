@@ -9,7 +9,6 @@
 
 	<modules>
 		<module>TrueSkillEngine</module>
-		<module>TrueSkillVaadinUI</module>
 	</modules>
 
 
