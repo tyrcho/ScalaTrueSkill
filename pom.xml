@@ -11,6 +11,11 @@
 		<module>TrueSkillEngine</module>
 	</modules>
 
+	<scm>
+		<connection>scm:git:https://tyrcho@82.232.237.150:9443/r/scala/TrueSkill.git</connection>
+		<developerConnection>scm:git:https://tyrcho@82.232.237.150:9443/r/scala/TrueSkill.git</developerConnection>
+	</scm>
+	
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -42,6 +47,17 @@
 	</dependencyManagement>
 
 	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+				</configuration>
+			</plugin>
+		</plugins>
 		<pluginManagement>
 			<plugins>
 				<plugin>
