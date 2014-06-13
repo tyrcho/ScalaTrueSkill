@@ -1,12 +1,10 @@
 package jskills.elo
 
 import jskills.GameInfo
-import jskills.IPlayer
-import jskills.ITeam
+import jskills.Player
 import jskills.Player
 import jskills.Rating
 import jskills.SkillCalculator
-import jskills.Team
 
 import org.junit.Test
 import org.junit.Assert._
@@ -23,16 +21,16 @@ class DuellingEloTest {
     val player1 = new Player(1)
     val player2 = new Player(2)
 
-    val team1 = new Team()
-      .addPlayer(player1, gameInfo.getDefaultRating())
-      .addPlayer(player2, gameInfo.getDefaultRating())
+    val team1 = Map(
+      player1 -> gameInfo.getDefaultRating,
+      player2 -> gameInfo.getDefaultRating)
 
     val player3 = new Player(3)
     val player4 = new Player(4)
 
-    val team2 = new Team()
-      .addPlayer(player3, gameInfo.getDefaultRating())
-      .addPlayer(player4, gameInfo.getDefaultRating())
+    val team2 = Map(
+      player3 -> gameInfo.getDefaultRating,
+      player4 -> gameInfo.getDefaultRating)
 
     val teams = Seq(team1, team2)
     val newRatingsWinLose = calculator.calculateNewRatings(gameInfo, teams, Seq(2, 1))

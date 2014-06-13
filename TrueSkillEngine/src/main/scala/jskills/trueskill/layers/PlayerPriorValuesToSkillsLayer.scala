@@ -1,9 +1,9 @@
 package jskills.trueskill.layers
 
-import jskills.IPlayer
-import jskills.ITeam
+import scala.collection.mutable.ListBuffer
+
+import jskills.Player
 import jskills.Rating
-import jskills.factorgraphs.DefaultVariable
 import jskills.factorgraphs.KeyedVariable
 import jskills.factorgraphs.Schedule
 import jskills.factorgraphs.ScheduleStep
@@ -13,16 +13,13 @@ import jskills.numerics.MathUtils
 import jskills.trueskill.TrueSkillFactorGraph
 import jskills.trueskill.factors.GaussianPriorFactor
 
-import collection.mutable.LinkedList
-import scala.collection.mutable.ListBuffer
-
 // We intentionally have no Posterior schedule since the only purpose here is to 
-class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: Seq[_ <: ITeam])
-  extends TrueSkillFactorGraphLayer[DefaultVariable[GaussianDistribution], GaussianPriorFactor, KeyedVariable[IPlayer, GaussianDistribution]](parentGraph) {
+class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: Seq[Map[Player,Rating]])
+  extends TrueSkillFactorGraphLayer[Variable[GaussianDistribution], GaussianPriorFactor, KeyedVariable[Player, GaussianDistribution]](parentGraph) {
 
   override def buildLayer() {
     for (currentTeam <- teams) {
-      val currentTeamSkills = ListBuffer.empty[KeyedVariable[IPlayer, GaussianDistribution]]
+      val currentTeamSkills = ListBuffer.empty[KeyedVariable[Player, GaussianDistribution]]
 
       for (currentTeamPlayer <- currentTeam) {
         val playerSkill = createSkillOutputVariable(currentTeamPlayer._1)
@@ -40,11 +37,11 @@ class PlayerPriorValuesToSkillsLayer(parentGraph: TrueSkillFactorGraph, teams: S
      scheduleSequence(schedules, "All priors")
   }
 
-  private def createPriorFactor(player: IPlayer, priorRating: Rating, skillsVariable: Variable[GaussianDistribution]): GaussianPriorFactor =
+  private def createPriorFactor(player: Player, priorRating: Rating, skillsVariable: Variable[GaussianDistribution]): GaussianPriorFactor =
     new GaussianPriorFactor(priorRating.mean,
       MathUtils.square(priorRating.standardDeviation) + MathUtils.square(parentGraph.gameInfo.dynamicsFactor),
       skillsVariable)
 
-  private def createSkillOutputVariable(key: IPlayer): KeyedVariable[IPlayer, GaussianDistribution] =
-    KeyedVariable[IPlayer, GaussianDistribution](key, GaussianDistribution.UNIFORM, "%s's skill", key.toString())
+  private def createSkillOutputVariable(key: Player): KeyedVariable[Player, GaussianDistribution] =
+    KeyedVariable[Player, GaussianDistribution](key, GaussianDistribution.UNIFORM, "%s's skill", key.toString())
 }

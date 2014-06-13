@@ -1,5 +1,7 @@
 package jskills
 
+import jskills.trueskill.DrawMargin
+
 /**
  * TrueSkill Default Values
  * As mentioned on page 8 of the TrueSkill paper (http://research.microsoft.com/apps/pubs/default.aspx?id=67956.), the initial values for a player are:
@@ -11,17 +13,13 @@ package jskills
  */
 object GameInfo {
   val defaultInitialMean = 25.0
-  val defaultBeta = defaultInitialMean / 6.0
-  val defaultDrawProbability = 0.10
-  val defaultDynamicsFactor = defaultInitialMean / 300.0
-  val defaultInitialStandardDeviation = defaultInitialMean / 3.0
 
-  val defaultGameInfo = new GameInfo(defaultInitialMean,
-    defaultInitialStandardDeviation,
-    defaultBeta,
-    defaultDynamicsFactor,
-    defaultDrawProbability)
-
+  val defaultGameInfo = new GameInfo(
+    initialMean = defaultInitialMean,
+    initialStandardDeviation = defaultInitialMean / 3.0,
+    beta = defaultInitialMean / 6.0,
+    dynamicsFactor = defaultInitialMean / 300.0,
+    drawProbability = 0.10)
 }
 /**
  * Parameters about the game for calculating the TrueSkill.
@@ -35,13 +33,15 @@ object GameInfo {
  * For example, if β is 4 then a player Alice with a skill of “30” will tend to win against Bob who has a skill of
  * “26” approximately 80% of the time.
  */
-class GameInfo(
-  val initialMean: Double,
-  val initialStandardDeviation: Double,
-  val beta: Double,
-  val dynamicsFactor: Double,
-  val drawProbability: Double) {
+case class GameInfo(
+  initialMean: Double,
+  initialStandardDeviation: Double,
+  beta: Double,
+  dynamicsFactor: Double,
+  drawProbability: Double) {
 
-  def getDefaultRating(): Rating =
+  def getDefaultRating: Rating =
     new Rating(initialMean, initialStandardDeviation)
+
+  def drawMargin = DrawMargin.getDrawMarginFromDrawProbability(drawProbability, beta)
 }

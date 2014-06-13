@@ -4,6 +4,7 @@ import jskills.numerics.MathUtils.square
 
 import jskills.numerics.GaussianDistribution
 import jskills.numerics.GaussianDistribution._
+import math._
 
 object Rating {
   private val defaultConservativeStandardDeviationMultiplier: Double = 3
@@ -32,22 +33,30 @@ object Rating {
   }
 
   def calcMeanMean(ratings: Seq[Rating]): Double = (ratings map (_.mean) sum) / ratings.size
+
+  implicit def toGaussian(r: Rating) = GaussianDistribution(r.mean, r.standardDeviation)
+
+  def avgFromTeam(teamRatings: Iterable[Rating]): Rating = {
+    val mean = (teamRatings map (_.mean) sum) / teamRatings.size
+    val stdDev = sqrt(teamRatings map (r => square(r.standardDeviation)) sum) / teamRatings.size
+    Rating(mean, stdDev)
+  }
 }
 
 /** Container for a player's rating. **/
-class Rating(
+case class Rating(
   /** The statistical mean value of the rating (also known as μ).*/
-  val mean: Double,
+  mean: Double,
   /** The number of standardDeviation to subtract from the mean to achieve a conservative rating.*/
-  val standardDeviation: Double,
+  standardDeviation: Double,
   /** The number of standardDeviations to subtract from the mean to achieve a conservative rating.*/
-  val conservativeStandardDeviationMultiplier: Double = Rating.defaultConservativeStandardDeviationMultiplier) {
+  conservativeStandardDeviationMultiplier: Double = Rating.defaultConservativeStandardDeviationMultiplier) {
 
   /** A conservative estimate of skill based on the mean and standard deviation. **/
   val conservativeRating: Double = mean - conservativeStandardDeviationMultiplier * standardDeviation
 
   /** The variance of the rating (standard deviation squared) **/
-  def getVariance(): Double = square(standardDeviation)
+  def getVariance: Double = square(standardDeviation)
 
   override def toString(): String =
     f"Mean(μ)=$mean, Std-Dev(σ)=$standardDeviation"

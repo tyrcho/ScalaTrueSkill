@@ -1,14 +1,12 @@
 package jskills.trueskill
 
-import collection.mutable.Map
 import jskills.GameInfo
-import jskills.IPlayer
+import jskills.Player
 import jskills.ITeam
 import jskills.Rating
 import jskills.factorgraphs.Factor
 import jskills.factorgraphs.FactorGraph
 import jskills.factorgraphs.FactorGraphLayerBase
-import jskills.factorgraphs.FactorList
 import jskills.factorgraphs.KeyedVariable
 import jskills.factorgraphs.Schedule
 import jskills.factorgraphs.ScheduleSequence
@@ -23,7 +21,7 @@ import jskills.trueskill.layers.TeamPerformancesToTeamPerformanceDifferencesLaye
 import scala.collection.mutable.ListBuffer
 
 class TrueSkillFactorGraph(
-  val gameInfo: GameInfo, teams: Seq[_ <: ITeam], teamRanks: Seq[Int])
+  val gameInfo: GameInfo, teams: Seq[Map[Player, Rating]], teamRanks: Seq[Int])
   extends FactorGraph[TrueSkillFactorGraph] {
   val priorLayer = new PlayerPriorValuesToSkillsLayer(this, teams)
   val layers = List(priorLayer,
@@ -69,17 +67,11 @@ class TrueSkillFactorGraph(
     layers map (_.createPriorSchedule()) filter (_ != null) foreach (fullSchedule += _)
     layers.reverse map (_.createPosteriorSchedule()) filter (_ != null) foreach (fullSchedule += _)
 
-     new ScheduleSequence[GaussianDistribution]("Full schedule", fullSchedule)
+    new ScheduleSequence[GaussianDistribution]("Full schedule", fullSchedule)
   }
 
-  def getUpdatedRatings(): Map[IPlayer, Rating] = {
-    val result = Map.empty[IPlayer, Rating]
-    for (currentTeam <- priorLayer.getOutputVariablesGroups()) {
-      for (currentPlayer <- currentTeam) {
-        result.put(currentPlayer.key, new Rating(currentPlayer.value.mean, currentPlayer.value.standardDeviation))
-      }
-    }
-
-     result
-  }
+  def getUpdatedRatings: Map[Player, Rating] = (for {
+    currentTeam <- priorLayer.getOutputVariablesGroups
+    currentPlayer <- currentTeam
+  } yield currentPlayer.key -> new Rating(currentPlayer.value.mean, currentPlayer.value.standardDeviation)).toMap
 }

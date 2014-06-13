@@ -1,6 +1,7 @@
 package jskills.elo
 
 import jskills.GameInfo
+import scala.math._
 
 class GaussianKFactor(value: Double = GaussianKFactor.StableDynamicsKFactor) extends KFactor(value)
 

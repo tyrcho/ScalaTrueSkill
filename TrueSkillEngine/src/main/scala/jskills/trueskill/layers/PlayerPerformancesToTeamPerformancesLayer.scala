@@ -1,6 +1,6 @@
 package jskills.trueskill.layers
 
-import jskills.IPlayer
+import jskills.Player
 import jskills.PartialPlay
 import jskills.factorgraphs.KeyedVariable
 import jskills.factorgraphs.Schedule
@@ -11,7 +11,7 @@ import jskills.trueskill.TrueSkillFactorGraph
 import jskills.trueskill.factors.GaussianWeightedSumFactor
 
 class PlayerPerformancesToTeamPerformancesLayer(parentGraph: TrueSkillFactorGraph)
-  extends TrueSkillFactorGraphLayer[KeyedVariable[IPlayer, GaussianDistribution], GaussianWeightedSumFactor, Variable[GaussianDistribution]](parentGraph) {
+  extends TrueSkillFactorGraphLayer[KeyedVariable[Player, GaussianDistribution], GaussianWeightedSumFactor, Variable[GaussianDistribution]](parentGraph) {
 
   override def buildLayer() {
     for (currentTeam <- inputVariablesGroups) {
@@ -29,7 +29,7 @@ class PlayerPerformancesToTeamPerformancesLayer(parentGraph: TrueSkillFactorGrap
      scheduleSequence(schedules, "all player perf to team perf schedule")
   }
 
-  def createPlayerToTeamSumFactor(teamMembers: Seq[KeyedVariable[IPlayer, GaussianDistribution]], sumVariable: Variable[GaussianDistribution]): GaussianWeightedSumFactor = {
+  def createPlayerToTeamSumFactor(teamMembers: Seq[KeyedVariable[Player, GaussianDistribution]], sumVariable: Variable[GaussianDistribution]): GaussianWeightedSumFactor = {
     val weights = teamMembers map (m => PartialPlay.getPartialPlayPercentage(m.key))
     new GaussianWeightedSumFactor(sumVariable, teamMembers, weights.toArray)
   }
@@ -50,7 +50,7 @@ class PlayerPerformancesToTeamPerformancesLayer(parentGraph: TrueSkillFactorGrap
     scheduleSequence(schedules.flatten, "all of the team's sum iterations")
   }
 
-  private def createOutputVariable(team: Seq[KeyedVariable[IPlayer, GaussianDistribution]]): Variable[GaussianDistribution] = {
+  private def createOutputVariable(team: Seq[KeyedVariable[Player, GaussianDistribution]]): Variable[GaussianDistribution] = {
     val sb = new StringBuilder()
     for (teamMember <- team) {
       sb.append(teamMember.key.toString())
