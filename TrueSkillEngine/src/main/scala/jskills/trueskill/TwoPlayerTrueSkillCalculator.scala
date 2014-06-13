@@ -51,14 +51,16 @@ class TwoPlayerTrueSkillCalculator
 
   def calculateNewRatings(
     gameInfo: GameInfo,
-    winnerRating: Rating,
-    loserRating: Rating,
+    selfRating: Rating,
+    opponentRating: Rating,
     result: PairwiseComparison): (Rating, Rating) =
-    (calculateNewRating(gameInfo, winnerRating, loserRating, result),
-      calculateNewRating(gameInfo, loserRating, winnerRating, result.opposite))
+    (calculateNewRating(gameInfo, selfRating, opponentRating, result),
+      calculateNewRating(gameInfo, opponentRating, selfRating, result.opposite))
 
-  private def calculateNewRating(gameInfo: GameInfo,
-    selfRating: Rating, opponentRating: Rating,
+  private def calculateNewRating(
+    gameInfo: GameInfo,
+    selfRating: Rating,
+    opponentRating: Rating,
     comparison: PairwiseComparison): Rating = {
     val drawMargin = gameInfo.drawMargin
 

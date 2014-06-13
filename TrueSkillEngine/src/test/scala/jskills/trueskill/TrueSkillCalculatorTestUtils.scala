@@ -10,8 +10,7 @@ import jskills.Rating
 import jskills.SkillCalculator
 
 trait TrueSkillCalculatorTestUtils {
-
-  private val ErrorTolerance = 0.085
+  import TrueSkillCalculatorTestUtils._
 
   // These are the roll-up ones
 
@@ -956,16 +955,20 @@ trait TrueSkillCalculatorTestUtils {
   // Helpers
   //------------------------------------------------------------------------------
 
-  private def assertRating(expectedMean: Double, expectedStandardDeviation: Double, actual: Rating) {
+  object Team {
+    def apply(p: Player, r: Rating) = Map(p -> r)
+  }
+}
+
+object TrueSkillCalculatorTestUtils {
+  val ErrorTolerance = 0.085
+
+  def assertRating(expectedMean: Double, expectedStandardDeviation: Double, actual: Rating) {
     assertEquals(actual.mean, expectedMean, ErrorTolerance)
     assertEquals(actual.standardDeviation, expectedStandardDeviation, ErrorTolerance)
   }
 
-  private def assertMatchQuality(expectedMatchQuality: Double, actualMatchQuality: Double) {
+  def assertMatchQuality(expectedMatchQuality: Double, actualMatchQuality: Double) {
     assertEquals(actualMatchQuality, expectedMatchQuality, 0.0005)
-  }
-
-  object Team {
-    def apply(p: Player, r: Rating) = Map(p -> r)
   }
 }
