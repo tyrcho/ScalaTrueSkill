@@ -44,7 +44,7 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
 
           // Remember that bigger numbers mean worse rank (e.g.
           // other-current is what we want)
-          val comparison = PairwiseComparison.fromMultiplier(Math.signum(tr(ixOtherTeam) - tr(ixCurrentTeam)))
+          val comparison = PairwiseComparison.fromMultiplier(Math.signum(tr(ixOtherTeam) - tr(ixCurrentTeam)).toInt)
 
           for ((ck, cv) <- currentTeam)
             for ((ok, ov) <- otherTeam)
@@ -63,7 +63,7 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
       }
     }
 
-     result
+    result
   }
 
   private def updateDuels(
@@ -104,7 +104,7 @@ class DuellingEloCalculator(twoPlayerEloCalculator: TwoPlayerEloCalculator)
       }
     }
 
-     minQuality
+    minQuality
   }
 
   def updateDuelInfo(

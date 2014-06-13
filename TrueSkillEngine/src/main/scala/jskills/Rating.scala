@@ -1,6 +1,5 @@
 package jskills
 
-
 import jskills.numerics.MathUtils.square
 
 import jskills.numerics.GaussianDistribution
@@ -50,6 +49,7 @@ class Rating(
   /** The variance of the rating (standard deviation squared) **/
   def getVariance(): Double = square(standardDeviation)
 
-  override def toString(): String = format("Mean(μ)=%f, Std-Dev(σ)=%f", mean, standardDeviation)
+  override def toString(): String =
+    f"Mean(μ)=$mean, Std-Dev(σ)=$standardDeviation"
 
 }

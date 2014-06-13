@@ -10,7 +10,7 @@ import jskills.numerics.GaussianDistribution
  * math paper for more details.[/remarks]
  */
 class GaussianLikelihoodFactor(betaSquared: Double, variable1: Variable[GaussianDistribution], variable2: Variable[GaussianDistribution])
-  extends GaussianFactor(format("Likelihood of %s going to %s", variable2, variable1)) {
+  extends GaussianFactor(String.format("Likelihood of %s going to %s", variable2, variable1)) {
 
   val precision = 1.0 / betaSquared
   createVariableToMessageBinding(variable1)
@@ -44,7 +44,7 @@ class GaussianLikelihoodFactor(betaSquared: Double, variable1: Variable[Gaussian
     variable1.value = newMarginal
 
     // Return the difference in the new marginal
-     sub(newMarginal, marginal1)
+    sub(newMarginal, marginal1)
   }
 
   override def updateMessage(messageIndex: Int): Double = {

@@ -11,13 +11,13 @@ class MatrixTest extends AssertionsForJUnit {
 
   @Test def TwoByTwoDeterminantTests() {
     val a = new SimpleMatrix(Array(Array[Double](1, 2), Array[Double](3, 4)))
-    assertEquals(a.determinant(), -2., ERROR_TOLERANCE)
+    assertEquals(a.determinant(), -2.0, ERROR_TOLERANCE)
 
     val b = new SimpleMatrix(Array(Array[Double](3, 4), Array[Double](5, 6)))
-    assertEquals(b.determinant(), -2., ERROR_TOLERANCE)
+    assertEquals(b.determinant(), -2.0, ERROR_TOLERANCE)
 
     val c = new SimpleMatrix(Array(Array[Double](1, 1), Array[Double](1, 1)))
-    assertEquals(c.determinant(), 0., ERROR_TOLERANCE)
+    assertEquals(c.determinant(), 0.0, ERROR_TOLERANCE)
 
     val d = new SimpleMatrix(Array(Array[Double](12, 15), Array[Double](17, 21)))
     assertEquals(d.determinant(), 12 * 21 - 15 * 17, ERROR_TOLERANCE)
@@ -25,7 +25,7 @@ class MatrixTest extends AssertionsForJUnit {
 
   @Test def ThreeByThreeDeterminantTests() {
     val a = new SimpleMatrix(Array(Array[Double](1.0, 2, 3), Array[Double](4.0, 5, 6), Array[Double](7.0, 8, 9)))
-    assertEquals(a.determinant(), 0., ERROR_TOLERANCE)
+    assertEquals(a.determinant(), 0.0, ERROR_TOLERANCE)
 
     val π = new SimpleMatrix(Array(Array[Double](3.0, 1, 4), Array[Double](1.0, 5, 9), Array[Double](2.0, 6, 5)))
 
@@ -97,7 +97,7 @@ class MatrixTest extends AssertionsForJUnit {
     val c = new SimpleMatrix(Array(Array[Double](1, 2, 3), Array[Double](0, 4, 5), Array[Double](1, 0, 6)))
 
     val cInverse = c.invert()
-    val d = new SimpleMatrix(Array(Array[Double](24, -12, -2), Array[Double](5, 3, -5), Array[Double](-4, 2, 4))).scale(1.0 / 22.)
+    val d = new SimpleMatrix(Array(Array[Double](24, -12, -2), Array[Double](5, 3, -5), Array[Double](-4, 2, 4))).scale(1.0 / 22.0)
 
     assertTrue(d.isIdentical(cInverse, ERROR_TOLERANCE))
     val identity3x3 = SimpleMatrix.identity(3)

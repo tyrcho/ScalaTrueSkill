@@ -6,6 +6,6 @@ class KeyedVariable[K, V](val key: K, prior: V, name: String)
 
 object KeyedVariable {
   def apply[K, V](key: K, prior: V, name: String, args: Any*) = {
-    new KeyedVariable[K, V](key, prior, format(name, args))
+    new KeyedVariable[K, V](key, prior, String.format(name, args))
   }
 }

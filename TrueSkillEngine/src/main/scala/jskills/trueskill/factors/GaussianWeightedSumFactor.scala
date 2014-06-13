@@ -22,7 +22,8 @@ object GaussianWeightedSumFactor {
         sb.append("-")
       }
 
-      sb.append(format("%.2f", Math.abs(weights(i))))
+      val abs = Math.abs(weights(i))
+      sb.append(f"$abs%.2f")
       sb.append("*[")
       sb.append(variablesToSum(i))
       sb.append("]")
@@ -38,7 +39,7 @@ object GaussianWeightedSumFactor {
       }
     }
 
-     sb.toString()
+    sb.toString()
   }
 }
 
@@ -54,7 +55,7 @@ class GaussianWeightedSumFactor(
   // By default, set the weight to 1.0, which is what null indicates
   val variableIndexOrdersForWeights = ListBuffer.empty[Array[Int]]
 
-  if (variableWeights == null) variableWeights = Array.fill(variablesToSum.size)(1.)
+  if (variableWeights == null) variableWeights = Array.fill(variablesToSum.size)(1.0)
 
   // This following is used for convenience, for example, the first entry is [0, 1, 2] 
   // corresponding to v(0) = a1*v[1] + a2*v[2]
@@ -136,7 +137,7 @@ class GaussianWeightedSumFactor(
       result += GaussianDistribution.logRatioNormalization(vars(i).value, messages(i).value)
     }
 
-     result
+    result
   }
 
   private def updateHelper(weights: Seq[Double],
@@ -192,7 +193,7 @@ class GaussianWeightedSumFactor(
     variables(0).value = newMarginal
 
     // Return the difference in the new marginal
-     sub(newMarginal, marginal0)
+    sub(newMarginal, marginal0)
   }
 
   override def updateMessage(messageIndex: Int): Double = {
@@ -214,6 +215,6 @@ class GaussianWeightedSumFactor(
       updatedVariables += allVariables(indicesToUse(i))
     }
 
-     updateHelper(weights(messageIndex), weightsSquared(messageIndex), updatedMessages, updatedVariables)
+    updateHelper(weights(messageIndex), weightsSquared(messageIndex), updatedMessages, updatedVariables)
   }
 }

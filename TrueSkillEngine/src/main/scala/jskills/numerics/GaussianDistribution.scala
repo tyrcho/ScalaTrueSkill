@@ -52,7 +52,7 @@ class GaussianDistribution(
 
   def *(other: GaussianDistribution): GaussianDistribution = GaussianDistribution.prod(this, other)
 
-  override def toString = format("Mean(\u03bc)=%f, Std-Dev(\u03c3)=%f", mean, standardDeviation)
+  override def toString = f"Mean(\u03bc)=$mean, Std-Dev(\u03c3)=$standardDeviation"
 
   override def equals(o: Any): Boolean = {
     o match {

@@ -9,7 +9,7 @@ package jskills.numerics
  */
 class Range(val min: Int, val max: Int) {
   def isInRange(value: Int): Boolean = (min <= value) && (value <= max)
-  override def toString() = format("Range(min=%s, max=%s)", min, max)
+  override def toString = f"Range(min=$min, max=$max)"
 }
 
 object Range {

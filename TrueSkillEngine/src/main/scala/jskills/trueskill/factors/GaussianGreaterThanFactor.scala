@@ -9,14 +9,16 @@ import jskills.numerics.GaussianDistribution
  * Factor representing a team difference that has exceeded the draw margin.
  * [remarks]See the accompanying math paper for more details.[/remarks]
  */
-class GaussianGreaterThanFactor(epsilon: Double, variable: Variable[GaussianDistribution]) extends GaussianFactor(format("%s ] %4.3f", variable, epsilon)) {
+class GaussianGreaterThanFactor(epsilon: Double, variable: Variable[GaussianDistribution])
+  extends GaussianFactor(f"$variable ] $epsilon%4.3f") {
+
   createVariableToMessageBinding(variable)
 
   override def getLogNormalization(): Double = {
     val marginal = variables(0).value
     val message = messages(0).value
     val messageFromVariable = divide(marginal, message)
-     -logProductNormalization(messageFromVariable, message) + Math.log(cumulativeTo((messageFromVariable.mean - epsilon) / messageFromVariable.standardDeviation))
+    -logProductNormalization(messageFromVariable, message) + Math.log(cumulativeTo((messageFromVariable.mean - epsilon) / messageFromVariable.standardDeviation))
   }
 
   override protected def updateMessage(message: Message[GaussianDistribution], variable: Variable[GaussianDistribution]): Double = {
@@ -48,6 +50,6 @@ class GaussianGreaterThanFactor(epsilon: Double, variable: Variable[GaussianDist
     variable.value = newMarginal
 
     // Return the difference in the new marginal
-     sub(newMarginal, oldMarginal)
+    sub(newMarginal, oldMarginal)
   }
 }

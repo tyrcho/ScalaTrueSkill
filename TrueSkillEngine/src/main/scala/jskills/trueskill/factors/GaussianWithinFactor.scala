@@ -11,7 +11,7 @@ import jskills.numerics.GaussianDistribution
  * [remarks]See the accompanying math paper for more details.[/remarks]
  */
 class GaussianWithinFactor(epsilon: Double, variable: Variable[GaussianDistribution])
-  extends GaussianFactor(format("%s [= %4.3f", variable, epsilon)) {
+  extends GaussianFactor(f"$variable [= $epsilon%4.3f") {
   createVariableToMessageBinding(variable)
 
   override def getLogNormalization(): Double = {
@@ -22,7 +22,7 @@ class GaussianWithinFactor(epsilon: Double, variable: Variable[GaussianDistribut
     val std = messageFromVariable.standardDeviation
     val z = cumulativeTo((epsilon - mean) / std) - cumulativeTo((-epsilon - mean) / std)
 
-     -logProductNormalization(messageFromVariable, message) + Math.log(z)
+    -logProductNormalization(messageFromVariable, message) + Math.log(z)
   }
 
   override protected def updateMessage(message: Message[GaussianDistribution], variable: Variable[GaussianDistribution]): Double = {
@@ -51,6 +51,6 @@ class GaussianWithinFactor(epsilon: Double, variable: Variable[GaussianDistribut
     variable.value = newMarginal
 
     // Return the difference in the new marginal
-     sub(newMarginal, oldMarginal)
+    sub(newMarginal, oldMarginal)
   }
 }

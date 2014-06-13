@@ -10,9 +10,9 @@ class ScheduleLoop[T](name: String, scheduleToLoop: Schedule[T], maxDelta: Doubl
     while (delta > maxDelta) {
       delta = scheduleToLoop.visit(depth + 1, maxDepth)
       if (totalIterations > MAX_ITERATIONS)
-        throw new RuntimeException(format("Maximum iterations (%d) reached.", MAX_ITERATIONS))
+        throw new RuntimeException(s"Maximum iterations ($MAX_ITERATIONS) reached.")
       totalIterations += 1
     }
-     delta
+    delta
   }
 }

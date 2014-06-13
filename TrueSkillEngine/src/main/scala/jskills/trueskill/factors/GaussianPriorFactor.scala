@@ -10,7 +10,7 @@ import jskills.numerics.GaussianDistribution._
  * [remarks]See the accompanying math paper for more details.[/remarks]
  */
 class GaussianPriorFactor(mean: Double, variance: Double, variable: Variable[GaussianDistribution])
-  extends GaussianFactor(format("Prior value going to %s", variable)) {
+  extends GaussianFactor(String.format("Prior value going to %s", variable)) {
   val newMessage = GaussianDistribution(mean, Math.sqrt(variance))
 
   createVariableToMessageBinding(variable,
@@ -26,7 +26,7 @@ class GaussianPriorFactor(mean: Double, variance: Double, variable: Variable[Gau
       oldMarginal.precision + newMessage.precision - oldMessage.value.precision)
     variable.value = newMarginal
     message.value = newMessage
-     sub(oldMarginal, newMarginal)
+    sub(oldMarginal, newMarginal)
   }
 
   override def getLogNormalization() = 0

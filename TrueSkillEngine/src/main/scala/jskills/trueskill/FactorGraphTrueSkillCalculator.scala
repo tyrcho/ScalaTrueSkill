@@ -134,7 +134,7 @@ class FactorGraphTrueSkillCalculator
       // Need to add in 0's for all the previous players, since they're
       // not
       // on this team
-      val currentRowValues = ListBuffer.fill(totalPreviousPlayers)(0.)
+      val currentRowValues = ListBuffer.fill(totalPreviousPlayers)(0.0)
       playerAssignments += currentRowValues
 
       currentTeam.keys foreach {

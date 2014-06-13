@@ -27,7 +27,7 @@ class RankSorterTest {
     // assertEquals doesn't work on primitive arrays
     // see http://code.google.com/p/testng/issues/detail?id=4
     for (i <- 0 until people.size)
-      assertEquals(format("Different at index %d. Expected <%d>, was <%d>.", i, sortedranks(i), ranks(i)),
+      assertEquals(f"Different at index $i. Expected <${sortedranks(i)}>, was <${ranks(i)}>.",
         ranks(i), sortedranks(i))
     assertEquals(people, Seq("One", "Two1", "Two2", "Four", "Five"))
   }

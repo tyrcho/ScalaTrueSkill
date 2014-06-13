@@ -51,11 +51,10 @@ class IteratedTeamDifferencesInnerLayer(parentGraph: TrueSkillFactorGraph,
         "teamPerformanceToPerformanceDifferenceFactors[0] @ 1",
         teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors()(0), 1),
       new ScheduleStep[GaussianDistribution](
-        format("teamPerformanceToPerformanceDifferenceFactors[teamTeamDifferences = %d - 1] @ 2",
-          totalTeamDifferences),
+        f"teamPerformanceToPerformanceDifferenceFactors[teamTeamDifferences = $totalTeamDifferences - 1] @ 2",
         teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors()(totalTeamDifferences - 1), 2))
 
-     new ScheduleSequence[GaussianDistribution]("inner schedule", schedules)
+    new ScheduleSequence[GaussianDistribution]("inner schedule", schedules)
   }
 
   private def createTwoTeamInnerPriorLoopSchedule(): Schedule[GaussianDistribution] = {
@@ -67,7 +66,7 @@ class IteratedTeamDifferencesInnerLayer(parentGraph: TrueSkillFactorGraph,
         "send to greater than or within factor",
         teamDifferencesComparisonLayer.getLocalFactors()(0),
         0))
-     scheduleSequence(schedules, "loop of just two teams inner sequence")
+    scheduleSequence(schedules, "loop of just two teams inner sequence")
   }
 
   private def createMultipleTeamInnerPriorLoopSchedule(): Schedule[GaussianDistribution] = {
@@ -78,13 +77,13 @@ class IteratedTeamDifferencesInnerLayer(parentGraph: TrueSkillFactorGraph,
     for (i <- 0 until totalTeamDifferences - 1) {
       val schedules = List(
         new ScheduleStep[GaussianDistribution](
-          format("team perf to perf diff %d", i),
+          f"team perf to perf diff $i",
           teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors()(i), 0),
         new ScheduleStep[GaussianDistribution](
-          format("greater than or within result factor %d", i),
+          f"greater than or within result factor $i",
           teamDifferencesComparisonLayer.getLocalFactors()(i), 0),
         new ScheduleStep[GaussianDistribution](
-          format("team perf to perf diff factors [%d], 2", i),
+          f"team perf to perf diff factors [$i], 2",
           teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors()(i), 2))
       val currentForwardSchedulePiece =
         scheduleSequence(schedules, "current forward schedule piece %s", i)
@@ -101,15 +100,14 @@ class IteratedTeamDifferencesInnerLayer(parentGraph: TrueSkillFactorGraph,
     for (i <- 0 until totalTeamDifferences - 1) {
       val schedules = List(
         new ScheduleStep[GaussianDistribution](
-          format("teamPerformanceToPerformanceDifferenceFactors[totalTeamDifferences - 1 - %d] @ 0", i),
+          f"teamPerformanceToPerformanceDifferenceFactors[totalTeamDifferences - 1 - $i] @ 0",
           teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors()(
             totalTeamDifferences - 1 - i), 0),
         new ScheduleStep[GaussianDistribution](
-          format("greaterThanOrWithinResultFactors[totalTeamDifferences - 1 - %d] @ 0", i),
+          f"greaterThanOrWithinResultFactors[totalTeamDifferences - 1 - $i] @ 0",
           teamDifferencesComparisonLayer.getLocalFactors()(totalTeamDifferences - 1 - i), 0),
         new ScheduleStep[GaussianDistribution](
-          format("teamPerformanceToPerformanceDifferenceFactors[totalTeamDifferences - 1 - %d] @ 1",
-            i),
+          f"teamPerformanceToPerformanceDifferenceFactors[totalTeamDifferences - 1 - $i] @ 1",
           teamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors()(
             totalTeamDifferences - 1 - i), 1))
 
@@ -129,11 +127,10 @@ class IteratedTeamDifferencesInnerLayer(parentGraph: TrueSkillFactorGraph,
     val initialMaxDelta = 0.0001
 
     val loop = new ScheduleLoop[GaussianDistribution](
-      format("loop with max delta of %f",
-        initialMaxDelta),
+      f"loop with max delta of $initialMaxDelta",
       forwardBackwardScheduleToLoop,
       initialMaxDelta)
 
-     loop
+    loop
   }
 }
