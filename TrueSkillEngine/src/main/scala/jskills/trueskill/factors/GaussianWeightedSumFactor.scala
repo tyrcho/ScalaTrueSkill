@@ -1,12 +1,13 @@
 package jskills.trueskill.factors
 
-import jskills.numerics.GaussianDistribution._
-import jskills.Guard
+import scala.collection.mutable.ListBuffer
+
 import jskills.factorgraphs.Message
 import jskills.factorgraphs.Variable
 import jskills.numerics.GaussianDistribution
-
-import scala.collection.mutable.ListBuffer
+import jskills.numerics.GaussianDistribution.divide
+import jskills.numerics.GaussianDistribution.prod
+import jskills.numerics.GaussianDistribution.sub
 
 object GaussianWeightedSumFactor {
   def createName(sumVariable: Variable[GaussianDistribution],
@@ -199,8 +200,6 @@ class GaussianWeightedSumFactor(
   override def updateMessage(messageIndex: Int): Double = {
     val allMessages = messages
     val allVariables = variables
-
-    Guard.argumentIsValidIndex(messageIndex, allMessages.size, "messageIndex")
 
     val updatedMessages = ListBuffer.empty[Message[GaussianDistribution]]
     val updatedVariables = ListBuffer.empty[Variable[GaussianDistribution]]

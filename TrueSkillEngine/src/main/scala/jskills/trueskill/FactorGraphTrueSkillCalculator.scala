@@ -1,32 +1,29 @@
 package jskills.trueskill
 
-import jskills.numerics.MathUtils._
+import scala.collection.mutable.ListBuffer
+
+import org.ejml.simple.SimpleMatrix
+
 import jskills.GameInfo
-import jskills.Guard
-import jskills.IPlayer
+import jskills.Player
 import jskills.ITeam
+import jskills.PartialPlay
 import jskills.RankSorter
 import jskills.Rating
 import jskills.SkillCalculator
-import jskills.numerics.Range
-import org.ejml.simple.SimpleMatrix
-
 import jskills.SupportedOptions
-import jskills.PartialPlay
-import collection.mutable.Map
-import scala.collection.mutable.ListBuffer
+import jskills.numerics.MathUtils.square
 
 /**
  * Calculates TrueSkill using a full factor graph.
  */
 class FactorGraphTrueSkillCalculator
   extends SkillCalculator(Seq(SupportedOptions.PartialPlay, SupportedOptions.PartialUpdate),
-    Range.atLeast(2),
-    Range.atLeast(1)) {
+    2 to Int.MaxValue,
+    1 to Int.MaxValue) {
 
   override def calculateNewRatings(gameInfo: GameInfo,
-    teams: Seq[_ <: ITeam], teamRanks: Seq[Int]): Map[IPlayer, Rating] = {
-    Guard.argumentNotNull(gameInfo, "gameInfo")
+    teams: Seq[Map[Player,Rating]], teamRanks: Seq[Int]): Map[Player, Rating] = {
     validateTeamCountAndPlayersCountPerTeam(teams)
 
     val teamsl = RankSorter.sort(teams, teamRanks)
@@ -35,11 +32,11 @@ class FactorGraphTrueSkillCalculator
     factorGraph.BuildGraph()
     factorGraph.runSchedule()
 
-    factorGraph.getUpdatedRatings()
+    factorGraph.getUpdatedRatings
   }
-
+  
   override def calculateMatchQuality(gameInfo: GameInfo,
-    teams: Seq[_ <: ITeam]): Double = {
+    teams: Seq[Map[Player,Rating]]): Double = {
     // We need to create the A matrix which is the player team assigments.
     val teamAssignmentsList = teams
     val skillsMatrix = getPlayerCovarianceMatrix(teamAssignmentsList)
@@ -71,7 +68,7 @@ class FactorGraphTrueSkillCalculator
     Math.exp(expPart) * Math.sqrt(sqrtPart)
   }
 
-  def getPlayerMeansVector(teamAssignmentsList: Seq[_ <: ITeam]): SimpleMatrix = {
+  def getPlayerMeansVector(teamAssignmentsList: Seq[Map[Player,Rating]]): SimpleMatrix = {
     // A simple list of all the player means.
     val temp = getPlayerMeanRatingValues(teamAssignmentsList)
     val tempa = temp.toArray
@@ -82,24 +79,16 @@ class FactorGraphTrueSkillCalculator
    * This is a square matrix whose diagonal values represent the variance
    * (square of standard deviation) of all players.
    */
-  private def getPlayerCovarianceMatrix(teamAssignmentsList: Seq[_ <: ITeam]): SimpleMatrix = {
+  private def getPlayerCovarianceMatrix(teamAssignmentsList: Seq[Map[Player,Rating]]): SimpleMatrix = {
     val temp = getPlayerVarianceRatingValues(teamAssignmentsList)
     SimpleMatrix.diag(temp: _*).transpose()
   }
 
-  /**
-   * TODO Make array? Helper function that gets a list of values for all
-   * player ratings
-   */
-  private def getPlayerMeanRatingValues(teamAssignmentsList: Seq[_ <: ITeam]): Seq[Double] =
+  private def getPlayerMeanRatingValues(teamAssignmentsList: Seq[Map[Player,Rating]]): Seq[Double] =
     teamAssignmentsList map (_.values map (_.mean)) flatten
 
-  /**
-   * TODO Make array? Helper function that gets a list of values for all
-   * player ratings
-   */
-  private def getPlayerVarianceRatingValues(teamAssignmentsList: Seq[_ <: ITeam]): Seq[Double] =
-    teamAssignmentsList map (_.values map (_.getVariance())) flatten
+  private def getPlayerVarianceRatingValues(teamAssignmentsList: Seq[Map[Player,Rating]]): Seq[Double] =
+    teamAssignmentsList map (_.values map (_.getVariance)) flatten
 
   /**
    * The team assignment matrix is often referred to as the "A" matrix. It's a
@@ -124,7 +113,7 @@ class FactorGraphTrueSkillCalculator
    * |  0.00 -1.00 |
    * [/pre]
    */
-  private def createTeamPerformanceToDifferenceFactor(teamAssignmentsList: Seq[ITeam], totalPlayers: Int): SimpleMatrix = {
+  private def createTeamPerformanceToDifferenceFactor(teamAssignmentsList: Seq[Map[Player,Rating]], totalPlayers: Int): SimpleMatrix = {
     val playerAssignments = ListBuffer.empty[ListBuffer[Double]]
     var totalPreviousPlayers = 0
 

@@ -3,13 +3,10 @@ package jskills.elo
 import org.junit.Assert._
 
 import jskills.GameInfo
-import jskills.IPlayer
-import jskills.ITeam
+import jskills.Player
 import jskills.PairwiseComparison
 import jskills.Player
 import jskills.Rating
-import jskills.Team
-
 
 object EloAssert {
   val ErrorTolerance = 0.1
@@ -20,11 +17,11 @@ object EloAssert {
     player1Result: PairwiseComparison,
     player1AfterRating: Double,
     player2AfterRating: Double) {
-    val player1 = new Player[Integer](1)
-    val player2 = new Player[Integer](2)
+    val player1 = new Player(1)
+    val player2 = new Player(2)
 
-    val team1 = Team(player1, new EloRating(player1BeforeRating))
-    val team2 = Team(player2, new EloRating(player2BeforeRating))
+    val team1 = Map(player1 -> new EloRating(player1BeforeRating))
+    val team2 = Map(player2 -> new EloRating(player2BeforeRating))
     val teams = Seq(team1, team2)
 
     val chessGameInfo = new GameInfo(1200, 0, 200, 0, 0)
