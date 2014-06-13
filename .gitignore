@@ -10,3 +10,7 @@ target
 .settings
 .classpath
 .project
+
+*.orig
+*.releaseBackup
+release.properties
