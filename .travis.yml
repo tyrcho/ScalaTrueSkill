@@ -1,0 +1,11 @@
+language: java
+
+jdk:
+  - oraclejdk7
+
+install: true
+script: mvn release:prepare release:perform
+
+notifications:
+  email:
+    - michel@daviot.info
