@@ -11,11 +11,12 @@
 	</modules>
 
 	<scm>
-		<connection>scm:git:https://tyrcho@82.232.237.150:9443/r/scala/TrueSkill.git</connection>
-		<developerConnection>scm:git:https://tyrcho@82.232.237.150:9443/r/scala/TrueSkill.git</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
-	
+		<connection>scm:git:https://github.com/tyrcho/ScalaTrueSkill</connection>
+		<developerConnection>scm:git:https://github.com/tyrcho/ScalaTrueSkill</developerConnection>
+		<url>https://github.com/tyrcho/ScalaTrueSkill</url>
+		<tag>HEAD</tag>
+	</scm>
+
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -23,6 +24,13 @@
 		<junit.version>4.10</junit.version>
 		<scalatest.version>2.2.0</scalatest.version>
 	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>bintray</id>
+			<url>https://api.bintray.com/maven/tyrcho/maven/ScalaTrueSkill</url>
+		</repository>
+	</distributionManagement>
 
 	<dependencyManagement>
 		<dependencies>
@@ -54,6 +62,8 @@
 				<version>2.5</version>
 				<configuration>
 					<tagNameFormat>v@{project.version}</tagNameFormat>
+					<useReleaseProfile>false</useReleaseProfile>
+					<releaseProfiles>release</releaseProfiles>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 				</configuration>
 			</plugin>
@@ -68,4 +78,38 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>3.0.0</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.10.3</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
